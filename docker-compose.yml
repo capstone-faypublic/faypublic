@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx
+    ports:
+      - 8000:8000
+    volumes:
+      - ./src/static:/var/www/static
+      - ./nginx/sites-enabled.conf:/etc/nginx/conf.d/sites-enabled.conf
+    depends_on:
+      - django
+
+  django:
+    build: ./src
+    command: python /usr/src/app/manage.py runserver 0:8080
+    volumes:
+      - ./src:/usr/src/app
+    depends_on:
+      - postgres
+    environment:
+      DEBUG: 1
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: "${PSQL_DEV_DB}"
+      POSTGRES_PASSWORD: "${PSQL_DEV_PASS}"

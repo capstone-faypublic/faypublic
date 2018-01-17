@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  nginx:
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./src/static:/var/www/static
+      - ./nginx/sites-enabled.prod.conf:/etc/nginx/conf.d/sites-enabled.conf
+
+    django:
+      command: gunicorn -w 3 --bind 0.0.0.0:8080 faypublic.wsgi
+      environment:
+        DEBUG: 0
+
+    postgres:
+      volumes:
+        - ./postgres:/var/lib/postgresql/data
+      environment:
+        POSTGRES_DB: "${PSQL_PROD_DB}"
+        POSTGRES_PASSWORD: "${PSQL_PROD_PASS}"
