@@ -9,8 +9,9 @@ User registration, production management, and class scheduling rolled into a hap
 
 1. Install [Docker](https://docs.docker.com/engine/installation/)
 2. Clone the repository and `cd /path/to/faypublic`
-3. Run `docker-compose up` and watch the magic happen
-4. Visit [`http://localhost:8000`](http://localhost:8000)
+3. Rename `.env.example` to `.env`
+4. Run `docker-compose up` and watch the magic happen
+5. Visit [`http://localhost:8000`](http://localhost:8000)
 
 ## Team members
 * Garrett Graham
