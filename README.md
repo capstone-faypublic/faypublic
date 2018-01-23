@@ -14,11 +14,9 @@ User registration, production management, and class scheduling rolled into a hap
 5. Visit [`http://localhost:8000`](http://localhost:8000)
 
 ## Team members
-* Garrett Graham
-* Ryan Hutslar
-* Jacob Krusz
+* Garrett Graham [gwadegraham](https://github.com/gwadegraham)
+* Ryan Hutslar [rchutsla](https://github.com/rchutsla)
+* Jacob Krusz [jkrusz](https://github.com/jkrusz)
 * Teja Nakka [tnakka214](https://github.com/tnakka214)
-* Blake Reed
+* Blake Reed [BlakeReed19](https://github.com/BlakeReed19)
 * Jan Timpe [jan-timpe](https://github.com/jan-timpe)
-
-## Contributers
