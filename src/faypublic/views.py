@@ -5,5 +5,6 @@ def home(request):
         request,
         'home.html',
         context={
+            'somevar': 'this is a context var'
         }
     )
