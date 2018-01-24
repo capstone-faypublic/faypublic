@@ -11,9 +11,3 @@ class ProducerUserProfile(models.Model):
     last_name = models.CharField(max_length=255, blank=True)
     email_address = models.EmailField(max_length=255, blank=True)
     phone_number = models.CharField(max_length=15, blank=True)
-
-    # class Meta:
-        ## add special user permissions/groups here
-        # permissions = (
-        #     ('permission_or_group', 'Description')
-        # )
