@@ -13,6 +13,20 @@ User registration, production management, and class scheduling rolled into a hap
 4. Run `docker-compose up` and watch the magic happen
 5. Visit [`http://localhost:8000`](http://localhost:8000)
 
+### Other runtime options
+
+Run the project in the background (detatched): `docker-compose up -d`
+
+Stop all running containers: `docker-compose down`
+
+Execute a command inside of a container (container must be running): `docker-compose exec <container-name> <command>`
+
+Loading seed data (fixtures): `docker-compose exec django python manage.py loaddata`
+
+Export data to fixtures: `docker-compose exec django python manage.py dumpdata`
+
+Create a superuser (admin user): `docker-compose exec django python manage.py createsuperuser`
+
 ## Team members
 * Garrett Graham [gwadegraham](https://github.com/gwadegraham)
 * Ryan Hutslar [rchutsla](https://github.com/rchutsla)
