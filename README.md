@@ -8,6 +8,7 @@ User registration, production management, and class scheduling rolled into a hap
 ## Run the project
 
 1. Install [Docker](https://docs.docker.com/engine/installation/)
+   On older versions of Windows and versions not Pro or Enterprise install [Docker Toolbox](https://docs.docker.com/toolbox/overview/)
 2. Clone the repository and `cd /path/to/faypublic`
 3. Rename `.env.example` to `.env`
 4. Run `docker-compose up` and watch the magic happen
