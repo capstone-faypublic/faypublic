@@ -127,3 +127,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = './static/'
+
+# Auth config
+LOGIN_REDIRECT_URL = '/profile'
