@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from .forms import UserRegistrationForm
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     return render(
@@ -34,8 +35,14 @@ def user_register(request):
         }
     )
 
+@login_required
 def user_profile(request):
+    user = request.user
+
     return render(
         request,
-        'home.html',
+        'profile.html',
+        context={
+            'name': user.first_name + ' ' + user.last_name
+        }
     ) 

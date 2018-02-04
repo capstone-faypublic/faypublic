@@ -123,10 +123,11 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.0/howto/static-files/
+# https://docs.djangoproject.com/en/2.0/how to/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = './static/'
 
 # Auth config
 LOGIN_REDIRECT_URL = '/profile'
+LOGIN_URL = '/login'
