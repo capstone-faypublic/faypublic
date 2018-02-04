@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from .forms import UserRegistrationForm
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.decorators import login_required
+from userprofile.models import UserProfile
 
 def home(request):
     return render(
@@ -25,6 +25,10 @@ def user_register(request):
             password=raw_pass
         )
         login(request, user)
+        userprofile = UserProfile.objects.create(
+            user=user
+        )
+        userprofile.save()
         return redirect('user_profile')
 
     return render(
@@ -34,15 +38,3 @@ def user_register(request):
             'form': form
         }
     )
-
-@login_required
-def user_profile(request):
-    user = request.user
-
-    return render(
-        request,
-        'profile.html',
-        context={
-            'name': user.first_name + ' ' + user.last_name
-        }
-    ) 

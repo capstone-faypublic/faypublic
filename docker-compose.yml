@@ -18,13 +18,10 @@ services:
       - ./src:/usr/src/app
     depends_on:
       - postgres
-    environment:
-      DEBUG: 1
-      POSTGRES_DB: "${PSQL_DEV_DB}"
-      POSTGRES_PASSWORD: "${PSQL_DEV_PASS}"
+    env_file:
+      - .env
 
   postgres:
     image: postgres
-    environment:
-      POSTGRES_DB: "${PSQL_DEV_DB}"
-      POSTGRES_PASSWORD: "${PSQL_DEV_PASS}"
+    env_file:
+      - .env
