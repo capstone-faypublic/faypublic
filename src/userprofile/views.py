@@ -9,10 +9,13 @@ from .forms import UserProfileForm
 def user_profile(request):
     user = request.user
     userprofile = get_object_or_404(UserProfile, user=user)
-    profile_form = UserProfileForm(instance=userprofile)
+
+    profile_form = UserProfileForm(request.POST, instance=userprofile)
 
     if profile_form.is_valid():
-        profile_form.save()
+        userprofile = profile_form.save()
+
+    profile_form = UserProfileForm(instance=userprofile)
 
     return render(
         request,
