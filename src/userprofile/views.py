@@ -24,4 +24,4 @@ def user_profile(request):
             'name': user.first_name + ' ' + user.last_name,
             'profile_form': profile_form
         }
-    ) 
+    )
