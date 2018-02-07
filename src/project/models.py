@@ -11,6 +11,9 @@ class Project(models.Model):
         blank=False
     )
 
+    def get_absolute_url(self):
+        return "/projects/%i/" % self.id
+
 
     # many to many field with equipment checkout model
     # equipment_checkouts = models.ManyToManyField(EquipmentCheckout)
@@ -19,7 +22,7 @@ class Project(models.Model):
 
 
 def handle_file_upload(instance, filename):
-    return 'user_{0}/{1}'.format(instance.user.id, filename)
+    return 'uploads/project_{0}/{1}'.format(instance.project.id, filename)
 
 
 class ProjectUpload(models.Model):

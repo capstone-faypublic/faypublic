@@ -14,7 +14,7 @@
 
     {% for project in userprofile.project_set.all %}
 
-        <p>{{ project.title }}</p>
+        <p><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></p>
 
     {% endfor %}
 
