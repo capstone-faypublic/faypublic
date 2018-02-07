@@ -103,3 +103,6 @@ ENV/
 
 # PostgreSQL data
 postgres/
+
+# Uploads
+static/media/uploads/*
