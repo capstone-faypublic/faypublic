@@ -151,6 +151,7 @@ input {
   border: 1px solid #bbb;
   max-width: 300px;
   font-size: 10pt;
+  border-radius: 2px;
 }
 
 input[type=submit] {
