@@ -105,4 +105,4 @@ ENV/
 postgres/
 
 # Uploads
-static/media/uploads/*
+src/static/media/uploads/*
