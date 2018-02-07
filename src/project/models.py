@@ -3,7 +3,7 @@ from userprofile.models import UserProfile
 
 # Create your models here.
 class Project(models.Model):
-    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    users = models.ManyToManyField(UserProfile)
 
     title = models.CharField(
         max_length=255, 

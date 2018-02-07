@@ -13,9 +13,8 @@ def projects(request):
     project_form = ProjectForm(request.POST)
 
     if project_form.is_valid():
-        project =  project_form.save(commit=False)
-        project.user_profile = userprofile
-        project.save()
+        project =  project_form.save()
+        userprofile.project_set.add(project)
 
     return render(
         request,
@@ -30,7 +29,7 @@ def projects(request):
 @login_required
 def project(request, id):
     userprofile = get_object_or_404(UserProfile, user=request.user)
-    project = get_object_or_404(Project, user_profile=userprofile, id=id)
+    project = get_object_or_404(userprofile.project_set, id=id)
 
     projectupload_form = ProjectUploadForm(request.POST, request.FILES)
 
@@ -44,7 +43,6 @@ def project(request, id):
         'project.html',
         context={
             'project': project,
-            'projectupload_form': ProjectUploadForm(),
-            'uploads':ProjectUpload.objects.all()
+            'projectupload_form': ProjectUploadForm()
         }
     )

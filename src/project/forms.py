@@ -4,7 +4,7 @@ from .models import Project, ProjectUpload
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        exclude = ['user_profile']
+        exclude = ['users']
 
 class ProjectUploadForm(ModelForm):
     class Meta:

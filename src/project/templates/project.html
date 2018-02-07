@@ -11,7 +11,7 @@
         <input type="submit"/>
     </form>
 
-    {% for upload in uploads %}
+    {% for upload in project.projectupload_set.all %}
 
         <p>{{ upload.title }} : {{ upload.uploaded_file.url }}</p>
 
