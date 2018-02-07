@@ -7,8 +7,7 @@ from .forms import UserProfileForm
 # Create your views here.
 @login_required
 def user_profile(request):
-    user = request.user
-    userprofile = get_object_or_404(UserProfile, user=user)
+    userprofile = get_object_or_404(UserProfile, user=request.user)
 
     profile_form = UserProfileForm(request.POST, instance=userprofile)
 
@@ -21,7 +20,7 @@ def user_profile(request):
         request,
         'profile.html',
         context={
-            'name': user.first_name + ' ' + user.last_name,
+            'name': request.user.first_name + ' ' + request.user.last_name,
             'profile_form': profile_form
         }
     )

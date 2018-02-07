@@ -135,3 +135,6 @@ STATIC_ROOT = './static/'
 # Auth config
 LOGIN_REDIRECT_URL = '/profile'
 LOGIN_URL = '/login'
+
+# Where are files uploaded
+MEDIA_ROOT = '/static/'
