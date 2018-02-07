@@ -2,16 +2,18 @@
 
 {% block pagecontent %}
 
-    <h1>user profile</h1>
-    <p>you can only see this if you're logged in</p>
-    <p>name: {{ name }}</p>
-
+<div class="container">
+    <h1>Welcome back, {{ user.first_name }}</h1>
+</div>
+<div class="container">
     <p><a href="/projects">Your projects</a></p>
-
+</div>
+<div class="container">
     <form action="" method="post">
         {% csrf_token %}
         {{ profile_form.as_p }}
-        <input type="submit"/>
+        <input type="submit" class="button green-bg"/>
     </form>
-    
+</div>
+
 {% endblock pagecontent %}

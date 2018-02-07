@@ -2,22 +2,19 @@
 
 {% block pagecontent %}
 
+<div class="container">
     <h1>Your projects</h1>
-    <p>asdfasdf</p>
-
-
+</div>
+<div class="container">
     <form action="" method="post">
         {% csrf_token %}
         {{ project_form.as_p }}
-        <input type="submit"/>
+        <input type="submit" class="button green-bg"/>
     </form>
-
+</div>
+<div class="container">
     {% for project in userprofile.project_set.all %}
-
         <p><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></p>
-
     {% endfor %}
-
-    <br/><br/><br/>
-
+<div class="container">
 {% endblock pagecontent %}

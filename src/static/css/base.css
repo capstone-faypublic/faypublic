@@ -37,6 +37,37 @@ h1, h2, h3, h4, h5, h6, p {
   padding: 6px;
 }
 
+.button {
+  display: inline-block;
+  padding: 12px 14px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+.button.red-bg:hover {
+  background: rgb(168, 0, 48);
+}
+.button.green-bg:hover {
+  background: rgb(10, 134, 87);
+}
+.button.blue-bg:hover {
+  background: rgb(3, 68, 100);
+}
+
+.red-bg {
+  background: #F70044;
+  color: #fff;
+}
+
+.green-bg {
+  background: #11CD86;
+  color: #fff;
+}
+
+.blue-bg {
+  background: #066FA5;
+  color: #fff;
+}
+
 /* */
 
 
@@ -101,4 +132,38 @@ h1, h2, h3, h4, h5, h6, p {
   color: #999;
 }
 
+/* */
+
+/* Forms */
+
+label {
+  display: block;
+  font-weight: bold;
+  width: 100%;
+}
+
+input {
+  display: block;
+  padding: 4px;
+  background: #fff;
+  -webkit-appearance: none;
+  width: 100%;
+  border: 1px solid #bbb;
+  max-width: 300px;
+  font-size: 10pt;
+}
+
+input[type=submit] {
+  width: auto;
+  background: auto;
+  border: none;
+}
+
+.helptext, .errorlist li {
+  font-size: 8pt;
+  color: #bbb;
+}
+.errorlist ul {
+  list-style-type: none;
+}
 /* */
