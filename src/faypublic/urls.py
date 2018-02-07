@@ -32,5 +32,8 @@ urlpatterns = [
     }, name="user_logout"),
 
     # profile
-    path('profile/', include('userprofile.urls'))
+    path('profile/', include('userprofile.urls')),
+
+    # user projects in production
+    path('projects/', include('project.urls'))
 ]

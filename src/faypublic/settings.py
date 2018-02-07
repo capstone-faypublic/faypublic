@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # created
-    'userprofile'
+    'userprofile',
+    'project'
 ]
 
 MIDDLEWARE = [
@@ -60,7 +61,8 @@ TEMPLATES = [
         'DIRS': [
             './templates',
             './faypublic/templates',
-            './userprofile/templates'
+            './userprofile/templates',
+            './project/templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
