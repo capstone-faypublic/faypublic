@@ -1,0 +1,55 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  top: 0;
+  left: 0;
+}
+
+.flex-container {
+  display: flex;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -o-flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+.flex-item {
+  flex: 1 1 auto;
+  vertical-align: middle;
+}
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.navigation {
+  width: 100%;
+  background: yellow;
+}
+.navigation .brand a{
+  padding: 10px 24px;
+  display: block;
+}
+.navigation .links ul {
+  list-style-type: none;
+}
+.navigation .links ul {
+  display: inline-flex;
+}
+.navigation .links a {
+  padding: 10px 24px;
+  display: block;
+}

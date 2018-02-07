@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block pagecontent %}
+
+    <h1>user profile</h1>
+    <p>you can only see this if you're logged in</p>
+    <p>name: {{ name }}</p>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ profile_form.as_p }}
+        <input type="submit"/>
+    </form>
+    
+{% endblock pagecontent %}
