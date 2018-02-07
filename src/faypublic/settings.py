@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # created
-    'userprofile'
+    'userprofile',
+    'project'
 ]
 
 MIDDLEWARE = [
@@ -60,7 +61,8 @@ TEMPLATES = [
         'DIRS': [
             './templates',
             './faypublic/templates',
-            './userprofile/templates'
+            './userprofile/templates',
+            './project/templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -133,3 +135,6 @@ STATIC_ROOT = './static/'
 # Auth config
 LOGIN_REDIRECT_URL = '/profile'
 LOGIN_URL = '/login'
+
+# Where are files uploaded
+MEDIA_ROOT = '/media/'

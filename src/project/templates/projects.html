@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block pagecontent %}
+
+    <h1>Your projects</h1>
+    <p>asdfasdf</p>
+
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ project_form.as_p }}
+        <input type="submit"/>
+    </form>
+
+    {% for project in userprofile.project_set.all %}
+
+        <p><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></p>
+
+    {% endfor %}
+
+    <br/><br/><br/>
+
+{% endblock pagecontent %}

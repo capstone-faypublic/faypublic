@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block pagecontent %}
+
+    <h1>{{ project.title }}</h1>
+    <p>jfjfjfjfjf</p>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ projectupload_form.as_p }}
+        <input type="submit"/>
+    </form>
+
+    {% for upload in project.projectupload_set.all %}
+
+        <p>{{ upload.title }} : {{ upload.uploaded_file.url }}</p>
+
+    {% endfor %}
+
+{% endblock pagecontent %}
