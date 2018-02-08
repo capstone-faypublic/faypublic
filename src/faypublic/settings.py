@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # created
-    'userprofile'
+    'userprofile',
+    'equipmentcheckout'
 ]
 
 MIDDLEWARE = [
@@ -61,6 +62,7 @@ TEMPLATES = [
             './templates',
             './faypublic/templates',
             './userprofile/templates'
+            './equipmentcheckout/templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {

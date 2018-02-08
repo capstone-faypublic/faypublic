@@ -24,13 +24,16 @@ urlpatterns = [
 
     # authentication
     path('register/', views.user_register, name="user_register"),
-    path('login/', auth_views.login, { 
+    path('login/', auth_views.login, {
         'template_name': 'user_login.html'
     }, name="user_login"),
-    path('logout/', auth_views.logout, { 
+    path('logout/', auth_views.logout, {
         'next_page': '/'
     }, name="user_logout"),
 
     # profile
-    path('profile/', include('userprofile.urls'))
+    path('profile/', include('userprofile.urls')),
+
+    # equipment checkout
+    path('checkout/', include('equipmentcheckout.urls'))
 ]
