@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
     # created
     'userprofile',
-    'equipmentcheckout'
+    'equipmentcheckout',
+    'project'
 ]
 
 MIDDLEWARE = [
@@ -62,7 +63,8 @@ TEMPLATES = [
             './templates',
             './faypublic/templates',
             './userprofile/templates'
-            './equipmentcheckout/templates'
+            './equipmentcheckout/templates',
+            './project/templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -135,3 +137,6 @@ STATIC_ROOT = './static/'
 # Auth config
 LOGIN_REDIRECT_URL = '/profile'
 LOGIN_URL = '/login'
+
+# Where are files uploaded
+MEDIA_ROOT = '/media/'
