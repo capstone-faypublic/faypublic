@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
-# from .models import UserProfile
-# from .forms import UserProfileForm
+from userprofile.models import UserProfile
 
 from .models import EquipmentCheckout
 from .forms import EquipmentCheckoutForm
@@ -11,21 +10,22 @@ from .forms import EquipmentCheckoutForm
 # Create your views here.
 @login_required
 def equipment_checkout(request):
-    user = request.user
-    userprofile = get_object_or_404(UserProfile, user=user)
+    # user = request.user
+    # equipmentcheckout = get_object_or_404(EquipmentCheckout, user=user)
+    userprofile = get_object_or_404(UserProfile, user=request.user)
 
-    profile_form = UserProfileForm(request.POST, instance=userprofile)
+    checkout_form = EquipmentCheckoutForm(request.POST)
 
-    if profile_form.is_valid():
-        userprofile = profile_form.save()
+    if checkout_form.is_valid():
+        equipmentcheckout = checkout_form.save()
 
-    profile_form = UserProfileForm(instance=userprofile)
+    # checkout_form = EquipmentCheckoutForm(instance=equipmentcheckout)
 
     return render(
         request,
         'checkout.html',
         context={
-            'name': user.first_name + ' ' + user.last_name,
+            'userprofile': userprofile,
             'checkout_form': checkout_form
         }
     )
