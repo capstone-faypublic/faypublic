@@ -1,8 +1,20 @@
 {% extends 'base.html' %}
 
+{% block title %}Fayetteville Public Television{% endblock title %}
+
 {% block pagecontent %}
-
-    <h1>Hello world</h1>
-    <p>Welcome to Fayetteville Public Television</p>
-
+    <div class="container">
+        <h1>Fayetteville Public Television</h1>
+        <p>Welcome to FPTV's production and class management application.</p>
+    </div>
+    <div class="container">
+        <p>
+            <a href="/login/" class="button green-bg">Login</a>
+            <a href="/register/" class="button blue-bg">Register</a>
+        </p>
+    </div>
+    <div class="container">
+        <p>The City of Fayetteville supports the free speech efforts of its residents by providing a platform that can be used to express your views and opinions on any subject. Fayetteville Public Television is your channel. You, the residents, decide what is telecast.</p>
+        <p>All resources are FREE for residents of Fayetteville, students attending the University of Arkansas or Fayetteville Public Schools, and employees of public institutions and non-­‐profit organizations based in Fayetteville. Residents of Washington and Benton Counties can utilize the resources for a $50 annual membership fee.</p>
+    </div>
 {% endblock pagecontent %}

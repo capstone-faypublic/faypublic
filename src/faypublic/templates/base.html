@@ -3,37 +3,53 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
+    <title>{% block title %}{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="/static/css/base.css" />
 </head>
 <body>
 
-    <nav class="navigation flex-container">
-        <div class="flex-item left brand">
-            <a href="/">FPTV</a>
+    <nav class="navigation">
+        <div id="account-navigation">
+            <div class="container">
+                <ul>
+                    {% if user.is_authenticated %}
+                        <li>
+                            <a href="/profile/">Profile</a>
+                        </li>
+                        <li>
+                            <a href="/logout/">Logout</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="/login/">Login</a>
+                        </li>
+                        <li>
+                            <a href="/register/">Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-        <div class="flex-item right links">
-            <ul>
-                <li>
-                    <a href="/">home</a>
-                </li>
-                <li>
-                    <a href="/register">register</a>
-                </li>
-                <li>
-                    <a href="/login">login</a>
-                </li>
-                <li>
-                    <a href="/logout">logout</a>
-                </li>
-                <li>
-                    <a href="/profile">profile</a>
-                </li>
-                <li>
-                    <a href="/checkout">equipment checkout</a>
-                </li>
-            </ul>
+        <div id="main-navigation">
+            <div class="container flex-container">
+                <div id="brand" class="flex-item">
+                    <a href="/">FPTV</a>
+                </div>
+                <div id="links" class="flex-item">
+                    <ul>
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        <li>
+                            <a href="/classes/">Classes</a>
+                        </li>
+                        <li>
+                            <a href="/equipment/">Equipment</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </nav>
 
