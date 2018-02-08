@@ -1,3 +1,5 @@
+/* Global Styles */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,6 +9,11 @@
 body {
   top: 0;
   left: 0;
+  font-family: sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  padding: 8px 0px;
 }
 
 .flex-container {
@@ -23,33 +30,141 @@ body {
   vertical-align: middle;
 }
 
-.left {
-  text-align: left;
+.container {
+  width: 100%;
+  max-width: 1067px;
+  margin: 0px auto;
+  padding: 6px;
 }
 
-.center {
-  text-align: center;
+.button {
+  display: inline-block;
+  padding: 12px 14px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+.button.red-bg:hover {
+  background: rgb(168, 0, 48);
+}
+.button.green-bg:hover {
+  background: rgb(10, 134, 87);
+}
+.button.blue-bg:hover {
+  background: rgb(3, 68, 100);
 }
 
-.right {
-  text-align: right;
+.red-bg {
+  background: #F70044;
+  color: #fff;
 }
+
+.green-bg {
+  background: #11CD86;
+  color: #fff;
+}
+
+.blue-bg {
+  background: #066FA5;
+  color: #fff;
+}
+
+/* */
+
+
+/* Navigation */
 
 .navigation {
   width: 100%;
-  background: yellow;
 }
-.navigation .brand a{
-  padding: 10px 24px;
-  display: block;
+
+#account-navigation {
+  background: #393939;
+  color: #fff;
+  text-align: right;
 }
-.navigation .links ul {
+#account-navigation ul {
   list-style-type: none;
 }
-.navigation .links ul {
-  display: inline-flex;
+#account-navigation ul li {
+  display: inline-block;
 }
-.navigation .links a {
-  padding: 10px 24px;
+#account-navigation ul li a {
   display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 14px;
 }
+#account-navigation ul li a:hover {
+  color: #bbb;
+}
+
+
+#main-navigation {
+  background: #F6D600;
+}
+
+#main-navigation #brand {
+  max-width: 200px;
+  width: 100%;
+}
+#main-navigation #brand a {
+  display: block;
+  color: #333;
+  text-decoration: none;
+  padding: 8px 14px;
+}
+#main-navigation #links {
+  text-align: right;
+}
+#main-navigation ul {
+  list-style-type: none;
+}
+#main-navigation ul li {
+  display: inline-block;
+}
+#main-navigation ul li a {
+  display: block;
+  color: #333;
+  text-decoration: none;
+  padding: 8px 14px;
+}
+#main-navigation ul li a:hover {
+  color: #999;
+}
+
+/* */
+
+/* Forms */
+
+label {
+  display: block;
+  font-weight: bold;
+  width: 100%;
+}
+
+input {
+  display: block;
+  padding: 4px;
+  background: #fff;
+  -webkit-appearance: none;
+  width: 100%;
+  border: 1px solid #bbb;
+  max-width: 300px;
+  font-size: 10pt;
+  border-radius: 2px;
+}
+
+input[type=submit] {
+  width: auto;
+  background: auto;
+  border: none;
+}
+
+.helptext, .errorlist li {
+  font-size: 8pt;
+  color: #bbb;
+}
+.errorlist ul {
+  list-style-type: none;
+}
+/* */
