@@ -11,7 +11,13 @@ User registration, production management, and class scheduling rolled into a hap
    On older versions of Windows and versions not Pro or Enterprise install [Docker Toolbox](https://docs.docker.com/toolbox/overview/)
 2. Clone the repository and `cd /path/to/faypublic`
 3. Rename `.env.example` to `.env`
-4. Run `docker-compose up` and watch the magic happen
+4. Run the following commands
+```bash
+docker-compose up -d
+docker-compose exec django python manage.py makemigrations
+docker-compose exec django python manage.py migrate
+docker-compose exec django python manage.py runserver
+```
 5. Visit [`http://localhost:8000`](http://localhost:8000)
 
 ### Other runtime options
