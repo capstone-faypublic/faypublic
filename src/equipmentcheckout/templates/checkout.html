@@ -2,15 +2,15 @@
 
 {% block pagecontent %}
 
+<div class="container">
     <h1>equipment checkout</h1>
     <p>this is a page where you can checkout equipment</p>
-    <!-- <p>name: {{ name }}</p> -->
-    <br></br>
-
+</div>
+<div class="container">
     <form action="" method="post">
         {% csrf_token %}
         {{ checkout_form.as_p }}
         <input type="submit"/>
     </form>
-
+</div>
 {% endblock pagecontent %}
