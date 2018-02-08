@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # created
     'userprofile',
+    'equipmentcheckout',
     'project'
 ]
 
@@ -61,7 +62,8 @@ TEMPLATES = [
         'DIRS': [
             './templates',
             './faypublic/templates',
-            './userprofile/templates',
+            './userprofile/templates'
+            './equipmentcheckout/templates',
             './project/templates'
         ],
         'APP_DIRS': True,
