@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock title %}
+
+{% block pagecontent %}
+
+<div class="container flex-container">
+    <div class="container flex-item sidebar submenu">
+        <h2>Welcome back, {{ user.first_name }}</h2>
+        <ul>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/classes">Classes</a></li>
+            <li><a href="/checkout">Equipment</a></li>
+        </ul>
+    </div>
+    <div class="flex-item sidebar content">
+        {% block content %}{% endblock content %}
+    </div>
+</div>
+
+{% endblock pagecontent %}

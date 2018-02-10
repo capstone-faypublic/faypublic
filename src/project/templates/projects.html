@@ -1,13 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'profile-base.html' %}
 
 {% block title %}Your projects{% endblock title %}
 
-{% block pagecontent %}
+{% block content %}
 
 <div class="container">
     <h1>Your projects</h1>
+    <p>This is a way to collaborate on and submit projects you're working on to play on-air</p>
 </div>
 <div class="container">
+    <p><i>Make a new project</i></p>
     <form action="" method="post">
         {% csrf_token %}
         {{ project_form.as_p }}
@@ -16,7 +18,17 @@
 </div>
 <div class="container">
     {% for project in userprofile.project_set.all %}
-        <p><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></p>
+        <div class="flex-container">
+            <div class="flex-item">
+                <span>
+                    <a href="{{ project.get_absolute_url }}">{{ project.title }}</a>
+                </span>
+                <span>
+                    {{ project.created_on }}
+                </span>
+            </div>
+           
+        </div>
     {% endfor %}
 <div class="container">
-{% endblock pagecontent %}
+{% endblock content %}

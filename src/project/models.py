@@ -11,6 +11,8 @@ class Project(models.Model):
         blank=False
     )
 
+    created_on = models.DateTimeField(auto_now_add=True)
+
     def get_absolute_url(self):
         return "/projects/%i/" % self.id
 

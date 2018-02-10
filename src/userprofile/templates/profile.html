@@ -1,21 +1,20 @@
-{% extends 'base.html' %}
+{% extends 'profile-base.html' %}
 
 {% block title %}Your profile{% endblock title %}
 
-{% block pagecontent %}
+{% block content %}
 
 <div class="container">
-    <h1>Welcome back, {{ user.first_name }}</h1>
+    <h2>Your profile</h2>
+    <p>Complete your profile to be able to sign out equipment, register for classes, and submit your projects to be viewed on-air</p>
 </div>
-<div class="container">
-    <p><a href="/projects">Your projects</a></p>
-</div>
+
 <div class="container">
     <form action="" method="post">
         {% csrf_token %}
         {{ profile_form.as_p }}
-        <input type="submit" class="button green-bg"/>
+        <input type="submit" class="button green-bg" value="Save profile"/>
     </form>
 </div>
 
-{% endblock pagecontent %}
+{% endblock content %}

@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'profile-base.html' %}
 
 {% block title %}{{ project.title }}{% endblock title %}
 
-{% block pagecontent %}
+{% block content %}
 <div class="container">
     <h1>{{ project.title }}</h1>
 </div>
@@ -18,4 +18,4 @@
         <p>{{ upload.title }} : {{ upload.uploaded_file.url }}</p>
     {% endfor %}
 </div>
-{% endblock pagecontent %}
+{% endblock content %}
