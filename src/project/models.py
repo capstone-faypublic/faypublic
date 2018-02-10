@@ -11,10 +11,13 @@ class Project(models.Model):
         blank=False
     )
 
-    created_on = models.DateTimeField(auto_now_add=True)
+    created_on = models.DateField(auto_now_add=True)
 
     def get_absolute_url(self):
         return "/projects/%i/" % self.id
+
+    def recent_submissions(self):
+        return self.projectsubmission_set.all()[:3]
 
 
     # many to many field with equipment checkout model
@@ -27,7 +30,7 @@ def handle_file_upload(instance, filename):
     return 'uploads/project_{0}/{1}'.format(instance.project.id, filename)
 
 
-class ProjectUpload(models.Model):
+class ProjectSubmission(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     title = models.CharField(

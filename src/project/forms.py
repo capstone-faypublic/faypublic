@@ -1,12 +1,12 @@
 from django.forms import Form, ModelForm
-from .models import Project, ProjectUpload
+from .models import Project, ProjectSubmission
 
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
         exclude = ['users']
 
-class ProjectUploadForm(ModelForm):
+class ProjectSubmissionForm(ModelForm):
     class Meta:
-        model = ProjectUpload
+        model = ProjectSubmission
         exclude = ['project']

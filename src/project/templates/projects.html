@@ -18,16 +18,27 @@
 </div>
 <div class="container">
     {% for project in userprofile.project_set.all %}
-        <div class="flex-container">
+        <div class="flex-container project-container">
+
             <div class="flex-item">
-                <span>
-                    <a href="{{ project.get_absolute_url }}">{{ project.title }}</a>
-                </span>
-                <span>
-                    {{ project.created_on }}
-                </span>
+                <h2>
+                    <span><a href="{{ project.get_absolute_url }}">{{ project.title}}</a>
+                </h2>
+                <span>Created: {{ project.created_on }}</span>
             </div>
-           
+
+            <div class="flex-item">
+                <h3>Submissions</h3>
+                {% for sub in project.recent_submissions %}
+                    <div>
+                        <p>{{ sub.title}}</p>
+                    </div>
+                {% endfor %}
+                {% if project.projectsubmission_set.all|length > 3 %}
+                    <span><a href="{{ project.get_absolute_url }}">...</a></span>
+                {% endif %}
+            </div>
+
         </div>
     {% endfor %}
 <div class="container">

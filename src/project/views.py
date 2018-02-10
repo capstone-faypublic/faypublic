@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Project, ProjectUpload
-from .forms import ProjectForm, ProjectUploadForm
+from .models import Project, ProjectSubmission
+from .forms import ProjectForm, ProjectSubmissionForm
 from userprofile.models import UserProfile
 
 # Create your views here.
@@ -31,10 +31,10 @@ def project(request, id):
     userprofile = get_object_or_404(UserProfile, user=request.user)
     project = get_object_or_404(userprofile.project_set, id=id)
 
-    projectupload_form = ProjectUploadForm(request.POST, request.FILES)
+    submission_form = ProjectSubmissionForm(request.POST, request.FILES)
 
-    if projectupload_form.is_valid():
-        upload = projectupload_form.save(commit=False)
+    if submission_form.is_valid():
+        upload = submission_form.save(commit=False)
         upload.project = project
         upload.save()
 
@@ -43,6 +43,6 @@ def project(request, id):
         'project.html',
         context={
             'project': project,
-            'projectupload_form': ProjectUploadForm()
+            'submission_form': ProjectSubmissionForm()
         }
     )

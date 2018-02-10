@@ -184,3 +184,11 @@ input[type=submit] {
   list-style-type: none;
 }
 /* */
+
+
+.project-container {
+  background: #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 8px 0px;
+}
