@@ -1,12 +1,17 @@
 from django.forms import Form, ModelForm
-from .models import Project, ProjectUpload
+from .models import Project, ProjectSubmission
+
+class SmallProjectForm(ModelForm):
+    class Meta:
+        model = Project
+        exclude = ['users', 'description']
 
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
         exclude = ['users']
 
-class ProjectUploadForm(ModelForm):
+class ProjectSubmissionForm(ModelForm):
     class Meta:
-        model = ProjectUpload
-        exclude = ['project']
+        model = ProjectSubmission
+        exclude = ['project', 'status', 'admin_notes', 'scheduled_time']

@@ -1,22 +1,49 @@
-{% extends 'base.html' %}
+{% extends 'profile-base.html' %}
 
 {% block title %}Your projects{% endblock title %}
 
-{% block pagecontent %}
+{% block content %}
 
 <div class="container">
-    <h1>Your projects</h1>
+    <h1>Your projects</h1> 
+    <p>This is a way to collaborate on and submit projects you're working on to play on-air</p>
 </div>
+
 <div class="container">
+    {% for project in userprofile.project_set.all %}
+        <div class="flex-container project-container">
+
+            <div class="flex-item">
+                <h2>
+                    <span><a href="{{ project.get_absolute_url }}">{{ project.title}}</a>
+                </h2>
+                <span>Created: {{ project.created }}</span>
+            </div>
+
+            <div class="flex-item right">
+                <h3>Submissions</h3>
+                {% for sub in project.recent_submissions %}
+                    <div>
+                        <span>{{ sub.title }}</span>
+                        <span>{{ sub.get_status_display }}</span>
+                    </div>
+                {% endfor %}
+                {% if project.projectsubmission_set.all|length > 3 %}
+                    <span><a href="{{ project.get_absolute_url }}">...</a></span>
+                {% endif %}
+            </div>
+
+        </div>
+    {% endfor %}
+</div>
+
+<div class="container">
+    <p><i>Make a new project</i></p>
     <form action="" method="post">
         {% csrf_token %}
         {{ project_form.as_p }}
         <input type="submit" class="button green-bg"/>
     </form>
 </div>
-<div class="container">
-    {% for project in userprofile.project_set.all %}
-        <p><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></p>
-    {% endfor %}
-<div class="container">
-{% endblock pagecontent %}
+
+{% endblock content %}
