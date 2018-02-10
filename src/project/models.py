@@ -11,7 +11,9 @@ class Project(models.Model):
         blank=False
     )
 
-    created_on = models.DateField(auto_now_add=True)
+    created = models.DateField(auto_now_add=True)
+    description = models.TextField(null=True, blank=True)
+
 
     def get_absolute_url(self):
         return "/projects/%i/" % self.id
@@ -24,6 +26,15 @@ class Project(models.Model):
     # equipment_checkouts = models.ManyToManyField(EquipmentCheckout)
     # inside and outside projects will rely on this
 
+SUBMITTED = 'SUBMITTED'
+SCHEDULED = 'SCHEDULED'
+REJECTED = 'REJECTED'
+
+PROJECT_SUBMISSION_STATUS = (
+    (SUBMITTED, 'Submitted'),
+    (SCHEDULED, 'Approved'),
+    (REJECTED, 'Rejected')
+)
 
 
 def handle_file_upload(instance, filename):
@@ -38,5 +49,15 @@ class ProjectSubmission(models.Model):
         null=True,
         blank=False
     )
+
+    created = models.DateField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+
+    status = models.CharField(max_length=15, choices=PROJECT_SUBMISSION_STATUS, default=SUBMITTED)
+
+    description = models.TextField(blank=True, null=True)
+    admin_notes = models.TextField(blank=True, null=True)
+
+    scheduled_time = models.DateTimeField(null=True)
 
     uploaded_file = models.FileField(upload_to=handle_file_upload)

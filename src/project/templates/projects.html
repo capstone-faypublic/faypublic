@@ -8,14 +8,7 @@
     <h1>Your projects</h1>
     <p>This is a way to collaborate on and submit projects you're working on to play on-air</p>
 </div>
-<div class="container">
-    <p><i>Make a new project</i></p>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ project_form.as_p }}
-        <input type="submit" class="button green-bg"/>
-    </form>
-</div>
+
 <div class="container">
     {% for project in userprofile.project_set.all %}
         <div class="flex-container project-container">
@@ -24,14 +17,15 @@
                 <h2>
                     <span><a href="{{ project.get_absolute_url }}">{{ project.title}}</a>
                 </h2>
-                <span>Created: {{ project.created_on }}</span>
+                <span>Created: {{ project.created }}</span>
             </div>
 
-            <div class="flex-item">
+            <div class="flex-item right">
                 <h3>Submissions</h3>
                 {% for sub in project.recent_submissions %}
                     <div>
-                        <p>{{ sub.title}}</p>
+                        <span>{{ sub.title }}</span>
+                        <span>{{ sub.get_status_display }}</span>
                     </div>
                 {% endfor %}
                 {% if project.projectsubmission_set.all|length > 3 %}
@@ -41,5 +35,15 @@
 
         </div>
     {% endfor %}
+</div>
+
 <div class="container">
+    <p><i>Make a new project</i></p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ project_form.as_p }}
+        <input type="submit" class="button green-bg"/>
+    </form>
+</div>
+
 {% endblock content %}

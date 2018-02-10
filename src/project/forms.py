@@ -1,6 +1,11 @@
 from django.forms import Form, ModelForm
 from .models import Project, ProjectSubmission
 
+class SmallProjectForm(ModelForm):
+    class Meta:
+        model = Project
+        exclude = ['users', 'description']
+
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
@@ -9,4 +14,4 @@ class ProjectForm(ModelForm):
 class ProjectSubmissionForm(ModelForm):
     class Meta:
         model = ProjectSubmission
-        exclude = ['project']
+        exclude = ['project', 'status', 'admin_notes', 'scheduled_time']
