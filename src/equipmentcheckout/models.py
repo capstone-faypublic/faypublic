@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 from django.contrib.auth.models import User
+from project.models import Project
 
 AUDIO = 'AUDIO'
 VIDEO = 'VIDEO'
@@ -66,8 +67,8 @@ class Equipment(models.Model):
 
 class EquipmentCheckout(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # equipmentID = models.ForeignKey(Equipment, on_delete=models.CASCADE)
-    # projectID = models.ForeignKey(Project, on_delete=models.CASCADE)
+    equipmentID = models.ForeignKey(Equipment, on_delete=models.CASCADE)
+    projectID = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     # additional equipment checkout information we want to collect
     checkout_date = models.DateField(null=True)
