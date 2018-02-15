@@ -66,7 +66,7 @@ class Equipment(models.Model):
 
     sub_category = models.CharField(max_length=15, choices=EQUIPMENT_SUBCATEGORIES, default=MICROPHONE)
 
-    category = models.CharField(max_length=15, choices=CHECKOUT_TIMEFRAMES, default=CHECKOUT_WEEK)
+    checkout_timeframe = models.CharField(max_length=15, choices=CHECKOUT_TIMEFRAMES, default=CHECKOUT_WEEK)
 
     image = models.FileField(upload_to=handle_file_upload, null=True)
 
