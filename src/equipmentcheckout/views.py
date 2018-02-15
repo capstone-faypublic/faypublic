@@ -8,6 +8,17 @@ from .forms import EquipmentCheckoutForm
 
 
 # Create your views here.
+
+def equipment(request):
+    return render(
+        request,
+        'equipment.html',
+        context={
+        }
+    )
+
+
+
 @login_required
 def equipment_checkout(request):
     # user = request.user

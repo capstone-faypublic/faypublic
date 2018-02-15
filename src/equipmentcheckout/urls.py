@@ -3,5 +3,6 @@ from . import views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('', views.equipment_checkout, name="equipment_checkout"),
+    path('', views.equipment, name="equipment"),
+    path('checkout/', views.equipment_checkout, name="equipment_checkout"),
 ]
