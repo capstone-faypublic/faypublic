@@ -43,6 +43,9 @@ CHECKOUT_TIMEFRAMES = [
     (CHECKOUT_WEEK, 'Thurs-Tues checkout')
 ]
 
+def handle_file_upload(instance, filename):
+    return 'uploads/equip_{0}/{1}'.format(instance.id, filename)
+
 class Equipment(models.Model):
     quantity = models.IntegerField()
     make = models.CharField(
@@ -64,6 +67,10 @@ class Equipment(models.Model):
     sub_category = models.CharField(max_length=15, choices=EQUIPMENT_SUBCATEGORIES, default=MICROPHONE)
 
     category = models.CharField(max_length=15, choices=CHECKOUT_TIMEFRAMES, default=CHECKOUT_WEEK)
+
+    image = models.FileField(upload_to=handle_file_upload, null=True)
+
+    manual_url = models.URLField(null=True, blank=True)
 
 class EquipmentCheckout(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
