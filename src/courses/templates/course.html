@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Courses</title>
+</head>
+<body>
+<h1>{{ question.question_text }}</h1>
+
+{% extends 'base.html' %}
+
+{% block pagecontent %}
+
+<div class="container">
+    <h1>equipment checkout</h1>
+    <p>Page to view courses offered</p>
+</div>
+<div class="container">
+    <label for="courses{{ forloop.counter }}">{{ course.course_title }}</label><br />
+
+</div>
+{% endblock pagecontent %}
+
+</body>
+</html>
+
+
+
