@@ -3,37 +3,37 @@ from django.contrib.auth.models import User
 from project.models import Project
 from django.template.defaultfilters import slugify
 
-AUDIO = 'AUDIO'
-VIDEO = 'VIDEO'
-LIGHTING = 'LIGHTING'
-EQUIPMENT_CATEGORIES = [
-    (AUDIO, 'Audio'),
-    (VIDEO, 'Video'),
-    (LIGHTING, 'Lighting')
-]
+# AUDIO = 'AUDIO'
+# VIDEO = 'VIDEO'
+# LIGHTING = 'LIGHTING'
+# EQUIPMENT_CATEGORIES = [
+#     (AUDIO, 'Audio'),
+#     (VIDEO, 'Video'),
+#     (LIGHTING, 'Lighting')
+# ]
 
-MICROPHONE = 'MICROPHONE'
-WIRELESS = 'WIRELESS'
-CASE = 'CASE'
-STAND = 'STAND'
-CABLE = 'CABLE'
-HEADPHONES = 'HEADPHONES'
-TELEPROMPTER = 'TELEPROMPTER'
-GREEN_SCREEN = 'GREEN_SCREEN'
-CAMERA = 'CAMERA'
-LIGHT_KIT = 'LIGHT_KIT'
-EQUIPMENT_SUBCATEGORIES = [
-    (MICROPHONE, 'Microphone'),
-    (WIRELESS, 'Wireless'),
-    (CASE, 'Case'),
-    (STAND, 'Stand'),
-    (CABLE, 'Cable'),
-    (HEADPHONES, 'Headphones'),
-    (TELEPROMPTER, 'Teleprompter'),
-    (GREEN_SCREEN, 'Green screen'),
-    (CAMERA, 'Camera'),
-    (LIGHT_KIT, 'Light kit')
-]
+# MICROPHONE = 'MICROPHONE'
+# WIRELESS = 'WIRELESS'
+# CASE = 'CASE'
+# STAND = 'STAND'
+# CABLE = 'CABLE'
+# HEADPHONES = 'HEADPHONES'
+# TELEPROMPTER = 'TELEPROMPTER'
+# GREEN_SCREEN = 'GREEN_SCREEN'
+# CAMERA = 'CAMERA'
+# LIGHT_KIT = 'LIGHT_KIT'
+# EQUIPMENT_SUBCATEGORIES = [
+#     (MICROPHONE, 'Microphone'),
+#     (WIRELESS, 'Wireless'),
+#     (CASE, 'Case'),
+#     (STAND, 'Stand'),
+#     (CABLE, 'Cable'),
+#     (HEADPHONES, 'Headphones'),
+#     (TELEPROMPTER, 'Teleprompter'),
+#     (GREEN_SCREEN, 'Green screen'),
+#     (CAMERA, 'Camera'),
+#     (LIGHT_KIT, 'Light kit')
+# ]
 
 CHECKOUT_24HR = 'CHECKOUT_24HR'
 CHECKOUT_WEEK = 'CHECKOUT_WEEK'
@@ -46,12 +46,18 @@ CHECKOUT_TIMEFRAMES = [
 
 class EquipmentCategory(models.Model):
     title = models.CharField(max_length=255)
-    slug = models.SlugField()
+    slug = models.SlugField(blank=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
             self.slug = slugify(self.title)
         super(EquipmentCategory, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.title
+
+    def __str__(self):
+        return self.title
 
 
 
@@ -61,11 +67,12 @@ def handle_file_upload(instance, filename):
 class Equipment(models.Model):
     make = models.CharField(max_length=255, null=True, blank=False)
     model = models.CharField(max_length=255, null=True, blank=False)
-    slug = models.SlugField()
+    slug = models.SlugField(blank=True)
     quantity = models.IntegerField()
     description = models.TextField(null=True, blank=True)
-    category = models.CharField(max_length=15, choices=EQUIPMENT_CATEGORIES, default=AUDIO)
-    sub_category = models.CharField(max_length=15, choices=EQUIPMENT_SUBCATEGORIES, default=MICROPHONE)
+
+    category = models.ForeignKey(EquipmentCategory, on_delete=models.CASCADE)
+
     checkout_timeframe = models.CharField(max_length=15, choices=CHECKOUT_TIMEFRAMES, default=CHECKOUT_WEEK)
     image = models.FileField(upload_to=handle_file_upload, null=True)
     manual_url = models.URLField(null=True, blank=True)
@@ -78,6 +85,12 @@ class Equipment(models.Model):
 
     def get_absolute_url(self):
         return '/equipment/' + self.slug
+
+    def __unicode__(self):
+        return self.make + " " + self.model
+
+    def __str__(self):
+        return self.make + " " + self.model
 
 
 class EquipmentCheckout(models.Model):
