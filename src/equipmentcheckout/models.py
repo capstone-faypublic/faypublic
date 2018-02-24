@@ -53,6 +53,9 @@ class EquipmentCategory(models.Model):
             self.slug = slugify(self.title)
         super(EquipmentCategory, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return '/equipment/category/' + self.slug
+
     def __unicode__(self):
         return self.title
 

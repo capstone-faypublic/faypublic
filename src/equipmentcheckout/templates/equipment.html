@@ -8,24 +8,28 @@
 
     <h1>Equipment inventory</h1>
 
+    {% for cat in categories %}
+
+        <p><a href="{{ cat.get_absolute_url }}">{{ cat.title }}</a></p>
+
+    {% endfor %}
+
     {% for equip in equipment %}
 
-    <div>
         <div>
-            <a href="{{ equip.get_absolute_url }}">
-                <img src="/static/media/{{ equip.image }}" width="100"/>
-            </a>
-        </div>
-        <div>
-            <p>
+            <div>
                 <a href="{{ equip.get_absolute_url }}">
-                    <b>{{ equip.make }} {{ equip.model }}</b>
+                    <img src="/static/media/{{ equip.image }}" width="100"/>
                 </a>
-            </p>
+            </div>
+            <div>
+                <p>
+                    <a href="{{ equip.get_absolute_url }}">
+                        <b>{{ equip.make }} {{ equip.model }}</b>
+                    </a>
+                </p>
+            </div>
         </div>
-    </div>
-
-    <p></a></p>
 
     {% endfor %}
 

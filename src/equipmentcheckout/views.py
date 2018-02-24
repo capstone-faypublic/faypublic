@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from userprofile.models import UserProfile
 
-from .models import Equipment, EquipmentCheckout
+from .models import Equipment, EquipmentCategory, EquipmentCheckout
 from .forms import EquipmentCheckoutForm
 
 
@@ -19,13 +19,30 @@ def equipment_item(request, slug):
         }
     )
 
-def equipment(request):
-    equipment = Equipment.objects.all()
+def equipment_category(request, slug):
+    category = get_object_or_404(EquipmentCategory, slug=slug)
+    equipment = Equipment.objects.filter(category=category)
+    categories = EquipmentCategory.objects.all()
+
     return render(
         request,
         'equipment.html',
         context={
-            'equipment': equipment
+            'equipment': equipment,
+            'categories': categories
+        }
+    )
+
+def equipment(request):
+    equipment = Equipment.objects.all()
+    categories = EquipmentCategory.objects.all()
+
+    return render(
+        request,
+        'equipment.html',
+        context={
+            'equipment': equipment,
+            'categories': categories
         }
     )
 
