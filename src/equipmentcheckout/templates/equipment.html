@@ -10,7 +10,22 @@
 
     {% for equip in equipment %}
 
-    <p>{{ equip.make }} {{ equip.model }}</p>
+    <div>
+        <div>
+            <a href="{{ equip.get_absolute_url }}">
+                <img src="/static/media/{{ equip.image }}" width="100"/>
+            </a>
+        </div>
+        <div>
+            <p>
+                <a href="{{ equip.get_absolute_url }}">
+                    <b>{{ equip.make }} {{ equip.model }}</b>
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <p></a></p>
 
     {% endfor %}
 

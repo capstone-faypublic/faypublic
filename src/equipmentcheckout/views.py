@@ -9,6 +9,16 @@ from .forms import EquipmentCheckoutForm
 
 # Create your views here.
 
+def equipment_item(request, slug):
+    item = get_object_or_404(Equipment, slug=slug)
+    return render(
+        request,
+        'equipment_item.html',
+        context={
+            'item': item
+        }
+    )
+
 def equipment(request):
     equipment = Equipment.objects.all()
     return render(

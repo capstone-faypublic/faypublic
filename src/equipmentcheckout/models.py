@@ -1,8 +1,7 @@
 from django.db import models
-
-# Create your models here.
 from django.contrib.auth.models import User
 from project.models import Project
+from django.template.defaultfilters import slugify
 
 AUDIO = 'AUDIO'
 VIDEO = 'VIDEO'
@@ -43,34 +42,43 @@ CHECKOUT_TIMEFRAMES = [
     (CHECKOUT_WEEK, 'Thurs-Tues checkout')
 ]
 
+
+
+class EquipmentCategory(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField()
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.title)
+        super(EquipmentCategory, self).save(*args, **kwargs)
+
+
+
 def handle_file_upload(instance, filename):
     return 'uploads/equip_{0}/{1}'.format(instance.id, filename)
 
 class Equipment(models.Model):
+    make = models.CharField(max_length=255, null=True, blank=False)
+    model = models.CharField(max_length=255, null=True, blank=False)
+    slug = models.SlugField()
     quantity = models.IntegerField()
-    make = models.CharField(
-        max_length=255, 
-        null=True,
-        blank=False
-    )
-
-    model = models.CharField(
-        max_length=255, 
-        null=True,
-        blank=False
-    )
-
     description = models.TextField(null=True, blank=True)
-
     category = models.CharField(max_length=15, choices=EQUIPMENT_CATEGORIES, default=AUDIO)
-
     sub_category = models.CharField(max_length=15, choices=EQUIPMENT_SUBCATEGORIES, default=MICROPHONE)
-
     checkout_timeframe = models.CharField(max_length=15, choices=CHECKOUT_TIMEFRAMES, default=CHECKOUT_WEEK)
-
     image = models.FileField(upload_to=handle_file_upload, null=True)
-
     manual_url = models.URLField(null=True, blank=True)
+
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.make + " " + self.model)
+        super(Equipment, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return '/equipment/' + self.slug
+
 
 class EquipmentCheckout(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
