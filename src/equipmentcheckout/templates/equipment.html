@@ -8,6 +8,12 @@
 
     <h1>Equipment inventory</h1>
 
+    <form action="" method="get">
+        <!-- {% csrf_token %} -->
+        <input type="text" name="q" placeholder="Search" value="{{ search }}">
+        <input type="submit" class="button blue-bg">
+    </form>
+
     {% for cat in categories %}
 
         <p><a href="{{ cat.get_absolute_url }}">{{ cat.title }}</a></p>

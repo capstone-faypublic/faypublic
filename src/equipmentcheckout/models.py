@@ -12,28 +12,6 @@ from django.template.defaultfilters import slugify
 #     (LIGHTING, 'Lighting')
 # ]
 
-# MICROPHONE = 'MICROPHONE'
-# WIRELESS = 'WIRELESS'
-# CASE = 'CASE'
-# STAND = 'STAND'
-# CABLE = 'CABLE'
-# HEADPHONES = 'HEADPHONES'
-# TELEPROMPTER = 'TELEPROMPTER'
-# GREEN_SCREEN = 'GREEN_SCREEN'
-# CAMERA = 'CAMERA'
-# LIGHT_KIT = 'LIGHT_KIT'
-# EQUIPMENT_SUBCATEGORIES = [
-#     (MICROPHONE, 'Microphone'),
-#     (WIRELESS, 'Wireless'),
-#     (CASE, 'Case'),
-#     (STAND, 'Stand'),
-#     (CABLE, 'Cable'),
-#     (HEADPHONES, 'Headphones'),
-#     (TELEPROMPTER, 'Teleprompter'),
-#     (GREEN_SCREEN, 'Green screen'),
-#     (CAMERA, 'Camera'),
-#     (LIGHT_KIT, 'Light kit')
-# ]
 
 CHECKOUT_24HR = 'CHECKOUT_24HR'
 CHECKOUT_WEEK = 'CHECKOUT_WEEK'
