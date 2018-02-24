@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Equipment{% endblock title %}
+
+{% block pagecontent %}
+
+<div class="container">
+
+    <h1>Equipment inventory</h1>
+
+    <form action="" method="get">
+        <!-- {% csrf_token %} -->
+        <input type="text" name="q" placeholder="Search" value="{{ search }}">
+        <input type="submit" class="button blue-bg">
+    </form>
+
+    {% for cat in categories %}
+
+        <p><a href="{{ cat.get_absolute_url }}">{{ cat.title }}</a></p>
+
+    {% endfor %}
+
+    {% for equip in equipment %}
+
+        <div>
+            <div>
+                <a href="{{ equip.get_absolute_url }}">
+                    <img src="/static/media/{{ equip.image }}" width="100"/>
+                </a>
+            </div>
+            <div>
+                <p>
+                    <a href="{{ equip.get_absolute_url }}">
+                        <b>{{ equip.make }} {{ equip.model }}</b>
+                    </a>
+                </p>
+            </div>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+
+{% endblock pagecontent %}

@@ -14,13 +14,11 @@ def user_profile(request):
     if profile_form.is_valid():
         userprofile = profile_form.save()
 
-    profile_form = UserProfileForm(instance=userprofile)
-
     return render(
         request,
         'profile.html',
         context={
             'name': request.user.first_name + ' ' + request.user.last_name,
-            'profile_form': profile_form
+            'profile_form': UserProfileForm(instance=userprofile)
         }
     )

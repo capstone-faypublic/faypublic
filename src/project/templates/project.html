@@ -1,21 +1,44 @@
-{% extends 'base.html' %}
+{% extends 'profile-base.html' %}
 
 {% block title %}{{ project.title }}{% endblock title %}
 
-{% block pagecontent %}
-<div class="container">
+{% block content %}
+<div class="container project-container">
     <h1>{{ project.title }}</h1>
+    <p>Created: {{ project.created }}</p>
+    <p>{{ project.description }}</p>
 </div>
 <div class="container">
+    <h2>Submissions</h2>
+    {% for sub in project.projectsubmission_set.all %}
+        <div class="flex-container container">
+            <div class="flex-item">
+                <p>{{ sub.title }}</p>
+                <p>Created {{ sub.created }}</p>
+            </div>
+            <div class="flex-item right">
+                <p>Status: {{ sub.get_status_display }}</p>
+                <p>Updated {{ sub.updated }}</p>
+            </div>
+        </div>
+
+        <hr>
+    {% endfor %}
+</div>
+<div class="container">
+    <h3>Add submission</h3>
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ projectupload_form.as_p }}
+        {{ submission_form.as_p }}
         <input type="submit" class="button green-bg"/>
     </form>
 </div>
 <div class="container">
-    {% for upload in project.projectupload_set.all %}
-        <p>{{ upload.title }} : {{ upload.uploaded_file.url }}</p>
-    {% endfor %}
+    <h3>Edit project details</h3>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ project_form.as_p }}
+        <input type="submit" class="button green-bg"/>
+    </form>
 </div>
-{% endblock pagecontent %}
+{% endblock content %}

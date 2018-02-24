@@ -35,8 +35,5 @@ urlpatterns = [
     path('profile/', include('userprofile.urls')),
 
     # equipment checkout
-    path('checkout/', include('equipmentcheckout.urls')),
-
-    # user projects in production
-    path('projects/', include('project.urls'))
+    path('equipment/', include('equipmentcheckout.urls')),
 ]

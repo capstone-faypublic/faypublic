@@ -37,6 +37,10 @@ h1, h2, h3, h4, h5, h6, p {
   padding: 6px;
 }
 
+.right {
+  text-align: right;
+}
+
 .button {
   display: inline-block;
   padding: 12px 14px;
@@ -132,6 +136,22 @@ h1, h2, h3, h4, h5, h6, p {
   color: #999;
 }
 
+.sidebar.submenu {
+  min-width: 300px;
+  width: 33%;
+}
+.sidebar.submenu ul {
+  list-style-type: none;
+}
+.sidebar.submenu li a {
+  display: block;
+  padding: 8px 2px;
+}
+
+.sidebar.content {
+  width: 66%;
+}
+
 /* */
 
 /* Forms */
@@ -168,3 +188,11 @@ input[type=submit] {
   list-style-type: none;
 }
 /* */
+
+
+.project-container {
+  background: #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 8px 0px;
+}
