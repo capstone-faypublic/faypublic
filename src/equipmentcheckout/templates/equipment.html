@@ -6,7 +6,13 @@
 
 <div class="container">
 
-    <p> equipment page </p>
+    <h1>Equipment inventory</h1>
+
+    {% for equip in equipment %}
+
+    <p>{{ equip.make }} {{ equip.model }}</p>
+
+    {% endfor %}
 
 </div>
 

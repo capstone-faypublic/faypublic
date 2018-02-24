@@ -3,17 +3,19 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from userprofile.models import UserProfile
 
-from .models import EquipmentCheckout
+from .models import Equipment, EquipmentCheckout
 from .forms import EquipmentCheckoutForm
 
 
 # Create your views here.
 
 def equipment(request):
+    equipment = Equipment.objects.all()
     return render(
         request,
         'equipment.html',
         context={
+            'equipment': equipment
         }
     )
 
