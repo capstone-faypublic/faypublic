@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from project.models import Project
 from django.template.defaultfilters import slugify
 from django.db.models import Q
+import arrow
 
 # AUDIO = 'AUDIO'
 # VIDEO = 'VIDEO'
@@ -111,3 +112,8 @@ class EquipmentCheckout(models.Model):
         choices = CHECKOUT_STATUS_CHOICES,
         default = RESERVED,
     )
+
+    def due_date_humanized(self):
+        due = arrow.get(self.due_date)
+        now = arrow.utcnow()
+        return due.humanize(now)

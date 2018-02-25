@@ -9,7 +9,6 @@ from equipmentcheckout.models import EquipmentCheckout
 @login_required
 def user_profile(request):
     userprofile = get_object_or_404(UserProfile, user=request.user)
-
     profile_form = UserProfileForm(request.POST, instance=userprofile)
 
     if profile_form.is_valid():
@@ -27,7 +26,7 @@ def user_profile(request):
 @login_required
 def user_checkouts(request):
     userprofile = get_object_or_404(UserProfile, user=request.user)
-    checkouts = EquipmentCheckout.objects.filter(user=request.user)
+    checkouts = EquipmentCheckout.objects.filter(user=request.user).order_by('-due_date', '-checkout_date')
     return render(
         request,
         'user_checkouts.html',
