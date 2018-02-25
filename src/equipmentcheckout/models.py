@@ -48,7 +48,7 @@ def handle_file_upload(instance, filename):
 class Equipment(models.Model):
     make = models.CharField(max_length=255, null=True, blank=False)
     model = models.CharField(max_length=255, null=True, blank=False)
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField(unique=True, blank=True)
     quantity = models.IntegerField()
     description = models.TextField(null=True, blank=True)
 
@@ -67,11 +67,17 @@ class Equipment(models.Model):
     def get_absolute_url(self):
         return '/equipment/' + self.slug
 
+    def get_checkout_url(self):
+        return '/equipment/checkout/' + self.slug
+
     def __unicode__(self):
         return self.make + " " + self.model
 
     def __str__(self):
         return self.make + " " + self.model
+
+    # def availability()
+    # a static method to calculate the number of these that are actually available for checkout
 
 
 class EquipmentCheckout(models.Model):

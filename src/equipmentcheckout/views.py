@@ -67,9 +67,10 @@ def equipment(request):
 
 
 @login_required
-def equipment_checkout(request):
+def equipment_checkout(request, slug):
     # user = request.user
     # equipmentcheckout = get_object_or_404(EquipmentCheckout, user=user)
+    item = get_object_or_404(Equipment, slug=slug)
     userprofile = get_object_or_404(UserProfile, user=request.user)
 
     checkout_form = EquipmentCheckoutForm(request.POST)

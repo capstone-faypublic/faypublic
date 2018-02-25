@@ -13,6 +13,12 @@
     <p>{{ item.description }}</p>
     <p>Quantity: {{ item.quantity }}</p>
 
+    {% if user.is_authenticated %}
+        <p><a href="{{ item.get_checkout_url }}" class="button blue-bg">Check out</a></p>
+    {% else %}
+        <p><a href="{{ item.get_checkout_url }}">Log in</a> to check out this item</p>
+    {% endif %}
+
 </div>
 
 
