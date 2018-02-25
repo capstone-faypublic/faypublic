@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from project.models import Project
 from django.template.defaultfilters import slugify
+from django.db.models import Q
 
 # AUDIO = 'AUDIO'
 # VIDEO = 'VIDEO'
@@ -88,8 +89,9 @@ class Equipment(models.Model):
 
     def available(self):
         taken_units = EquipmentCheckout.objects.filter(
-            equipment=self,
-            checkout_status=RETURNED
+            Q(equipment=self)
+            & (Q(checkout_status=RESERVED)
+            | Q(checkout_status=CHECKED_OUT))
         )
 
         return self.quantity - len(taken_units)
@@ -105,7 +107,7 @@ class EquipmentCheckout(models.Model):
     due_date = models.DateField(null=True)
 
     checkout_status = models.CharField(
-        max_length=2,
+        max_length=15,
         choices = CHECKOUT_STATUS_CHOICES,
         default = RESERVED,
     )

@@ -6,6 +6,12 @@
 
 <div class="container">
     <h1>Your checkouts</h1>
+
+    {% for checkout in checkouts %}
+
+        <p>{{ checkout.equipment.make }} {{ checkout.equipment.model }}</p>
+
+    {% endfor %}
 </div>
 
 {% endblock content %}
