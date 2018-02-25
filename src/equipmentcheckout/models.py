@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from project.models import Project
 from django.template.defaultfilters import slugify
+from django.db.models import Q
+import arrow
 
 # AUDIO = 'AUDIO'
 # VIDEO = 'VIDEO'
@@ -21,8 +23,22 @@ CHECKOUT_TIMEFRAMES = [
 ]
 
 
+RESERVED = 'RESERVED'
+CHECKED_OUT = 'CHECKED_OUT'
+RETURNED = 'RETURNED'
+CHECKOUT_STATUS_CHOICES = (
+    (RESERVED, 'Reserved'),
+    (CHECKED_OUT, 'Checked Out'),
+    (RETURNED, 'Returned'),
+)
+
+
 
 class EquipmentCategory(models.Model):
+    class Meta:
+        verbose_name = "category"
+        verbose_name_plural = "categories"
+
     title = models.CharField(max_length=255)
     slug = models.SlugField(blank=True)
 
@@ -40,15 +56,22 @@ class EquipmentCategory(models.Model):
     def __str__(self):
         return self.title
 
+    def number_of_items(self):
+        return len(Equipment.objects.filter(category=self))
+
 
 
 def handle_file_upload(instance, filename):
     return 'uploads/equip_{0}/{1}'.format(instance.id, filename)
 
 class Equipment(models.Model):
+    class Meta:
+        verbose_name = "equipment"
+        verbose_name_plural = "inventory"
+
     make = models.CharField(max_length=255, null=True, blank=False)
     model = models.CharField(max_length=255, null=True, blank=False)
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField(unique=True, blank=True)
     quantity = models.IntegerField()
     description = models.TextField(null=True, blank=True)
 
@@ -67,31 +90,58 @@ class Equipment(models.Model):
     def get_absolute_url(self):
         return '/equipment/' + self.slug
 
-    def __unicode__(self):
+    def get_checkout_url(self):
+        return '/equipment/checkout/' + self.slug
+
+    def name(self):
         return self.make + " " + self.model
 
+    def __unicode__(self):
+        return self.name()
+
     def __str__(self):
-        return self.make + " " + self.model
+        return self.name()
+
+    def available(self):
+        taken_units = EquipmentCheckout.objects.filter(
+            Q(equipment=self)
+            & (Q(checkout_status=RESERVED)
+            | Q(checkout_status=CHECKED_OUT))
+        )
+
+        return self.quantity - len(taken_units)
+
 
 
 class EquipmentCheckout(models.Model):
+    class Meta:
+        verbose_name = "checkout"
+        verbose_name_plural = "checkouts"
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    equipmentID = models.ForeignKey(Equipment, on_delete=models.CASCADE)
-    projectID = models.ForeignKey(Project, on_delete=models.CASCADE)
+    equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     # additional equipment checkout information we want to collect
     checkout_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
-    RESERVED = 'RE'
-    CHECKED_OUT = 'CO'
-    RETURNED = 'RT'
-    CHECKOUT_STATUS_CHOICES = (
-        (RESERVED, 'Reserved'),
-        (CHECKED_OUT, 'Checked Out'),
-        (RETURNED, 'Returned'),
-    )
+
     checkout_status = models.CharField(
-        max_length=2,
+        max_length=15,
         choices = CHECKOUT_STATUS_CHOICES,
         default = RESERVED,
     )
+
+    def due_date_humanized(self):
+        due = arrow.get(self.due_date)
+        now = arrow.utcnow()
+        return due.humanize(now)
+
+    def equipment_name(self):
+        return self.equipment.name()
+
+    def user_name(self):
+        return self.user.first_name + " " + self.user.last_name
+
+    def project_title(self):
+        return self.project.title

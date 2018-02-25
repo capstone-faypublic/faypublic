@@ -1,0 +1,25 @@
+{% extends 'profile-base.html' %}
+
+{% block title %}Your checkouts{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Your checkouts</h1>
+
+    {% for checkout in checkouts %}
+
+    <div class="flex-container">
+        <span class="flex-item left">{{ checkout.equipment.make }} {{ checkout.equipment.model }}</span>
+        <span class="flex-item right">
+            Due {{ checkout.due_date_humanized }}
+            <span class="circle red-bg"></span>
+        </span>
+    </div>
+
+        <p>Checked out: {{ checkout.checkout_date }}</p>
+
+    {% endfor %}
+</div>
+
+{% endblock content %}
