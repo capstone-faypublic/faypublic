@@ -35,6 +35,10 @@ CHECKOUT_STATUS_CHOICES = (
 
 
 class EquipmentCategory(models.Model):
+    class Meta:
+        verbose_name = "category"
+        verbose_name_plural = "categories"
+
     title = models.CharField(max_length=255)
     slug = models.SlugField(blank=True)
 
@@ -61,6 +65,10 @@ def handle_file_upload(instance, filename):
     return 'uploads/equip_{0}/{1}'.format(instance.id, filename)
 
 class Equipment(models.Model):
+    class Meta:
+        verbose_name = "equipment"
+        verbose_name_plural = "inventory"
+
     make = models.CharField(max_length=255, null=True, blank=False)
     model = models.CharField(max_length=255, null=True, blank=False)
     slug = models.SlugField(unique=True, blank=True)
@@ -106,6 +114,10 @@ class Equipment(models.Model):
 
 
 class EquipmentCheckout(models.Model):
+    class Meta:
+        verbose_name = "checkout"
+        verbose_name_plural = "checkouts"
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)

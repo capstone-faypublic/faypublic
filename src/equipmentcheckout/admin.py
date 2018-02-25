@@ -4,8 +4,9 @@ from .models import Equipment, EquipmentCategory, EquipmentCheckout
 # Register your models here.
 class EquipmentAdmin(admin.ModelAdmin):
     list_display = ('make', 'model', 'quantity', 'available', 'checkout_timeframe')
-    list_filter = ('make', 'model', 'quantity', 'checkout_timeframe')
+    list_filter = ('make', 'checkout_timeframe', 'category__title')
     exclude = ('slug',)
+    search_fields = ('make', 'model', '')
 admin.site.register(Equipment, EquipmentAdmin)
 
 
