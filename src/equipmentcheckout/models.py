@@ -52,6 +52,9 @@ class EquipmentCategory(models.Model):
     def __str__(self):
         return self.title
 
+    def number_of_items(self):
+        return len(Equipment.objects.filter(category=self))
+
 
 
 def handle_file_upload(instance, filename):
@@ -82,11 +85,14 @@ class Equipment(models.Model):
     def get_checkout_url(self):
         return '/equipment/checkout/' + self.slug
 
-    def __unicode__(self):
+    def name(self):
         return self.make + " " + self.model
 
+    def __unicode__(self):
+        return self.name()
+
     def __str__(self):
-        return self.make + " " + self.model
+        return self.name()
 
     def available(self):
         taken_units = EquipmentCheckout.objects.filter(
@@ -96,6 +102,7 @@ class Equipment(models.Model):
         )
 
         return self.quantity - len(taken_units)
+
 
 
 class EquipmentCheckout(models.Model):
@@ -117,3 +124,12 @@ class EquipmentCheckout(models.Model):
         due = arrow.get(self.due_date)
         now = arrow.utcnow()
         return due.humanize(now)
+
+    def equipment_name(self):
+        return self.equipment.name()
+
+    def user_name(self):
+        return self.user.first_name + " " + self.user.last_name
+
+    def project_title(self):
+        return self.project.title
