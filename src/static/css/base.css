@@ -187,8 +187,16 @@ input[type=submit] {
 .errorlist ul {
   list-style-type: none;
 }
+
+.search-bar, .search-button {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 8px 14px;
+}
+
 /* */
 
+/* Projects */
 
 .project-container {
   background: #ddd;
@@ -196,3 +204,28 @@ input[type=submit] {
   padding: 12px;
   margin: 8px 0px;
 }
+
+/* */
+
+
+/* Equipment */
+
+.equipment-item {
+}
+
+.equipment-item .thumbnail {
+  width: 35%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.equipment-item .thumbnail img {
+  width: 100%;
+}
+
+.equipment-item .info {
+  display: inline-block;
+  vertical-align: top;
+}
+
+/* */

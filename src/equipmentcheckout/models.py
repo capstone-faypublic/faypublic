@@ -21,6 +21,16 @@ CHECKOUT_TIMEFRAMES = [
 ]
 
 
+RESERVED = 'RESERVED'
+CHECKED_OUT = 'CHECKED_OUT'
+RETURNED = 'RETURNED'
+CHECKOUT_STATUS_CHOICES = (
+    (RESERVED, 'Reserved'),
+    (CHECKED_OUT, 'Checked Out'),
+    (RETURNED, 'Returned'),
+)
+
+
 
 class EquipmentCategory(models.Model):
     title = models.CharField(max_length=255)
@@ -76,26 +86,24 @@ class Equipment(models.Model):
     def __str__(self):
         return self.make + " " + self.model
 
-    # def availability()
-    # a static method to calculate the number of these that are actually available for checkout
+    def available(self):
+        taken_units = EquipmentCheckout.objects.filter(
+            equipment=self,
+            checkout_status=RETURNED
+        )
+
+        return self.quantity - len(taken_units)
 
 
 class EquipmentCheckout(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    equipmentID = models.ForeignKey(Equipment, on_delete=models.CASCADE)
-    projectID = models.ForeignKey(Project, on_delete=models.CASCADE)
+    equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     # additional equipment checkout information we want to collect
     checkout_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
-    RESERVED = 'RE'
-    CHECKED_OUT = 'CO'
-    RETURNED = 'RT'
-    CHECKOUT_STATUS_CHOICES = (
-        (RESERVED, 'Reserved'),
-        (CHECKED_OUT, 'Checked Out'),
-        (RETURNED, 'Returned'),
-    )
+
     checkout_status = models.CharField(
         max_length=2,
         choices = CHECKOUT_STATUS_CHOICES,

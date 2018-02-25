@@ -22,3 +22,12 @@ def user_profile(request):
             'profile_form': UserProfileForm(instance=userprofile)
         }
     )
+
+@login_required
+def user_checkouts(request):
+    return render(
+        request,
+        'user_checkouts.html',
+        context={
+        }
+    )

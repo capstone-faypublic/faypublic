@@ -9,16 +9,6 @@ from .forms import EquipmentCheckoutForm
 
 # Create your views here.
 
-def equipment_item(request, slug):
-    item = get_object_or_404(Equipment, slug=slug)
-    return render(
-        request,
-        'equipment_item.html',
-        context={
-            'item': item
-        }
-    )
-
 def equipment_category(request, slug):
     category = get_object_or_404(EquipmentCategory, slug=slug)
     equipment = Equipment.objects.filter(category=category)
@@ -34,15 +24,16 @@ def equipment_category(request, slug):
 
     return render(
         request,
-        'equipment.html',
+        'equipment_list.html',
         context={
             'search': search,
             'equipment': equipment,
-            'categories': categories
+            'categories': categories,
+            'category': category
         }
     )
 
-def equipment(request):
+def equipment_list(request):
     equipment = Equipment.objects.all()
     categories = EquipmentCategory.objects.all()
 
@@ -56,7 +47,7 @@ def equipment(request):
 
     return render(
         request,
-        'equipment.html',
+        'equipment_list.html',
         context={
             'search': search,
             'equipment': equipment,
@@ -82,8 +73,9 @@ def equipment_checkout(request, slug):
 
     return render(
         request,
-        'checkout.html',
+        'equipment_checkout.html',
         context={
+            'item': item,
             'userprofile': userprofile,
             'checkout_form': checkout_form
         }
