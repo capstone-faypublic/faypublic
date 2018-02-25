@@ -24,18 +24,23 @@
             <h1>Equipment inventory</h1>
         {% endif %}
 
+        <br/>
+
         <form action="" method="get">
             <input type="text" name="q" placeholder="Search" value="{{ search }}" class="search-bar">
             <input type="submit" class="button blue-bg search-button">
         </form>
 
+        <br/>
+
 
         {% for equip in equipment %}
-            <div class="equipment-item">
-                <div class="thumbnail">
+            <div class="equipment-item flex-container">
+                <div class="thumbnail flex-item">
                     <img src="/static/media/{{ equip.image }}"/>
                 </div>
-                <div class="info">
+                
+                <div class="info flex-item">
                     <p>
                         <b>{{ equip.make }} {{ equip.model }}</b>
                     </p>

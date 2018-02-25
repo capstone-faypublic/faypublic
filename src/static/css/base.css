@@ -211,21 +211,28 @@ input[type=submit] {
 /* Equipment */
 
 .equipment-item {
+  flex-wrap: nowrap;
+  margin: 12px 0px;
 }
 
 .equipment-item .thumbnail {
-  width: 35%;
-  display: inline-block;
+  width: 30%;
+  min-width: 80px;
+  max-width: 240px;
+  flex-grow: 0;
+  flex-shrink: 0;
   vertical-align: top;
+  padding: 6px;
 }
 
 .equipment-item .thumbnail img {
+  display: block;
   width: 100%;
 }
 
 .equipment-item .info {
-  display: inline-block;
   vertical-align: top;
+  padding: 6px;
 }
 
 /* */
