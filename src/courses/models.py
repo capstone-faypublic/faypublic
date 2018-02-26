@@ -27,9 +27,12 @@ class Course(models.Model):
         blank=False
     )
 
-#     course_prerequisites = models.ManyToManyField(PrerequisiteCourses)
-#
-#
-# class PrerequisiteCourses(models.Model):
-#     course_id = models.ForeignKey(Course, on_delete=models.CASCADE())
-#     needed_course = models.ForeignKey(Course, on_delete=models.CASCADE())
+
+
+
+class PrerequisiteCourses(models.Model):
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course_prerequisites = models.ManyToManyField(Course)
+    # needed_course = models.ForeignKey(Course.course_title, on_delete=models.CASCADE)
+    # course_id = models.ForeignKey(Course)
+    # needed_course = models.ForeignKey(Course)
