@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Equipment{% endblock title %}
+
+{% block pagecontent %}
+
+
+<div class="container flex-container">
+    <div class="container flex-item sidebar submenu">
+        <h2>Categories</h2>
+
+        <ul>
+            <li><a href="/equipment/">All</a></li>
+        {% for cat in categories %}
+            <li><a href="{{ cat.get_absolute_url }}">{{ cat.title }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div class="flex-item sidebar content">
+        {% if category %}
+            <h1>{{ category.title }} inventory</h1>
+        {% else %}
+            <h1>Equipment inventory</h1>
+        {% endif %}
+
+        <br/>
+
+        <form action="" method="get">
+            <input type="text" name="q" placeholder="Search" value="{{ search }}" class="search-bar">
+            <input type="submit" class="button blue-bg search-button">
+        </form>
+
+        <br/>
+
+
+        {% for equip in equipment %}
+            <div class="equipment-item flex-container">
+                <div class="thumbnail flex-item">
+                    <img src="/static/media/{{ equip.image }}"/>
+                </div>
+                
+                <div class="info flex-item">
+                    <p>
+                        <b>{{ equip.make }} {{ equip.model }}</b>
+                    </p>
+                    <p>Available: {{ equip.available }}</p>
+                    <p>{{ equip.description }}</p>
+                    {% if user.is_authenticated %}
+                        <p><a href="{{ equip.get_checkout_url }}" class="button blue-bg">Check out</a></p>
+                    {% else %}
+                        <p><a href="{{ equip.get_checkout_url }}">Log in</a> to check out this item</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock pagecontent %}

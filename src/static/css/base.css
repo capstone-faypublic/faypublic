@@ -49,12 +49,15 @@ h1, h2, h3, h4, h5, h6, p {
 }
 .button.red-bg:hover {
   background: rgb(168, 0, 48);
+  color: rgba(255, 255, 255, 0.9);
 }
 .button.green-bg:hover {
   background: rgb(10, 134, 87);
+  color: rgba(255, 255, 255, 0.9);
 }
 .button.blue-bg:hover {
   background: rgb(3, 68, 100);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .red-bg {
@@ -70,6 +73,13 @@ h1, h2, h3, h4, h5, h6, p {
 .blue-bg {
   background: #066FA5;
   color: #fff;
+}
+
+.circle {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
 }
 
 /* */
@@ -104,7 +114,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 
 #main-navigation {
-  background: #F6D600;
+  background: #f6d600;
 }
 
 #main-navigation #brand {
@@ -133,7 +143,7 @@ h1, h2, h3, h4, h5, h6, p {
   padding: 8px 14px;
 }
 #main-navigation ul li a:hover {
-  color: #999;
+  color: rgba(51, 51, 51, 0.6);
 }
 
 .sidebar.submenu {
@@ -187,8 +197,16 @@ input[type=submit] {
 .errorlist ul {
   list-style-type: none;
 }
+
+.search-bar, .search-button {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 8px 14px;
+}
+
 /* */
 
+/* Projects */
 
 .project-container {
   background: #ddd;
@@ -196,3 +214,35 @@ input[type=submit] {
   padding: 12px;
   margin: 8px 0px;
 }
+
+/* */
+
+
+/* Equipment */
+
+.equipment-item {
+  flex-wrap: nowrap;
+  margin: 12px 0px;
+}
+
+.equipment-item .thumbnail {
+  width: 30%;
+  min-width: 80px;
+  max-width: 240px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  vertical-align: top;
+  padding: 6px;
+}
+
+.equipment-item .thumbnail img {
+  display: block;
+  width: 100%;
+}
+
+.equipment-item .info {
+  vertical-align: top;
+  padding: 6px;
+}
+
+/* */
