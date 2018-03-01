@@ -6,6 +6,8 @@ from django.db.models import Q
 from .models import Equipment, EquipmentCategory, EquipmentCheckout
 from .forms import EquipmentCheckoutForm
 import arrow
+from .models import RESERVED
+
 
 
 # Create your views here.
@@ -58,39 +60,37 @@ def equipment_list(request):
 
 
 def compute_due_date(val):
-    if val == "CHECKOUT_24hr":
+    if val == "CHECKOUT_24HR":
         now = arrow.utcnow()
-        due = now.replace(hour=+24)
+        due = now.shift(days=2).date()
         return due
     if val == "CHECKOUT_WEEK":
         now = arrow.utcnow()
-        due = now.replace(hour=+120)
+        due = now.shift(days=6).date()
         return due
+    else:
+        return "2018-03-15"
 
 @login_required
 def equipment_checkout(request, slug):
-    # user = request.user
-    # equipmentcheckout = get_object_or_404(EquipmentCheckout, user=user)
-    item = get_object_or_404(Equipment, slug=slug)
+    equipment = get_object_or_404(Equipment, slug=slug)
     userprofile = get_object_or_404(UserProfile, user=request.user)
 
-    checkout_form = EquipmentCheckoutForm(request.POST, initial={'due_date':'2018-02-28'})
-    checkout_form.fields["due_date"].initial = arrow.utcnow()
-
-    new_due_date = compute_due_date(item.checkout_timeframe)
+    checkout_form = EquipmentCheckoutForm(request.POST)
 
     if checkout_form.is_valid():
-        equipmentcheckout = checkout_form.save(commit=False)
-        # equipmentcheckout.due_date = '2018-02-28'
-        equipmentcheckout.save()
-
-    # checkout_form = EquipmentCheckoutForm(instance=equipmentcheckout)
+        checkout = checkout_form.save(commit=False)
+        checkout.equipment = equipment
+        checkout.user = request.user
+        checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe)
+        checkout.checkout_status = RESERVED
+        checkout.save()
 
     return render(
         request,
         'equipment_checkout.html',
         context={
-            'item': item,
+            'equipment': equipment,
             'userprofile': userprofile,
             'checkout_form': checkout_form
         }

@@ -7,15 +7,9 @@ class DateInput(forms.DateInput):
     input_type = 'date'
 
 class EquipmentCheckoutForm(ModelForm):
-    find_out = forms.DateField(
-        initial="2018-02-28",
-        label='Test Field',
-        help_text='For Initial Value Testing'
-    )
-
     class Meta:
         model = EquipmentCheckout
-        exclude = ['user']
+        exclude = ['user', 'equipment', 'checkout_status', 'due_date']
         widgets = {
             'checkout_date' : DateInput(),
         }

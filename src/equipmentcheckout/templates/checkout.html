@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block pagecontent %}
+
+<div class="container">
+    <h1>Equipment Checkout</h1>
+    <p>this is a page where you can checkout equipment</p>
+</div>
+<div class="container">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ checkout_form.as_p }}
+        <input type="submit" class="button green-bg"/>
+    </form>
+</div>
+{% endblock pagecontent %}
