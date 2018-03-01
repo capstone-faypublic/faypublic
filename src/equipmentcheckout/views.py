@@ -69,7 +69,7 @@ def compute_due_date(timeframe, checkout_date):
         due = now.shift(days=6).date()
         return due
     else:
-        return "2018-03-15"
+        return "5555-05-05"
 
 @login_required
 def equipment_checkout(request, slug):
