@@ -59,13 +59,13 @@ def equipment_list(request):
     )
 
 
-def compute_due_date(val):
-    if val == "CHECKOUT_24HR":
-        now = arrow.utcnow()
+def compute_due_date(timeframe, checkout_date):
+    if timeframe == "CHECKOUT_24HR":
+        now = arrow.get(checkout_date)
         due = now.shift(days=2).date()
         return due
-    if val == "CHECKOUT_WEEK":
-        now = arrow.utcnow()
+    if timeframe == "CHECKOUT_WEEK":
+        now = arrow.get(checkout_date)
         due = now.shift(days=6).date()
         return due
     else:
@@ -82,9 +82,11 @@ def equipment_checkout(request, slug):
         checkout = checkout_form.save(commit=False)
         checkout.equipment = equipment
         checkout.user = request.user
-        checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe)
+        checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
         checkout.checkout_status = RESERVED
         checkout.save()
+
+        return redirect('equipment_list')
 
     return render(
         request,
