@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_cron',
 
     # created
     'userprofile',
@@ -140,3 +141,9 @@ LOGIN_URL = '/login'
 
 # Where are files uploaded
 MEDIA_ROOT = '/media/'
+
+# Setting up Cron Jobs
+CRON_CLASSES = [
+    "faypublic.cron.MyCronJob",
+]
+
