@@ -5,6 +5,9 @@ from userprofile.models import UserProfile
 from django.db.models import Q
 from .models import Equipment, EquipmentCategory, EquipmentCheckout
 from .forms import EquipmentCheckoutForm
+import arrow
+from .models import RESERVED
+
 
 
 # Create your views here.
@@ -56,26 +59,40 @@ def equipment_list(request):
     )
 
 
+def compute_due_date(timeframe, checkout_date):
+    if timeframe == "CHECKOUT_24HR":
+        now = arrow.get(checkout_date)
+        due = now.shift(days=2).date()
+        return due
+    if timeframe == "CHECKOUT_WEEK":
+        now = arrow.get(checkout_date)
+        due = now.shift(days=6).date()
+        return due
+    else:
+        return "5555-05-05"
 
 @login_required
 def equipment_checkout(request, slug):
-    # user = request.user
-    # equipmentcheckout = get_object_or_404(EquipmentCheckout, user=user)
-    item = get_object_or_404(Equipment, slug=slug)
+    equipment = get_object_or_404(Equipment, slug=slug)
     userprofile = get_object_or_404(UserProfile, user=request.user)
 
     checkout_form = EquipmentCheckoutForm(request.POST)
 
     if checkout_form.is_valid():
-        equipmentcheckout = checkout_form.save()
+        checkout = checkout_form.save(commit=False)
+        checkout.equipment = equipment
+        checkout.user = request.user
+        checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
+        checkout.checkout_status = RESERVED
+        checkout.save()
 
-    # checkout_form = EquipmentCheckoutForm(instance=equipmentcheckout)
+        return redirect('equipment_list')
 
     return render(
         request,
         'equipment_checkout.html',
         context={
-            'item': item,
+            'equipment': equipment,
             'userprofile': userprofile,
             'checkout_form': checkout_form
         }
