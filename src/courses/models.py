@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
+from userprofile.models import Badge, User
 
 
 class Course(models.Model):
@@ -16,23 +17,58 @@ class Course(models.Model):
         blank=False
     )
 
-    course_duration = models.CharField(
-        max_length=255,
-        null=True,
-        blank=False
+    prereq_badges = models.ManyToManyField(Badge,
+        related_name="prerequisites",
+        blank=True
     )
 
-    course_capacity = models.IntegerField(
+    awarded_badges = models.ManyToManyField(Badge, related_name="awarded")
+
+    def __str__(self):
+        return self.course_title
+
+    def __unicode__(self):
+        return self.course_title
+
+
+class CourseSection(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    start_date = models.DateTimeField
+
+    end_date = models.DateTimeField
+
+    seat_avaliable = models.IntegerField(
         null=True,
-        blank=False
+        blank=True,
+        default=6
+    )
+
+    def __str__(self):
+        return self.course.course_title
+
+    def __unicode__(self):
+        return self.course.course_title
+
+
+class CourseRegisteration(models.Model):
+    course_section = models.ForeignKey(CourseSection, on_delete=models.CASCADE)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    completed = models.BooleanField(
+        default=False
+    )
+
+    score = models.TextField(
+        default="0"
     )
 
 
+    def __str__(self):
+        return self.course_section.course.course_title
+
+    def __unicode__(self):
+        return self.course_section.course.course_title
 
 
-class PrerequisiteCourses(models.Model):
-    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
-    course_prerequisites = models.ManyToManyField(Course)
-    # needed_course = models.ForeignKey(Course.course_title, on_delete=models.CASCADE)
-    # course_id = models.ForeignKey(Course)
-    # needed_course = models.ForeignKey(Course)

@@ -35,12 +35,9 @@ urlpatterns = [
     path('profile/', include('userprofile.urls')),
 
     # equipment checkout
-<<<<<<< HEAD
     path('checkout/', include('equipmentcheckout.urls')),
 
     # course
     path('courses/', include('courses.urls')),
-=======
     path('equipment/', include('equipmentcheckout.urls')),
->>>>>>> master
 ]
