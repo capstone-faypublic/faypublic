@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'userprofile',
     'equipmentcheckout',
     'project',
-    'courses'
+    'classes'
 ]
 
 MIDDLEWARE = [
@@ -66,7 +66,7 @@ TEMPLATES = [
             './userprofile/templates'
             './equipmentcheckout/templates',
             './project/templates',
-            './courses/templates'
+            './classes/templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {

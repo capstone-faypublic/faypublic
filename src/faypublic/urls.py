@@ -37,7 +37,7 @@ urlpatterns = [
     # equipment checkout
     path('checkout/', include('equipmentcheckout.urls')),
 
-    # course
-    path('courses/', include('courses.urls')),
+    # class
+    path('classes/', include('classes.urls')),
     path('equipment/', include('equipmentcheckout.urls')),
 ]
