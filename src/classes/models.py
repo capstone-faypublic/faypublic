@@ -12,8 +12,8 @@ class Class(models.Model):
 
     class_title = models.CharField(max_length=255, null=True, blank=False)
     class_description = models.TextField(null=True, blank=False)
-    prerequisite_badges = models.ManyToManyField(Badge, related_name="prerequisites", null=True, blank=True)
-    awarded_badges = models.ManyToManyField(Badge, related_name="awarded")
+    prerequisite_badges = models.ManyToManyField(Badge, related_name="prerequisites", blank=True)
+    awarded_badges = models.ManyToManyField(Badge, related_name="awarded", blank=True)
 
     def __str__(self):
         return self.class_title
