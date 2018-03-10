@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block pagecontent %}
+
+<div class="container">
+    <h1>Equipment Checkout</h1>
+    <p>This is where you can checkout equipment!</p>
+</div>
+<div class="container">
+    <h1>{{ item.make }} {{ item.model }}</h1>
+
+    <img src="/static/media/{{ item.image }}" width="300">
+
+    <p>{{ item.description }}</p>
+
+
+
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ checkout_form.as_p }}
+        <input type="submit" class="button green-bg"/>
+    </form>
+</div>
+{% endblock pagecontent %}

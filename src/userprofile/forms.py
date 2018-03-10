@@ -3,7 +3,7 @@ from .models import UserProfile
 from django import forms
 
 class DateInput(forms.DateInput):
-	input_type = 'date'
+    input_type = 'date'
 
 class UserProfileForm(ModelForm):
     class Meta:

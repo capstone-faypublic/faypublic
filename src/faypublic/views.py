@@ -28,6 +28,11 @@ def user_register(request):
             user=user
         )
         userprofile.save()
+
+        if request.GET.get('next'):
+            requested_page = request.GET['next']
+            return redirect(requested_page)
+
         return redirect('user_profile')
 
     return render(

@@ -34,3 +34,11 @@ class UserProfile(models.Model):
     )
 
     birthdate = models.DateField(null=True, blank=False)
+
+
+class Badge(models.Model):
+    badge = models.CharField(
+        max_length=255,
+        null=False,
+        blank=False
+    )

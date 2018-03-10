@@ -106,3 +106,7 @@ postgres/
 
 # Uploads
 src/static/media/uploads/*
+
+# editors
+.idea
+.vscode
