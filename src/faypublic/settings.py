@@ -41,8 +41,9 @@ INSTALLED_APPS = [
 
     # created
     'userprofile',
-    'equipmentcheckout',
-    'project'
+    'inventory',
+    'project',
+    'classes'
 ]
 
 MIDDLEWARE = [
@@ -64,8 +65,9 @@ TEMPLATES = [
             './templates',
             './faypublic/templates',
             './userprofile/templates'
-            './equipmentcheckout/templates',
-            './project/templates'
+            './inventory/templates',
+            './project/templates',
+            './classes/templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {

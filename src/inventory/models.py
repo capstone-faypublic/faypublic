@@ -67,7 +67,7 @@ def handle_file_upload(instance, filename):
 class Equipment(models.Model):
     class Meta:
         verbose_name = "equipment"
-        verbose_name_plural = "inventory"
+        verbose_name_plural = "equipment"
 
     make = models.CharField(max_length=255, null=True, blank=False)
     model = models.CharField(max_length=255, null=True, blank=False)
