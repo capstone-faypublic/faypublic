@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from .models import UserProfile
 from .forms import UserProfileForm
-from equipmentcheckout.models import EquipmentCheckout
+from inventory.models import EquipmentCheckout
 
 # Create your views here.
 @login_required
