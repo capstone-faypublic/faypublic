@@ -5,14 +5,14 @@ from django.contrib.auth.models import User
 from userprofile.models import Badge, User
 
 
-class Course(models.Model):
-    course_title = models.CharField(
+class Class(models.Model):
+    class_title = models.CharField(
         max_length=255,
         null=True,
         blank=False,
     )
 
-    course_description = models.TextField(
+    class_description = models.TextField(
         null=True,
         blank=False
     )
@@ -25,14 +25,17 @@ class Course(models.Model):
     awarded_badges = models.ManyToManyField(Badge, related_name="awarded")
 
     def __str__(self):
-        return self.course_title
+        return self.class_title
 
     def __unicode__(self):
-        return self.course_title
+        return self.class_title
+
+    class Meta:
+        verbose_name_plural = "classes"
 
 
-class CourseSection(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+class ClassSection(models.Model):
+    class_key = models.ForeignKey(Class, on_delete=models.CASCADE)
 
     start_date = models.DateTimeField
 
@@ -45,14 +48,14 @@ class CourseSection(models.Model):
     )
 
     def __str__(self):
-        return self.course.course_title
+        return self.class_key.class_title
 
     def __unicode__(self):
-        return self.course.course_title
+        return self.class_key.class_title
 
 
-class CourseRegisteration(models.Model):
-    course_section = models.ForeignKey(CourseSection, on_delete=models.CASCADE)
+class ClassRegistration(models.Model):
+    class_section = models.ForeignKey(ClassSection, on_delete=models.CASCADE)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -66,9 +69,9 @@ class CourseRegisteration(models.Model):
 
 
     def __str__(self):
-        return self.course_section.course.course_title
+        return self.class_section.class_key.class_title
 
     def __unicode__(self):
-        return self.course_section.course.course_title
+        return self.class_section.class_key.class_title
 
 
