@@ -13,10 +13,15 @@ from django.http import HttpResponse
 #     return HttpResponse("You're looking at question./n" + output )
 
 
-def class_listing(request):
-    classList = Class.objects.order_by("id")[:]
-    output = ", ".join([c.class_title for c in classList])
-    return render(request, 'class.html', context={"output" : classList})
+def class_list(request):
+    classes = Class.objects.order_by("id")[:]
+    return render(
+        request, 
+        'class_list.html', 
+        context={
+            "classes" : classes
+        }
+    )
 
 
 
