@@ -6,11 +6,18 @@ from .models import Class
 from django.http import HttpResponse
 
 # Create your views here.
-# @login_required
-# def class_listing(request):
-#     classList = Class.objects.order_by("id")[:]
-#     output = ", ".join([c.class_title for c in classList])
-#     return HttpResponse("You're looking at question./n" + output )
+
+
+@login_required
+def class_registration(request, slug):
+    course = get_object_or_404(Class, slug=slug)
+    return render(
+        request,
+        'class_registration.html',
+        context={
+            'class': course
+        }
+    )
 
 
 def class_list(request):

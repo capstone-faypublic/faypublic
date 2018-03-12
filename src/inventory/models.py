@@ -40,7 +40,7 @@ class EquipmentCategory(models.Model):
         verbose_name_plural = "categories"
 
     title = models.CharField(max_length=255)
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField(blank=True, unique=True)
 
     def save(self, *args, **kwargs):
         if not self.id:

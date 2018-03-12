@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 from userprofile.models import Badge, User
@@ -14,12 +15,21 @@ class Class(models.Model):
     class_description = models.TextField(null=True, blank=False)
     prerequisite_badges = models.ManyToManyField(Badge, related_name="prerequisites", blank=True)
     awarded_badges = models.ManyToManyField(Badge, related_name="awarded", blank=True)
+    slug = models.SlugField(blank=True, unique=True)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.class_title)
+        super(Class, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.class_title
 
     def __unicode__(self):
         return self.class_title
+
+    def get_register_url(self):
+        return '/classes/' + self.slug
 
 
 class ClassSection(models.Model):
