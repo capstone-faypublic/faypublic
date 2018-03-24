@@ -15,6 +15,13 @@
 
 <div class="container">
 
+    <form action="" method="get">
+        <input type="text" name="q" placeholder="Search" value="{{ search }}" class="search-bar">
+        <input type="submit" class="button blue-bg search-button">
+    </form>
+
+    <br/>
+
     {% for item in classes %}
         <div>
            <h3> {{ item.class_title }}</h3>

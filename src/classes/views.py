@@ -5,6 +5,7 @@ from django.shortcuts import render
 from .models import Class, ClassSection, ClassRegistration
 from django.http import HttpResponse
 import arrow
+from django.db.models import Q
 
 # Create your views here.
 
@@ -36,12 +37,19 @@ def class_registration(request, slug):
 
 
 def class_list(request):
-    classes = Class.objects.order_by("id")[:]
+    classes = Class.objects.all()
+    
+    search = ''
+    if request.GET.get('q') and len(request.GET['q']) > 0:
+        search = request.GET['q']
+        classes = classes.filter(Q(class_title__icontains=search))
+
     return render(
         request, 
         'class_list.html', 
         context={
-            "classes" : classes
+            'classes': classes,
+            'search': search
         }
     )
 
