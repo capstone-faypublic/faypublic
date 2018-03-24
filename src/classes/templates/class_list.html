@@ -19,6 +19,7 @@
         <div>
            <h3> {{ item.class_title }}</h3>
             <p> {{ item.class_description }}</p>
+            <p>{{ item.get_open_sections|length }} open section(s)</p>
             {% if user.is_authenticated %}
                 <p><a href="{{ item.get_register_url }}" class="button blue-bg">Register</a></p>
             {% else %}

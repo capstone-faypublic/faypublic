@@ -184,6 +184,10 @@ input {
   border-radius: 2px;
 }
 
+input[type=radio] {
+  -webkit-appearance: radio;
+}
+
 input[type=submit] {
   width: auto;
   background: auto;
@@ -244,5 +248,13 @@ input[type=submit] {
   vertical-align: top;
   padding: 6px;
 }
+
+/* */
+
+
+/* classes */
+
+
+
 
 /* */

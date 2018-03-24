@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from django.db.models import Q
+import arrow
 
 # Create your models here.
 from userprofile.models import Badge, User
@@ -31,6 +33,11 @@ class Class(models.Model):
     def get_register_url(self):
         return '/classes/' + self.slug
 
+    def get_open_sections(self):
+        return self.classsection_set.filter(
+            Q(date__gte=arrow.utcnow().datetime)
+        ).order_by('date')
+
 
 class ClassSection(models.Model):
     class Meta:
@@ -38,15 +45,20 @@ class ClassSection(models.Model):
         verbose_name_plural = "sections"
 
     class_key = models.ForeignKey(Class, on_delete=models.CASCADE)
-    start_date = models.DateTimeField
-    end_date = models.DateTimeField
-    seat_avaliable = models.IntegerField(null=True, blank=True, default=0)
+    date = models.DateTimeField()
+    seats_avaliable = models.IntegerField(null=True, blank=True, default=0)
 
     def __str__(self):
         return self.class_key.class_title
 
     def __unicode__(self):
         return self.class_key.class_title
+
+    def number_open_seats(self):
+        return self.seats_avaliable - len(self.classregistration_set.all())
+
+    def date_humanized(self):
+        return arrow.get(self.date).humanize(arrow.utcnow())
 
 
 class ClassRegistration(models.Model):

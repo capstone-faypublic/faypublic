@@ -17,10 +17,35 @@
 
     <p> {{ class.class_description }}</p>
 
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Register" class="button green-bg">
+        <table>
+
+            {% for sect in class.get_open_sections %}
+            <tr>
+                <td>
+
+                    <label>
+                        <input type="radio" name="section_id" value="{{ sect.id }}"/> 
+                        {{ class.class_title }}
+                    </label>
+                </td>
+                <td>{{ sect.date }} ({{ sect.date_humanized }})</td>
+                <td>{{ sect.number_open_seats }} seat(s) available</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </form>
+
+    
+
 </div>
 {% endblock pagecontent %}
 
 </body>
 </html>
 
-
+ 
