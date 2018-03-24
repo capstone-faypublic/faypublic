@@ -6,15 +6,15 @@
 
 <div class="container">
     <h1>Your profile</h1>
-    <p>Complete your profile to be able to sign out equipment, register for classes, and submit your projects to be viewed on-air</p>
+    <p>Welcome back, {{ profile.user.first_name }}</p>
 </div>
 
 <div class="container">
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ profile_form.as_p }}
-        <input type="submit" class="button green-bg" value="Save profile"/>
-    </form>
+    <h2>Your projects</h2>
+    <a href="/profile/projects" class="button green-bg">Start a project</a>
+    {% for project in profile.project_set.all %}
+        <p><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></p>
+    {% endfor %}
 </div>
 
 {% endblock content %}

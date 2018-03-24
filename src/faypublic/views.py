@@ -33,7 +33,7 @@ def user_register(request):
             requested_page = request.GET['next']
             return redirect(requested_page)
 
-        return redirect('user_profile')
+        return redirect('edit_profile')
 
     return render(
         request,

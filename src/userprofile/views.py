@@ -6,8 +6,21 @@ from .forms import UserProfileForm
 from inventory.models import EquipmentCheckout
 
 # Create your views here.
+
 @login_required
 def user_profile(request):
+    userprofile = get_object_or_404(UserProfile, user=request.user)
+    return render(
+        request,
+        'profile.html',
+        context={
+            'profile': userprofile
+        }
+    )
+
+
+@login_required
+def edit_profile(request):
     userprofile = get_object_or_404(UserProfile, user=request.user)
     profile_form = UserProfileForm(request.POST, instance=userprofile)
 
@@ -16,7 +29,7 @@ def user_profile(request):
 
     return render(
         request,
-        'profile.html',
+        'edit_profile.html',
         context={
             'name': request.user.first_name + ' ' + request.user.last_name,
             'profile_form': UserProfileForm(instance=userprofile)
