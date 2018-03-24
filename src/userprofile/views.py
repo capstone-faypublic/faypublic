@@ -14,7 +14,8 @@ def user_profile(request):
         request,
         'profile.html',
         context={
-            'profile': userprofile
+            'profile': userprofile,
+            'badges': userprofile.earned_badges()
         }
     )
 

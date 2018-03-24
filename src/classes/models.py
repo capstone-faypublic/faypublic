@@ -5,7 +5,7 @@ from django.db.models import Q
 import arrow
 
 # Create your models here.
-from userprofile.models import Badge, User
+from userprofile.models import Badge, UserProfile
 
 
 class Class(models.Model):
@@ -56,7 +56,7 @@ class ClassSection(models.Model):
 
     def number_open_seats(self):
         return self.seats_avaliable - len(self.classregistration_set.all())
-
+ 
     def date_humanized(self):
         return arrow.get(self.date).humanize(arrow.utcnow())
 

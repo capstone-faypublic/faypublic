@@ -15,6 +15,9 @@
     {% for project in profile.project_set.all %}
         <p><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></p>
     {% endfor %}
+
+    {{ badges }}
+
 </div>
 
 {% endblock content %}
