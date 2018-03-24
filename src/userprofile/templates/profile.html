@@ -16,7 +16,14 @@
         <p><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></p>
     {% endfor %}
 
-    {{ badges }}
+
+    <br/>
+
+    <h2>Your badges</h2>
+
+    {% for badge in profile.earned_badges %}
+        {{ badge.badge }}
+    {% endfor %}
 
 </div>
 

@@ -37,8 +37,8 @@ class UserProfile(models.Model):
 
 
     def earned_badges(self):
-        # classes = self.user.classregistration_set.filter(completed=True)
-        registrations = self.user.classregistration_set.all()
+        registrations = self.user.classregistration_set.filter(completed=True)
+        # registrations = self.user.classregistration_set.all()
         # return registrations
         badges = []
 
