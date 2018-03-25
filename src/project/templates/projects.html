@@ -10,31 +10,26 @@
 </div>
 
 <div class="container">
+    <table class="project-container">
     {% for project in userprofile.project_set.all %}
-        <div class="flex-container project-container">
-
-            <div class="flex-item">
-                <h2>
-                    <span><a href="{{ project.get_absolute_url }}">{{ project.title}}</a>
-                </h2>
-                <span>Created: {{ project.created }}</span>
-            </div>
-
-            <div class="flex-item right">
-                <h3>Submissions</h3>
-                {% for sub in project.recent_submissions %}
-                    <div>
-                        <span>{{ sub.title }}</span>
-                        <span>{{ sub.get_status_display }}</span>
-                    </div>
-                {% endfor %}
-                {% if project.projectsubmission_set.all|length > 3 %}
-                    <span><a href="{{ project.get_absolute_url }}">...</a></span>
-                {% endif %}
-            </div>
-
-        </div>
+        <tr class="project-row">
+            <td>
+                <span class="title">
+                    <a href="{{ project.get_absolute_url }}">
+                        {{ project.title }}
+                    </a>
+                </span>
+                <span class="dates">
+                    Created: {{ project.created }} <br/>
+                    Estimated completion: {{ project.expected_completion_date }}
+                </span>
+            </td>
+            <td class="submissions">
+                {{ project.number_of_submissions }} submission(s)
+            </td>
+        </tr>
     {% endfor %}
+    </table>
 </div>
 
 <div class="container">

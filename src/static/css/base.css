@@ -213,10 +213,33 @@ input[type=submit] {
 /* Projects */
 
 .project-container {
-  background: #ddd;
-  border-radius: 6px;
-  padding: 12px;
-  margin: 8px 0px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.project-row {
+  background: #ecf0f1;
+  border-bottom: 1px solid #fff;
+}
+
+.project-row .title {
+  display: block;
+  font-weight: bold;
+  font-size: 14pt;
+}
+
+.project-row .dates {
+  font-size: 10pt;
+}
+
+.project-row .submissions {
+  /* font-weight: bold; */
+  font-size: 14pt;
+  text-align: right;
+}
+
+.project-row td {
+  padding: 8px 12px;
 }
 
 /* */

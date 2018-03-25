@@ -26,8 +26,8 @@ class Project(models.Model):
     def get_absolute_url(self):
         return "/profile/projects/%i/" % self.id
 
-    def recent_submissions(self):
-        return self.projectsubmission_set.all()[:3]
+    def number_of_submissions(self):
+        return len(self.projectsubmission_set.all())
 
 
 
