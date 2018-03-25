@@ -38,6 +38,9 @@ class Class(models.Model):
             Q(date__gte=arrow.utcnow().datetime)
         ).order_by('date')
 
+    def number_of_open_sections(self):
+        return len(self.get_open_sections())
+
 
 class ClassSection(models.Model):
     class Meta:
@@ -56,6 +59,9 @@ class ClassSection(models.Model):
 
     def number_open_seats(self):
         return self.seats_avaliable - len(self.classregistration_set.all())
+
+    def number_registered(self):
+        return len(self.classregistration_set.all())
  
     def date_humanized(self):
         return arrow.get(self.date).humanize(arrow.utcnow())
@@ -70,6 +76,12 @@ class ClassRegistration(models.Model):
     class_section = models.ForeignKey(ClassSection, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
     score_percentage = models.DecimalField(null=True, blank=True, max_digits=4, decimal_places=1)
+
+    def class_title(self):
+        return self.class_section.class_key.class_title
+    
+    def section(self):
+        return self.class_section.date
 
     def __str__(self):
         return self.class_section.class_key.class_title

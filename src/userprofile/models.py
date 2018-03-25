@@ -3,6 +3,11 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+def get_user_display_name(self):
+    return self.first_name + ' ' + self.last_name + ' [' + self.username + ']'
+User.add_to_class('__str__', get_user_display_name)
+User.add_to_class('__unicode__', get_user_display_name)
+
 class UserProfile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -38,8 +43,6 @@ class UserProfile(models.Model):
 
     def earned_badges(self):
         registrations = self.user.classregistration_set.filter(completed=True)
-        # registrations = self.user.classregistration_set.all()
-        # return registrations
         badges = []
 
         for reg in registrations:
@@ -54,8 +57,14 @@ class UserProfile(models.Model):
 
 
 class Badge(models.Model):
-    badge = models.CharField(
+    title = models.CharField(
         max_length=255,
         null=False,
         blank=False
     )
+
+    def __str__(self):
+        return self.title
+
+    def __unicode__(self):
+        return self.title
