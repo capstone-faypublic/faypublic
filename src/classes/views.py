@@ -30,6 +30,8 @@ def class_registration(request, slug):
                     class_section=class_section,
                 )
                 reg.save()
+
+                return redirect('user_classes')
                 # redirect to the profile and class registration list
             # else: # use django flash messages api here for unsuccessful registration
 

@@ -92,7 +92,7 @@ def equipment_checkout(request, slug):
             checkout.checkout_status = RESERVED
             checkout.save()
 
-            return redirect('/profile/checkouts')
+            return redirect('user_checkouts')
 
     return render(
         request,
