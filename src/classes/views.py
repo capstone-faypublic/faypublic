@@ -24,7 +24,7 @@ def class_registration(request, slug):
         if(class_section.number_open_seats() > 0):
             # check to make sure a user isn't already registered, it's really easy to reload the page and re-register for a course
 
-            if userprofile.can_register_for_class():
+            if userprofile.can_register_for_class(class_section.class_key):
                 reg = ClassRegistration(
                     user=request.user,
                     class_section=class_section,
