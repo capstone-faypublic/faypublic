@@ -6,6 +6,7 @@ from .models import Class, ClassSection, ClassRegistration
 from django.http import HttpResponse
 import arrow
 from django.db.models import Q
+from userprofile.models import UserProfile
 
 # Create your views here.
 
@@ -18,14 +19,19 @@ def class_registration(request, slug):
         section_id = request.POST.get('section_id')
         class_section = get_object_or_404(ClassSection, id=section_id, date__gte=arrow.utcnow().datetime)
 
+        userprofile = get_object_or_404(UserProfile, user=request.user)
+
         if(class_section.number_open_seats() > 0):
             # check to make sure a user isn't already registered, it's really easy to reload the page and re-register for a course
-            reg = ClassRegistration(
-                user=request.user,
-                class_section=class_section,
-            )
-            reg.save()
-            # redirect to the profile and class registration list
+
+            if userprofile.can_register_for_class():
+                reg = ClassRegistration(
+                    user=request.user,
+                    class_section=class_section,
+                )
+                reg.save()
+                # redirect to the profile and class registration list
+            # else: # use django flash messages api here for unsuccessful registration
 
     return render(
         request,
