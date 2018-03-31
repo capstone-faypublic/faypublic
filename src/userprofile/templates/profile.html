@@ -12,9 +12,24 @@
 <div class="container">
     <h2>Your projects</h2>
     <a href="/profile/projects" class="button green-bg">Start a project</a>
-    {% for project in profile.project_set.all %}
-        <p><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></p>
-    {% endfor %}
+    <br/><br/>
+
+    <table class="table">
+        {% for project in profile.project_set.all %}
+            <tr class="row">
+                <td>
+                    <span class="title">
+                        <a href="{{ project.get_absolute_url }}">
+                            {{ project.title }}
+                        </a>
+                    </span>
+                    <span class="info">
+                        Created: {{ project.created }}
+                    </span>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
 
 
     <br/>
