@@ -15,8 +15,8 @@ class Class(models.Model):
 
     class_title = models.CharField(max_length=255, null=True, blank=False)
     class_description = models.TextField(null=True, blank=False)
-    prerequisite_badges = models.ManyToManyField(Badge, related_name="prerequisites", blank=True)
-    awarded_badges = models.ManyToManyField(Badge, related_name="awarded", blank=True)
+    prerequisite_badges = models.ManyToManyField(Badge, related_name="courses_with_badge_prerequisite", blank=True)
+    awarded_badges = models.ManyToManyField(Badge, related_name="courses_with_badge_awarded", blank=True)
     slug = models.SlugField(blank=True, unique=True)
 
     def save(self, *args, **kwargs):

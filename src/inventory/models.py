@@ -4,6 +4,7 @@ from project.models import Project
 from django.template.defaultfilters import slugify
 from django.db.models import Q
 import arrow
+from userprofile.models import Badge
 
 # AUDIO = 'AUDIO'
 # VIDEO = 'VIDEO'
@@ -74,6 +75,8 @@ class Equipment(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     quantity = models.IntegerField()
     description = models.TextField(null=True, blank=True)
+    prerequisite_badges = models.ManyToManyField(Badge, related_name="equipment_with_badge_prerequisite", blank=True)
+    awarded_badges = models.ManyToManyField(Badge, related_name="equipment_with_badge_awarded", blank=True)
 
     category = models.ForeignKey(EquipmentCategory, on_delete=models.CASCADE)
 
