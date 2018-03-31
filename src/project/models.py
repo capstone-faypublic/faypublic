@@ -23,6 +23,13 @@ class Project(models.Model):
     description = models.TextField(null=True, blank=True)
     expected_completion_date = models.DateField(null=True, blank=False)
 
+
+    def __str__(self):
+        return self.title
+    
+    def __unicode__(self):
+        return self.title
+
     def get_absolute_url(self):
         return "/profile/projects/%i/" % self.id
 

@@ -47,3 +47,16 @@ def user_checkouts(request):
             'checkouts': checkouts
         }
     )
+
+
+@login_required
+def user_classes(request):
+    userprofile = get_object_or_404(UserProfile, user=request.user)
+    class_registrations = request.user.classregistration_set.all().order_by('-class_section__date')
+    return render(
+        request,
+        'user_classes.html',
+        context={
+            'class_registrations': class_registrations
+        }
+    )

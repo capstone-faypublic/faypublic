@@ -1,4 +1,4 @@
-{% extends 'profile-base.html' %}
+{% extends 'profile_base.html' %}
 
 {% block title %}Your projects{% endblock title %}
 
@@ -10,21 +10,21 @@
 </div>
 
 <div class="container">
-    <table class="project-container">
+    <table class="table">
     {% for project in userprofile.project_set.all %}
-        <tr class="project-row">
+        <tr class="row">
             <td>
                 <span class="title">
                     <a href="{{ project.get_absolute_url }}">
                         {{ project.title }}
                     </a>
                 </span>
-                <span class="dates">
+                <span class="info">
                     Created: {{ project.created }} <br/>
                     Estimated completion: {{ project.expected_completion_date }}
                 </span>
             </td>
-            <td class="submissions">
+            <td class="right">
                 {{ project.number_of_submissions }} submission(s)
             </td>
         </tr>

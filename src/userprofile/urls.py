@@ -8,5 +8,5 @@ urlpatterns = [
     # user projects in production
     path('projects/', include('project.urls')),
     path('checkouts/', views.user_checkouts, name="user_checkouts"),
-    path('classes/', include('classes.urls'))
+    path('classes/', views.user_classes, name="user_classes")
 ]

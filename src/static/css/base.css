@@ -75,11 +75,17 @@ h1, h2, h3, h4, h5, h6, p {
   color: #fff;
 }
 
+.yellow-bg {
+  background: #f1c40f;
+  color: #fff;
+}
+
 .circle {
   display: inline-block;
   width: 14px;
   height: 14px;
   border-radius: 7px;
+  margin: 0px 10px;
 }
 
 /* */
@@ -212,33 +218,27 @@ input[type=submit] {
 
 /* Projects */
 
-.project-container {
+.table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.project-row {
+.row {
   background: #ecf0f1;
   border-bottom: 1px solid #fff;
 }
 
-.project-row .title {
+.row .title {
   display: block;
   font-weight: bold;
   font-size: 14pt;
 }
 
-.project-row .dates {
+.row .info {
   font-size: 10pt;
 }
 
-.project-row .submissions {
-  /* font-weight: bold; */
-  font-size: 14pt;
-  text-align: right;
-}
-
-.project-row td {
+.row td {
   padding: 8px 12px;
 }
 
