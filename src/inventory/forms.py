@@ -9,7 +9,7 @@ class DateInput(forms.DateInput):
 class EquipmentCheckoutForm(ModelForm):
     class Meta:
         model = EquipmentCheckout
-        exclude = ['user', 'equipment', 'checkout_status', 'due_date']
+        exclude = ['user', 'equipment', 'checkout_status', 'due_date', 'project']
         widgets = {
             'checkout_date' : DateInput(),
         }

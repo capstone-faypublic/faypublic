@@ -10,5 +10,5 @@ class UserProfileForm(ModelForm):
         model = UserProfile
         exclude = ['user', 'badges']
         widgets = {
-        	'birthdate' : DateInput(),
+            'birthdate' : DateInput(),
         }

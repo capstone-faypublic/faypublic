@@ -7,6 +7,7 @@ from .models import Equipment, EquipmentCategory, EquipmentCheckout
 from .forms import EquipmentCheckoutForm
 import arrow
 from .models import RESERVED
+from project.models import Project
 
 
 
@@ -79,14 +80,19 @@ def equipment_checkout(request, slug):
     checkout_form = EquipmentCheckoutForm(request.POST)
 
     if checkout_form.is_valid():
-        checkout = checkout_form.save(commit=False)
-        checkout.equipment = equipment
-        checkout.user = request.user
-        checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
-        checkout.checkout_status = RESERVED
-        checkout.save()
+        project_id = request.POST.get('project_id')
+        project = get_object_or_404(Project, id=project_id)
 
-        return redirect('/profile/checkouts')
+        if userprofile.can_checkout_equipment(equipment):
+            checkout = checkout_form.save(commit=False)
+            checkout.equipment = equipment
+            checkout.user = request.user
+            checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
+            checkout.project = project
+            checkout.checkout_status = RESERVED
+            checkout.save()
+
+            return redirect('/profile/checkouts')
 
     return render(
         request,

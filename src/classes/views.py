@@ -44,7 +44,7 @@ def class_registration(request, slug):
 
 def class_list(request):
     classes = Class.objects.all()
-    
+
     search = ''
     if request.GET.get('q') and len(request.GET['q']) > 0:
         search = request.GET['q']

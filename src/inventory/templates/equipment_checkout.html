@@ -19,6 +19,16 @@
     <form action="" method="post">
         {% csrf_token %}
         {{ checkout_form.as_p }}
+        <p>
+            <label>Project</label>
+            <select name="project_id" required>
+                <option disabled selected>-----</option>
+                {% for project in userprofile.project_set.all %}
+                    <option value="{{ project.id }}">{{ project.title }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        
         <input type="submit" class="button green-bg"/>
     </form>
 </div>
