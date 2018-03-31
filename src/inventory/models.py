@@ -76,7 +76,7 @@ class Equipment(models.Model):
     quantity = models.IntegerField()
     description = models.TextField(null=True, blank=True)
     prerequisite_badges = models.ManyToManyField(Badge, related_name="equipment_with_badge_prerequisite", blank=True)
-    awarded_badges = models.ManyToManyField(Badge, related_name="equipment_with_badge_awarded", blank=True)
+    # awarded_badges = models.ManyToManyField(Badge, related_name="equipment_with_badge_awarded", blank=True)
 
     category = models.ForeignKey(EquipmentCategory, on_delete=models.CASCADE)
 

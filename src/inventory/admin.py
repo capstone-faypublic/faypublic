@@ -7,7 +7,7 @@ class EquipmentAdmin(admin.ModelAdmin):
     list_filter = ('make', 'checkout_timeframe', 'category__title')
     exclude = ('slug',)
     ordering = ('make', 'model')
-    filter_horizontal = ('prerequisite_badges', 'awarded_badges')
+    filter_horizontal = ('prerequisite_badges',)
     search_fields = ('make', 'model', '')
 admin.site.register(Equipment, EquipmentAdmin)
 
