@@ -10,37 +10,47 @@
 
 
 <div class="container">
-    <h1>{{ class.class_title }}</h1>
+    
 </div>
 
-<div class="container">
+<div class="container flex-container">
 
-    <p> {{ class.class_description }}</p>
+    <div class="flex-item">
+        <h1>{{ class.class_title }}</h1>
+        <p> {{ class.class_description }}</p>
+    </div>
 
+    <div class="flex-item">
 
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="submit" value="Register" class="button green-bg">
-        <table>
+        <h2>Select a section to register</h2>
 
-            {% for sect in class.get_open_sections %}
-            <tr>
-                <td>
+        <form action="" method="post">
+            {% csrf_token %}
 
-                    <label>
-                        <input type="radio" name="section_id" value="{{ sect.id }}"/> 
-                        {{ class.class_title }}
-                    </label>
-                </td>
-                <td>{{ sect.date }} ({{ sect.date_humanized }})</td>
-                <td>{{ sect.number_open_seats }} seat(s) available</td>
-            </tr>
-            {% endfor %}
+            <input type="submit" value="Register" class="button green-bg">
 
-        </table>
-    </form>
+            <br/><br/>
 
-    
+            <table class="table">
+                {% for sect in class.get_open_sections %}
+                <tr class="row">
+                    <td>
+                        <input type="radio" name="section_id" value="{{ sect.id }}" id="sect_{{ sect.id }}"/> 
+                    </td>
+                    <td>
+                        <label for="sect_{{ sect.id }}" class="title">
+                            {{ class.class_title }}
+                        </label>
+                    </td>
+                    <td>{{ sect.date }} ({{ sect.date_humanized }})</td>
+                    <td>{{ sect.number_open_seats }} seat(s) available</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+        </form>
+
+    </div>
 
 </div>
 {% endblock pagecontent %}

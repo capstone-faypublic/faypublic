@@ -24,6 +24,7 @@ class ClassRegistrationInline(admin.TabularInline):
 class ClassSectionAdmin(admin.ModelAdmin):
     inlines = [ClassRegistrationInline]
     list_display = ['__str__', 'date', 'number_open_seats', 'number_registered']
+    list_editable = ['date']
     ordering = ('-date',)
 admin.site.register(ClassSection, ClassSectionAdmin)
 
