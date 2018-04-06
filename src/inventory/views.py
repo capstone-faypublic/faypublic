@@ -71,6 +71,8 @@ def compute_due_date(timeframe, checkout_date):
         return due
     return None
 
+
+
 def available_units(item, start_date, end_date):
     checkouts = EquipmentCheckout.objects.filter(
         Q(equipment=item)
@@ -93,6 +95,8 @@ def equipment_checkout(request, slug):
 
     checkout_form = EquipmentCheckoutForm(request.POST)
 
+    err_msg = ''
+
     if checkout_form.is_valid():
         project_id = request.POST.get('project_id')
         project = get_object_or_404(Project, id=project_id)
@@ -113,6 +117,10 @@ def equipment_checkout(request, slug):
                 checkout.save()
 
                 return redirect('user_checkouts')
+            else:
+                err_msg = 'Sorry, there are units available for that date'
+        else:
+            err_msg = 'Sorry, you haven\'t completed the prerequisites necessary to check out this item'
 
     return render(
         request,
@@ -120,6 +128,7 @@ def equipment_checkout(request, slug):
         context={
             'equipment': equipment,
             'userprofile': userprofile,
-            'checkout_form': checkout_form
+            'checkout_form': checkout_form,
+            'err_msg': err_msg
         }
     )

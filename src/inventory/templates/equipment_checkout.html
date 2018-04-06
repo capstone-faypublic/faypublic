@@ -12,6 +12,9 @@
 
     <div class="flex-item space">
         <h2>Check out "{{ equipment.make }} {{ equipment.model }}"</h2>
+
+        <p>{{ err_msg }}</p>
+
         <form action="" method="post">
             {% csrf_token %}
             {{ checkout_form.as_p }}
