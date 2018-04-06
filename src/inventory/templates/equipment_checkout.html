@@ -2,34 +2,31 @@
 
 {% block pagecontent %}
 
-<div class="container">
-    <h1>Equipment Checkout</h1>
-    <p>This is where you can checkout equipment!</p>
-</div>
-<div class="container">
-    <h1>{{ equipment.make }} {{ equipment.model }}</h1>
+<div class="container flex-container">
+    <div class="flex-item">
+        <img src="/static/media/{{ equipment.image }}" width="300">
+        <h1>{{ equipment.make }} {{ equipment.model }}</h1>
+        <p>{{ equipment.description }}</p>
+        <p>{{ equipment.available }} unit(s) available</p>
+    </div>
 
-    <img src="/static/media/{{ equipment.image }}" width="300">
-
-    <p>{{ equipment.description }}</p>
-
-
-
-
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ checkout_form.as_p }}
-        <p>
-            <label>Project</label>
-            <select name="project_id" required>
-                <option disabled selected>-----</option>
-                {% for project in userprofile.project_set.all %}
-                    <option value="{{ project.id }}">{{ project.title }}</option>
-                {% endfor %}
-            </select>
-        </p>
-        
-        <input type="submit" class="button green-bg"/>
-    </form>
+    <div class="flex-item">
+        <h2>Check out "{{ equipment.make }} {{ equipment.model }}"</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ checkout_form.as_p }}
+            <p>
+                <label>Project</label>
+                <select name="project_id" required>
+                    <option disabled selected>-----</option>
+                    {% for project in userprofile.project_set.all %}
+                        <option value="{{ project.id }}">{{ project.title }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            
+            <input type="submit" class="button green-bg"/>
+        </form>
+    </div>
 </div>
 {% endblock pagecontent %}
