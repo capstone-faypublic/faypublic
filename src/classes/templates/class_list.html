@@ -22,18 +22,30 @@
 
     <br/>
 
+    <table class="table">
     {% for item in classes %}
-        <div>
-           <h3> {{ item.class_title }}</h3>
-            <p> {{ item.class_description }}</p>
-            <p>{{ item.get_open_sections|length }} open section(s)</p>
-            {% if user.is_authenticated %}
-                <p><a href="{{ item.get_register_url }}" class="button blue-bg">Register</a></p>
-            {% else %}
-                <p><a href="{{ item.get_register_url }}">Log in</a> to register for this class</p>
-            {% endif %}
-        </div>
+        <tr class="row">
+            <td>
+                <span class="title">
+                    {{ item.class_title }}
+                </span>
+                <span class="info">
+                    {{ item.class_description }}
+                </span>
+            </td>
+            <td>
+                {{ item.get_open_sections|length }} open section(s)
+            </td>
+            <td>
+                {% if user.is_authenticated %}
+                    <a href="{{ item.get_register_url }}" class="button blue-bg">Register</a>
+                {% else %}
+                    <a href="{{ item.get_register_url }}">Log in</a> to register
+                {% endif %}
+            </td>
+        </tr>
     {% endfor %}
+    </table>
 
 </div>
 {% endblock pagecontent %}

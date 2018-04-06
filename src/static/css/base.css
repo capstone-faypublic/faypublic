@@ -222,6 +222,12 @@ input[type=submit] {
   width: 100%;
   border-collapse: collapse;
 }
+.row .media {
+  width: 140px;
+}
+.row .media img {
+  width: 100%;
+}
 
 .row {
   background: #ecf0f1;

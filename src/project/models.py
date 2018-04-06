@@ -9,7 +9,7 @@ PROJECT_SUBMISSION_STATUS = (
     (SUBMITTED, 'Submitted'),
     (SCHEDULED, 'Approved'),
     (REJECTED, 'Rejected')
-)
+) 
 
 
 class Project(models.Model):

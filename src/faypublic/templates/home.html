@@ -8,13 +8,39 @@
         <p>Welcome to FPTV's production and class management application.</p>
     </div>
     <div class="container">
+        {% if user.is_authenticated %}
+        <p>
+            <a href="/profile/" class="button green-bg">Your profile</a>
+        </p>
+        {% else %}
         <p>
             <a href="/login/" class="button green-bg">Login</a>
             <a href="/register/" class="button blue-bg">Register</a>
         </p>
+        {% endif %}
     </div>
+
     <div class="container">
         <p>The City of Fayetteville supports the free speech efforts of its residents by providing a platform that can be used to express your views and opinions on any subject. Fayetteville Public Television is your channel. You, the residents, decide what is telecast.</p>
         <p>All resources are FREE for residents of Fayetteville, students attending the University of Arkansas or Fayetteville Public Schools, and employees of public institutions and non-­‐profit organizations based in Fayetteville. Residents of Washington and Benton Counties can utilize the resources for a $50 annual membership fee.</p>
+    </div>
+
+    <div class="container">
+        <p>
+            <a href="tel:479-444-3433">(479) 444-3433</a>
+        </p>
+        <p>
+            101 West Rock Street<br/>
+            Fayetteville, AR 72701
+        </p>
+        <p>
+            Monday: 10:00am-7:00pm<br/>
+            Tuesday: 10:00am-7:00pm<br/>
+            Wednesday: CLOSED<br/>
+            Thursday: 10:00am-7:00pm<br/>
+            Friday: 10:00am-7:00pm<br/>
+            Saturday: 10:00am-7:00pm<br/>
+            Sunday: CLOSED
+        </p>
     </div>
 {% endblock pagecontent %}
