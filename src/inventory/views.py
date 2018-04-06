@@ -65,12 +65,26 @@ def compute_due_date(timeframe, checkout_date):
         now = arrow.get(checkout_date)
         due = now.shift(days=2).date()
         return due
-    if timeframe == "CHECKOUT_WEEK":
+    elif timeframe == "CHECKOUT_WEEK":
         now = arrow.get(checkout_date)
         due = now.shift(days=6).date()
         return due
-    else:
-        return "5555-05-05"
+    return None
+
+def available_units(item, start_date, end_date):
+    checkouts = EquipmentCheckout.objects.filter(
+        Q(equipment=item)
+        & (
+            Q(checkout_date__gte=start_date)
+            & Q(due_date__lte=end_date)
+        )
+        & (
+            Q(checkout_status='RESERVED')
+            | Q(checkout_status='CHECKED_OUT')
+        )
+    )
+    return item.quantity - len(checkouts)
+
 
 @login_required
 def equipment_checkout(request, slug):
@@ -85,14 +99,20 @@ def equipment_checkout(request, slug):
 
         if userprofile.can_checkout_equipment(equipment):
             checkout = checkout_form.save(commit=False)
-            checkout.equipment = equipment
-            checkout.user = request.user
-            checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
-            checkout.project = project
-            checkout.checkout_status = RESERVED
-            checkout.save()
+            checkout_date = checkout.checkout_date
+            due_date = compute_due_date(
+                equipment.checkout_timeframe, checkout.checkout_date
+            )
 
-            return redirect('user_checkouts')
+            if available_units(equipment, checkout_date, due_date) > 0:
+                checkout.equipment = equipment
+                checkout.user = request.user
+                checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
+                checkout.project = project
+                checkout.checkout_status = RESERVED
+                checkout.save()
+
+                return redirect('user_checkouts')
 
     return render(
         request,
