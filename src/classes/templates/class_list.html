@@ -27,7 +27,9 @@
         <tr class="row">
             <td>
                 <span class="title">
-                    {{ item.class_title }}
+                    <a href="{{ item.get_register_url }}">
+                        {{ item.class_title }}
+                    </a>
                 </span>
                 <span class="info">
                     {{ item.class_description }}
