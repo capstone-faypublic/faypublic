@@ -8,5 +8,6 @@ urlpatterns = [
     # user projects in production
     path('projects/', include('project.urls')),
     path('checkouts/', views.user_checkouts, name="user_checkouts"),
-    path('classes/', views.user_classes, name="user_classes")
+    path('classes/', views.user_classes, name="user_classes"),
+    path('change-password/', views.user_change_password, name="user_change_password"),
 ]
