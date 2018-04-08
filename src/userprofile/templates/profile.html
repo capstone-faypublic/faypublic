@@ -36,9 +36,14 @@
 
     <h2>Your badges</h2>
 
+    <table class="table">
     {% for badge in profile.earned_badges %}
-        <p>{{ badge.title }}</p>
+        <tr class="row">
+            <td class="media"><img src="/static/media/{{ badge.image }}" alt="{{ badge.title }}"/></td>
+            <td>{{ badge.title }}</td>
+        </tr>
     {% endfor %}
+    </table>
 
 </div>
 
