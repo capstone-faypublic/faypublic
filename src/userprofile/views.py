@@ -27,6 +27,11 @@ def edit_profile(request):
 
     if profile_form.is_valid():
         userprofile = profile_form.save()
+        user_first_name = request.POST.get('user_first_name')
+        user_last_name = request.POST.get('user_last_name')
+        request.user.first_name = user_first_name
+        request.user.last_name = user_last_name
+        request.user.save()
 
     return render(
         request,
