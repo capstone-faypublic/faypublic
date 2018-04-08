@@ -30,6 +30,18 @@ urlpatterns = [
     path('logout/', auth_views.logout, {
         'next_page': '/'
     }, name="user_logout"),
+    path('reset-password/', auth_views.password_reset, {
+        'template_name': 'user_password_reset.html'
+    }, name="password_reset"),
+    path('reset-password/done/', auth_views.password_reset_done, {
+        'template_name': 'user_password_reset_done.html'
+    }, name="password_reset_done"),
+    path('reset-password/<uidb64>/<token>/', auth_views.password_reset_confirm, {
+        'template_name': 'user_password_reset_confirm.html'
+    }, name="password_reset_confirm"),
+    path('/reset-password/complete/', auth_views.password_reset_complete, {
+        'template_name': 'user_password_reset_complete.html'
+    }, name="password_reset_complete"),
 
     # profile
     path('profile/', include('userprofile.urls')),
