@@ -13,7 +13,7 @@ def home(request):
     )
 
 def user_register(request):
-    form = UserRegistrationForm(request.POST)
+    form = UserRegistrationForm(request.POST or None)
 
     if form.is_valid():
         form.save()

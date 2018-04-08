@@ -204,9 +204,13 @@ input[type=submit] {
   border: none;
 }
 
-.helptext, .errorlist li {
-  font-size: 8pt;
-  color: #bbb;
+.helptext{
+  font-size: 10pt;
+  color: #666;
+}
+.errorlist li {
+  font-size: 10pt;
+  color: #c0392b;
 }
 .errorlist ul {
   list-style-type: none;
