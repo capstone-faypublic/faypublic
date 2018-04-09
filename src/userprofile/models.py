@@ -31,7 +31,8 @@ class UserProfile(models.Model):
     phone_number = models.CharField(max_length=15, null=True, blank=False)
     birthdate = models.DateField(null=True, blank=False)
     badges = models.ManyToManyField(Badge, related_name="users_with_badge_awarded", blank=True)
-
+    get_sms_reminders = models.BooleanField(default=False, blank=True)
+    get_email_reminders = models.BooleanField(default=False, blank=True)
 
     def earned_badges(self):
         registrations = self.user.classregistration_set.filter(completed=True)

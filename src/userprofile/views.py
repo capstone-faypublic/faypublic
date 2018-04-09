@@ -26,11 +26,19 @@ def edit_profile(request):
     profile_form = UserProfileForm(request.POST, instance=userprofile)
 
     if profile_form.is_valid():
-        userprofile = profile_form.save()
+        userprofile = profile_form.save(commit=False)
+        user_get_email_reminders = request.POST.get('user_get_email_reminders')
+        userprofile.get_email_reminders = True if user_get_email_reminders == 'on' else False
+        user_get_sms_reminders = request.POST.get('user_get_sms_reminders')
+        userprofile.get_sms_reminders = True if user_get_sms_reminders == 'on' else False
+        userprofile.save()
+
         user_first_name = request.POST.get('user_first_name')
         user_last_name = request.POST.get('user_last_name')
+        user_email = request.POST.get('user_email')
         request.user.first_name = user_first_name
         request.user.last_name = user_last_name
+        request.user.email = user_email
         request.user.save()
 
     return render(
@@ -38,6 +46,7 @@ def edit_profile(request):
         'edit_profile.html',
         context={
             'name': request.user.first_name + ' ' + request.user.last_name,
+            'profile': userprofile,
             'profile_form': UserProfileForm(instance=userprofile)
         }
     )

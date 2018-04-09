@@ -8,7 +8,7 @@ class DateInput(forms.DateInput):
 class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
-        exclude = ['user', 'badges']
+        exclude = ['user', 'badges', 'get_sms_reminders', 'get_email_reminders']
         widgets = {
             'birthdate' : DateInput(),
         }

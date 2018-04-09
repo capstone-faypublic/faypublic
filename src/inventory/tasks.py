@@ -22,13 +22,18 @@ logger = get_task_logger(__name__)
 )
 def send_equipment_checkout_reminder_email():
     today = arrow.utcnow().date()
-    due_today = EquipmentCheckout.objects.filter(due_date=today)
+    due_today = EquipmentCheckout.objects.filter(due_date=today, checkout_status='CHECKED_OUT')
 
     logger.info('attempting to send emails...')
     print('attempting to send emails...')
     
     for reg in due_today:
         user = reg.user
+        profile = UserProfile.objects.get(user=user)
+
+        if not profile.get_email_reminders:
+            continue
+
         send_mail(
             subject='Reminder: Your equipment is due today!',
             message='''Greetings, ''' + user.first_name + ''',\n
@@ -54,7 +59,7 @@ You're receiving this email because you've asked to be notified when your equipm
 )
 def send_equipment_checkout_reminder_sms():
     today = arrow.utcnow().date()
-    due_today = EquipmentCheckout.objects.filter(due_date=today)
+    due_today = EquipmentCheckout.objects.filter(due_date=today, checkout_status='CHECKED_OUT')
 
     logger.info('attempting to send sms...')
     print('attempting to send sms...')
@@ -64,6 +69,9 @@ def send_equipment_checkout_reminder_sms():
     for reg in due_today:
         user = reg.user
         profile = UserProfile.objects.get(user=user)
+
+        if not profile.get_sms_reminders:
+            continue
 
         try:
             message = client.messages.create(

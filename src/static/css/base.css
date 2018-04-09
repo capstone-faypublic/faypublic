@@ -196,6 +196,11 @@ input {
 
 input[type=radio] {
   -webkit-appearance: radio;
+  width: auto;
+}
+input[type=checkbox] {
+  -webkit-appearance: checkbox;
+  width: auto;
 }
 
 input[type=submit] {
