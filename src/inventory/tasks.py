@@ -11,6 +11,9 @@ from faypublic.settings import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
 
 logger = get_task_logger(__name__)
 
+# to run celery in development mode, open two terminal windows and execute the following (one command per window)
+# docker-compose exec django celery -A faypublic worker -l info
+# docker-compose exec django celery -A faypublic beat -l info
 
 @periodic_task(
     run_every=(crontab(minute='*/1')),
@@ -66,7 +69,7 @@ def send_equipment_checkout_reminder_sms():
             message = client.messages.create(
                 to=profile.phone_number,
                 from_='+19728107378',
-                body='Hello, ' + user.first_name + ', This is a reminder that the ' + reg.equipment.make + ' ' + reg.equipment.model + ' you have checked out is due today!'
+                body='Hello, ' + user.first_name + ', This is a reminder that the ' + reg.equipment.make + ' ' + reg.equipment.model + ' you have checked out is due today! ~ FPTV'
             )
         except:
             print('Invalid number')

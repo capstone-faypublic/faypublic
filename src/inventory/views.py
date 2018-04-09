@@ -87,6 +87,18 @@ def available_units(item, start_date, end_date):
     )
     return item.quantity - len(checkouts)
 
+def user_has_current_checkout(user, item):
+    today = arrow.utcnow().date()
+    checkouts = EquipmentCheckout.objects.filter(
+        Q(equipment=item)
+        & Q(user=user)
+        & (
+            Q(checkout_status='RESERVED')
+            | Q(checkout_status='CHECKED_OUT')
+        )
+    )
+    return len(checkouts) > 0
+
 
 @login_required
 def equipment_checkout(request, slug):
@@ -109,14 +121,17 @@ def equipment_checkout(request, slug):
             )
 
             if available_units(equipment, checkout_date, due_date) > 0:
-                checkout.equipment = equipment
-                checkout.user = request.user
-                checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
-                checkout.project = project
-                checkout.checkout_status = RESERVED
-                checkout.save()
+                if not user_has_current_checkout(request.user, equipment):
+                    checkout.equipment = equipment
+                    checkout.user = request.user
+                    checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
+                    checkout.project = project
+                    checkout.checkout_status = RESERVED
+                    checkout.save()
 
-                return redirect('user_checkouts')
+                    return redirect('user_checkouts')
+                else:
+                    err_msg = 'Sorry, you currently have this item checked out'
             else:
                 err_msg = 'Sorry, there are units available for that date'
         else:
