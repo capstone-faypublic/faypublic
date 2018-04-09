@@ -5,5 +5,5 @@ psycopg2==2.7.3.2
 python-dateutil==2.6.1
 pytz==2017.3
 six==1.11.0
-[33mYou are using pip version 9.0.1, however version 9.0.3 is available.
-You should consider upgrading via the 'pip install --upgrade pip' command.[0m
+celery==4.1.0
+redis==2.10.6
