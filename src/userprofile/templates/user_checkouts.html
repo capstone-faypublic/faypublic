@@ -16,22 +16,34 @@
                 {{ checkout.equipment.make }} {{ checkout.equipment.model }}
             </span>
             <span class="info">
-                Checked out: {{ checkout.checkout_date }}
+                Checked out: {{ checkout.checkout_date }} <br/>
+                Due: {{ checkout.due_date }}
             </span>
         </td>
         <td class="right">
-            <span style="display: inline-block; vertical-align:middle;">Due {{ checkout.due_date_humanized }}</span>
-
             {% if checkout.checkout_status == 'RESERVED' %}
 
+                <span style="display: inline-block; vertical-align:middle;">
+                    Reserved<br/>
+                    Pick up {{ checkout.checkout_date }}<br/>
+                    Due {{ checkout.due_date_humanized }}
+                </span>
                 <span style="display: inline-block; vertical-align:middle;" class="circle blue-bg"></span>
 
             {% elif checkout.checkout_status == 'CHECKED_OUT' %}
+
+                <span style="display: inline-block; vertical-align:middle;">
+                    Checked out<br/>
+                    Due {{ checkout.due_date_humanized }}
+                </span>
 
                 <span style="display: inline-block; vertical-align:middle;" class="circle yellow-bg"></span>
 
             {% elif checkout.checkout_status == 'RETURNED' %}
 
+                <span style="display: inline-block; vertical-align:middle;">
+                    Returned
+                </span>
                 <span style="display: inline-block; vertical-align:middle;" class="circle green-bg"></span>
 
             {% endif %}
