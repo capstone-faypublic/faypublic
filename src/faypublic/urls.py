@@ -49,4 +49,5 @@ urlpatterns = [
     # class
     path('classes/', include('classes.urls')),
     path('equipment/', include('inventory.urls')),
+    path('test-notifications/', views.test_notifications, name="test_notifications")
 ]
