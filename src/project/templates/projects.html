@@ -1,11 +1,11 @@
 {% extends 'profile_base.html' %}
 
-{% block title %}Your projects{% endblock title %}
+{% block title %}Your Projects{% endblock title %}
 
 {% block content %}
 
 <div class="container">
-    <h1>Your projects</h1> 
+    <h1>Your Projects</h1>
     <p>This is a way to collaborate on and submit projects you're working on to play on-air</p>
 </div>
 
@@ -33,11 +33,12 @@
 </div>
 
 <div class="container">
-    <p><i>Make a new project</i></p>
+    <h2>Create a new project:</h2>
     <form action="" method="post">
         {% csrf_token %}
         {{ project_form.as_p }}
-        <input type="submit" class="button green-bg"/>
+        <br>
+        <input type="submit" class="button green-bg" value="Create New Project" style="width:100%"/>
     </form>
 </div>
 
