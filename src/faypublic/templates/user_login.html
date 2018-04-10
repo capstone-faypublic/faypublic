@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
 
-{% block title %}Log in{% endblock title %}
+{% block title %}Login{% endblock title %}
 
 {% block pagecontent %}
 
 <div class="container">
-    <h1>Log in</h1>
-    <p>Dont have an account? <a href="/register/?next={{ next }}">Register</a></p>
-    <p>Forgot your password? <a href="/reset-password/">Reset it</a></p>
+    <h1>Login</h1>
 </div>
 <div class="container">
     <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" class="button green-bg"/>
+        <input type="submit" class="button green-bg" value="Login" style="width:100%"/>
     </form>
 </div>
-
+<div class="container">
+  <p>Dont have an account? <a href="/register/?next={{ next }}">Register</a></p>
+  <p>Forgot your password? <a href="/reset-password/">Reset it</a></p>
+</div>
 {% endblock pagecontent %}
