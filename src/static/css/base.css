@@ -248,6 +248,12 @@ input[type=submit] {
   padding: 8px 14px;
 }
 
+hr {
+  display: block;
+  border-style: inset;
+  border-width: 1px;
+}
+
 /* */
 
 /* Projects */

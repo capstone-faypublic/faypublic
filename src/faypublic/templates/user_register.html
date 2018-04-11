@@ -6,14 +6,18 @@
 
 <div class="container">
     <h1>Register</h1>
-    <p>Have an account? <a href="/login/">Login</a></p>
 </div>
 <div class="container">
     <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" class="button green-bg" value="Register"/>
+        <input type="submit" class="button green-bg" value="Register" style="width:100%"/>
+        <hr style="width:28.5%">
     </form>
+</div>
+
+<div class="container">
+	<p>Already have a FPTV account? <a href="/login/"><b>Login</b></a></p>
 </div>
 
 {% endblock pagecontent %}
