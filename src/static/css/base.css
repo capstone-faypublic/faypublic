@@ -338,4 +338,9 @@ hr {
 
 #pass-help { font-size: 10pt; color: #666; }
 
+/* Edit Profile Form styling */
+
+#fa-edit-prof { position: absolute; top: 33px; left: 275px; color: black;}
+
+#fa-edit-prof-cal { position: absolute; top: 33px; left: 248px; color: black;}
 /* */
