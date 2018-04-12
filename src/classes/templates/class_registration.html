@@ -29,10 +29,6 @@
         <form action="" method="post">
             {% csrf_token %}
 
-            <input type="submit" value="Register" class="button green-bg">
-
-            <br/><br/>
-
             <table class="table">
                 {% for sect in class.get_open_sections %}
                 <tr class="row">
@@ -49,6 +45,10 @@
                 </tr>
                 {% endfor %}
             </table>
+
+            <br/>
+
+            <input type="submit" value="Register" class="button green-bg" style="min-width:100%">
 
         </form>
 
