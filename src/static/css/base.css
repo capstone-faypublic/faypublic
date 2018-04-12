@@ -332,6 +332,8 @@ hr {
 
 #fa-cal { position: absolute; top: 8px; left: 248px; color: black;}
 
+#fa-search { position: absolute; top: 10px; left: 275px; color: black;}
+
 /* Register Form styling */
 
 #pass-help { font-size: 10pt; color: #666; }
