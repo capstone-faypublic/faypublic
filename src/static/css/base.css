@@ -318,6 +318,10 @@ hr {
   padding: 6px;
 }
 
+select {
+  background-color: white;
+}
+
 /* */
 
 
