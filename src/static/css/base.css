@@ -324,6 +324,16 @@ hr {
 /* classes */
 
 
+/* font awesome styling */
 
+.wrapper { position: relative; }
+
+#fa-icon { position: absolute; top: 8px; left: 275px; color: black;}
+
+#fa-arrow { position: absolute; top: 8px; left: 278px; color: black;}
+
+/* Register Form styling */
+
+#pass-help { font-size: 10pt; color: #666; }
 
 /* */

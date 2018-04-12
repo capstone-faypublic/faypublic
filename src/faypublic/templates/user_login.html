@@ -4,18 +4,40 @@
 
 {% block pagecontent %}
 
+<head>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+</head>
+
 <div class="container">
     <h1>Login</h1>
 </div>
 <div class="container">
     <form action="" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class = "wrapper">
+        	<i class="fas fa-user-circle" id="fa-icon"></i>
+        	{{ form.username }}
+        </div>
+        <br>
+        <div class = "wrapper">
+        	<i class="fa fa-unlock-alt" id="fa-icon"></i>
+        	{{ form.password }}
+        </div>
+        <br>
         <input type="submit" class="button green-bg" value="Login" style="width:100%"/>
+        <hr style="width:28.5%">
     </form>
 </div>
 <div class="container">
-  <p>Dont have an account? <a href="/register/?next={{ next }}">Register</a></p>
-  <p>Forgot your password? <a href="/reset-password/">Reset it</a></p>
+  <p>Dont have an account? <a href="/register/?next={{ next }}"><b>Register</b></a></p>
+  <p>Forgot your password? <a href="/reset-password/"><b>Reset it</b></a></p>
 </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" >
+    $(document).ready(function(){
+        $("#id_username").attr('placeholder', '{{form.username.label}}');
+        $("#id_password").attr('placeholder', '{{form.password.label}}');
+    });
+</script>
 {% endblock pagecontent %}

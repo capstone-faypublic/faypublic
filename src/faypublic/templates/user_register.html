@@ -4,13 +4,47 @@
 
 {% block pagecontent %}
 
+<head>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+</head>
+
 <div class="container">
     <h1>Register</h1>
 </div>
 <div class="container">
     <form action="" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class = "wrapper">
+        	<i class="fas fa-user-circle" id="fa-icon"></i>
+        	{{ form.username }}
+        </div>
+        <br>
+        <div class = "wrapper">
+        	<i class="fa fa-sort-up" id="fa-arrow"></i>
+        	{{ form.first_name }}
+        </div>
+        <br>
+        <div class = "wrapper">
+        	<i class="fas fa-sort-down" id="fa-arrow"></i>
+        	{{ form.last_name }}
+        </div>
+        <br>
+        <div class = "wrapper">
+        	<i class="fa fa-envelope" id="fa-icon"></i>
+        	{{ form.email }}
+        </div>
+        <br>
+        <div class = "wrapper">
+        	<i class="fas fa-unlock-alt" id="fa-icon"></i>
+        	{{ form.password1 }}
+        	<p id="pass-help">Must contain 8 characters, with at least 1 letter</p>
+        </div>
+        <br>
+        <div class = "wrapper">
+        	<i class="fa fa-check-circle" id="fa-icon"></i>
+        	{{ form.password2 }}
+        </div>
+        <br>
         <input type="submit" class="button green-bg" value="Register" style="width:100%"/>
         <hr style="width:28.5%">
     </form>
@@ -19,5 +53,17 @@
 <div class="container">
 	<p>Already have a FPTV account? <a href="/login/"><b>Login</b></a></p>
 </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" >
+    $(document).ready(function(){
+        $("#id_username").attr('placeholder', '{{form.username.label}}');
+        $("#id_first_name").attr('placeholder', '{{form.first_name.label}}');
+        $("#id_last_name").attr('placeholder', '{{form.last_name.label}}');
+        $("#id_email").attr('placeholder', '{{form.email.label}}');
+        $("#id_password1").attr('placeholder', '{{form.password1.label}}');
+        $("#id_password2").attr('placeholder', '{{form.password2.label}}');
+    });
+</script>
 
 {% endblock pagecontent %}
