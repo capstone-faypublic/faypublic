@@ -1,14 +1,13 @@
 from django.forms import Form, ModelForm
 from .models import UserProfile
 from django import forms
-
-class DateInput(forms.DateInput):
-    input_type = 'date'
+from functools import partial
+DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 
 class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
         exclude = ['user', 'badges', 'get_sms_reminders', 'get_email_reminders']
         widgets = {
-            'birthdate' : DateInput(),
+        	'birthdate': DateInput(),
         }
