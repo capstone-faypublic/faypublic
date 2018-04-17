@@ -3,7 +3,21 @@
 
 <head>
     <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+    <!-- added for date picker -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
+
+<script>
+$(document).ready(function() {
+    $('.datepicker').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "1900:2050",
+        defaultDate: new Date(),});
+});
+</script>
 
 <div class="container flex-container">
     <div class="flex-item space">
@@ -21,7 +35,7 @@
         <form action="" method="post">
             {% csrf_token %}
             <div class = "wrapper">
-                <i class="fa fa-calendar" id="fa-edit-prof-cal"></i>
+                <i class="fa fa-calendar" id="fa-edit-prof"></i>
                 <label>Checkout date:</label>
                 {{ checkout_form.checkout_date }}
             </div>

@@ -2,9 +2,8 @@ from django.forms import Form, ModelForm
 from .models import EquipmentCheckout
 from django import forms
 import arrow
-
-class DateInput(forms.DateInput):
-    input_type = 'date'
+from functools import partial
+DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 
 class EquipmentCheckoutForm(ModelForm):
     class Meta:
