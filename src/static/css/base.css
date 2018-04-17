@@ -203,12 +203,6 @@ label {
   width: 100%;
 }
 
-.label {
-  display: block;
-  font-weight: bold;
-  width: 100%;
-}
-
 input {
   display: block;
   padding: 4px;
