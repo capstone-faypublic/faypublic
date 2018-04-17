@@ -340,8 +340,6 @@ select {
 
 #fa-icon { position: absolute; top: 8px; left: 275px; color: black;}
 
-#fa-cal { position: absolute; top: 8px; left: 248px; color: black;}
-
 #fa-search { position: absolute; top: 10px; left: 275px; color: black;}
 
 /* Register Form styling */
@@ -351,8 +349,6 @@ select {
 /* Edit Profile Form styling */
 
 #fa-edit-prof { position: absolute; top: 33px; left: 275px; color: black;}
-
-#fa-edit-prof-cal { position: absolute; top: 33px; left: 248px; color: black;}
 
 /* Edit Project Details Form styling */
 
