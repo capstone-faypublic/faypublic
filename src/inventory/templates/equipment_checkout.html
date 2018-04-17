@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block pagecontent %}
 
+<head>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+</head>
+
 <div class="container flex-container">
     <div class="flex-item space">
         <img src="/static/media/{{ equipment.image }}" width="300">
@@ -16,18 +20,24 @@
 
         <form action="" method="post">
             {% csrf_token %}
-            {{ checkout_form.as_p }}
-            <p>
-                <label>Project</label>
-                <select name="project_id" required>
-                    <option disabled selected>-----</option>
-                    {% for project in userprofile.project_set.all %}
-                        <option value="{{ project.id }}">{{ project.title }}</option>
-                    {% endfor %}
-                </select>
-            </p>
-
-            <input type="submit" class="button green-bg" value="Check out"/>
+            <div class = "wrapper">
+                <i class="fa fa-calendar" id="fa-edit-prof-cal"></i>
+                <label>Checkout date:</label>
+                {{ checkout_form.checkout_date }}
+            </div>
+            <br>
+            <div>
+                <p>
+                    <label>Project</label>
+                    <select name="project_id" required style="width:55%">
+                        <option disabled selected>-----</option>
+                        {% for project in userprofile.project_set.all %}
+                            <option value="{{ project.id }}">{{ project.title }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+            <input type="submit" class="button green-bg" value="Check out" style="width:100%"/>
         </form>
     </div>
 </div>

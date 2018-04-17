@@ -4,6 +4,10 @@
 
 {% block content %}
 
+<head>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+</head>
+
 <div class="container">
     <h1>Your Projects</h1>
     <p>This is a way to collaborate on and submit projects you're working on to play on-air</p>
@@ -36,10 +40,26 @@
     <h2>Create a new project:</h2>
     <form action="" method="post">
         {% csrf_token %}
-        {{ project_form.as_p }}
+        <div class = "wrapper">
+            <i class="fas fa-pencil-alt" id="fa-icon"></i>
+            {{ project_form.title }}
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="fa fa-calendar" id="fa-cal"></i>
+            {{ project_form.expected_completion_date }}
+            <p id="pass-help">Expected completion date</p>
+        </div>
         <br>
         <input type="submit" class="button green-bg" value="Create New Project" style="width:100%"/>
     </form>
 </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" >
+    $(document).ready(function(){
+        $("#id_title").attr('placeholder', '{{project_form.title.label}}');
+    });
+</script>
 
 {% endblock content %}

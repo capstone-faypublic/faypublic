@@ -12,3 +12,7 @@ class UserRegistrationForm(UserCreationForm):
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
         self.fields['email'].required = True
+
+        # Altering help text
+        for fieldname in ['password1']:
+        	self.fields[fieldname].help_text = "Must contain 8 characters, with at least 1 letter"
