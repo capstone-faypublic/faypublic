@@ -10,6 +10,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" media="screen" href="/static/css/base.css" />
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+
 </head>
 <body>
 
@@ -32,17 +34,17 @@
           <ul class="nav navbar-nav">
             <li class="">
               <a href="/" style="color: black;">
-                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; Home
+                <span class="fa fa-home" aria-hidden="true"></span>&nbsp; Home
               </a>
             </li>
             <li class="">
               <a href="/classes/" style="color: black;">
-                <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp; Classes
+                <span class="fa fa-graduation-cap" aria-hidden="true"></span>&nbsp; Classes
               </a>
             </li>
             <li class="">
               <a href="/equipment/" style="color: black;">
-                <span class="glyphicon glyphicon-camera" aria-hidden="true"></span>&nbsp; Equipment
+                <span class="fa fa-video" aria-hidden="true"></span>&nbsp; Equipment
               </a>
             </li>
           </ul>
@@ -51,23 +53,23 @@
             {% if user.is_authenticated %}
               <li class="">
                 <a href="/profile/" style="color: black;">
-                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Profile
+                  <span class="fa fa-user" aria-hidden="true"></span>&nbsp; Profile
                 </a>
               </li>
               <li class="">
                 <a href="/logout/" style="color: black;">
-                  <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp; Logout
+                  <span class="fa fa-sign-out-alt" aria-hidden="true"></span>&nbsp; Logout
                 </a>
               </li>
             {% else %}
               <li class="">
                 <a href="/login/" style="color: black;">
-                  <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp; Login
+                  <span class="fa fa-sign-in-alt" aria-hidden="true"></span>&nbsp; Login
                 </a>
               </li>
               <li class="">
                 <a href="/register/" style="color: black;">
-                  <span class="glyphicon glyphicon-check" aria-hidden="true"></span>&nbsp; Register
+                  <span class="fas fa-clipboard" aria-hidden="true"></span>&nbsp; Register
                 </a>
               </li>
             {% endif %}
