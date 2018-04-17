@@ -203,6 +203,12 @@ label {
   width: 100%;
 }
 
+.label {
+  display: block;
+  font-weight: bold;
+  width: 100%;
+}
+
 input {
   display: block;
   padding: 4px;
@@ -347,4 +353,8 @@ select {
 #fa-edit-prof { position: absolute; top: 33px; left: 275px; color: black;}
 
 #fa-edit-prof-cal { position: absolute; top: 33px; left: 248px; color: black;}
+
+/* Edit Project Details Form styling */
+
+#fa-edit-proj { position: absolute; top: 33px; left: 315px; color: black;}
 /* */
