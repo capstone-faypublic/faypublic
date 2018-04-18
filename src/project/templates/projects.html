@@ -30,8 +30,31 @@ $(document).ready(function() {
 </div>
 
 <div class="container">
+    <h2>Projects you've started</h2>
     <table class="table">
-    {% for project in userprofile.project_set.all %}
+    {% for project in request.user.owner_projects.all %}
+        <tr class="row">
+            <td>
+                <span class="title">
+                    <a href="{{ project.get_absolute_url }}">
+                        {{ project.title }}
+                    </a>
+                </span>
+                <span class="info">
+                    Created: {{ project.created }} <br/>
+                    Estimated completion: {{ project.expected_completion_date }}
+                </span>
+            </td>
+            <td class="right">
+                {{ project.number_of_submissions }} submission(s)
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+
+    <h2>Projects you work on</h2>
+    <table class="table">
+    {% for project in request.user.project_set.all %}
         <tr class="row">
             <td>
                 <span class="title">

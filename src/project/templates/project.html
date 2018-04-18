@@ -26,34 +26,35 @@ $(document).ready(function() {
     <h1>{{ project.title }}</h1>
     <p>Created: {{ project.created }}</p>
     <p>{{ project.description }}</p>
-</div>
-<div class="container">
-    <h2>Submissions</h2>
-    {% for sub in project.projectsubmission_set.all %}
-        <div class="flex-container container">
-            <div class="flex-item">
-                <p>{{ sub.title }}</p>
-                <p>Created {{ sub.created }}</p>
-            </div>
-            <div class="flex-item right">
-                <p>Status: {{ sub.get_status_display }}</p>
-                <p>Updated {{ sub.updated }}</p>
-            </div>
-        </div>
-
-        <hr>
+    <p>Owner: {{ project.owner }}</p>
+    {% for user in project.users.all %}
+        <p>Member: {{ user }}</p>
     {% endfor %}
 </div>
 <div class="container">
-    <h3>Add submission</h3>
-    <form action="" method="post" enctype="multipart/form-data">
+    <h3>Invite user</h3>
+    <form action="" method="post">
         {% csrf_token %}
-        {{ submission_form.as_p }}
-        <input type="submit" class="button green-bg" value="Submit" style="width:100%"/>
+        <div class = "wrapper">
+            <i class="fa fa-user" id="fa-edit-prof"></i>
+            <label>Invite user by email:</label>
+            {{ invite_user_form.invited_user_email }}
+            <!-- <p id="pass-help">Expected completion date</p> -->
+        </div>
+        <br>
+        <input type="submit" class="button green-bg" value="Invite" style="width:100%"/>
     </form>
 </div>
 <div class="container">
-    <h3>Edit Project Details</h3>
+    <h3>Program request</h3>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ project_program_request_form.as_p }}
+        <input type="submit" class="button green-bg" value="Submit request" style="width:100%"/>
+    </form>
+</div>
+<div class="container">
+    <h3>Project Details</h3>
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class = "wrapper">
@@ -71,6 +72,13 @@ $(document).ready(function() {
             <i class="fa fa-calendar" id="fa-edit-prof"></i>
             <label>{{ project_form.expected_completion_date.label }}</label>
             {{ project_form.expected_completion_date }}
+            <!-- <p id="pass-help">Expected completion date</p> -->
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="fa fa-upload" id="fa-edit-prof"></i>
+            <label>Upload</label>
+            {{ project_form.uploaded_file }}
             <!-- <p id="pass-help">Expected completion date</p> -->
         </div>
         <br>

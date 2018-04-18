@@ -68,3 +68,14 @@ class UserProfile(models.Model):
                 return False
         
         return True
+
+    def projects(self):
+        projects = []
+
+        for p in self.user.owner_projects.all():
+            projects.append(p)
+        
+        for p in self.user.project_set.all():
+            projects.append(p)
+
+        return projects
