@@ -34,7 +34,7 @@ def project(request, id):
     userprofile = get_object_or_404(UserProfile, user=request.user)
     project = get_object_or_404(Project, id=id)
 
-    if not project.owner == request.user and not project in request.user.project_set.all():
+    if not project in userprofile.projects():
         return redirect('/profile/projects/')
 
     invite_user_form = ProjectInviteUserForm(request.POST)
