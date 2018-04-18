@@ -38,13 +38,13 @@ def project(request, id):
         return redirect('/profile/projects/')
 
     submission_form = ProjectSubmissionForm(request.POST, request.FILES)
-    if submission_form.is_valid():
+    if request.method == 'POST' and submission_form.is_valid():
         upload = submission_form.save(commit=False)
         upload.project = project
         upload.save()
 
     invite_user_form = ProjectInviteUserForm(request.POST)
-    if invite_user_form.is_valid():
+    if request.method == 'POST' and invite_user_form.is_valid():
         email = invite_user_form.cleaned_data['invited_user_email']
 
         if email != request.user.email:
@@ -52,8 +52,8 @@ def project(request, id):
             project.users.add(invited_user)
 
     project_form = ProjectForm(request.POST, instance=project)
-    if project_form.is_valid():
-        project_form.save()
+    if request.method == 'POST' and project_form.is_valid():
+        project = project_form.save()
 
     return render(
         request,

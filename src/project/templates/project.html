@@ -26,8 +26,6 @@ $(document).ready(function() {
     <h1>{{ project.title }}</h1>
     <p>Created: {{ project.created }}</p>
     <p>{{ project.description }}</p>
-    <br/><br/>
-    <p>Users</p>
     <p>Owner: {{ project.owner }}</p>
     {% for user in project.users.all %}
         <p>Member: {{ user }}</p>
