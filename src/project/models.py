@@ -49,7 +49,7 @@ class ProgramRequest(models.Model):
         verbose_name = "program request"
         verbose_name_plural = "program requests"
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_program_requests')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, null=True, blank=False)
     description = models.TextField(null=True, blank=True)
     requested_on = models.DateField(auto_now_add=True)

@@ -5,6 +5,7 @@ from .models import UserProfile
 from .forms import UserProfileForm
 from inventory.models import EquipmentCheckout
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
+from project.forms import ProgramRequestForm
 
 # Create your views here.
 
@@ -91,5 +92,25 @@ def user_change_password(request):
         'user_change_password.html',
         context={
             'form': form
+        }
+    )
+
+
+@login_required
+def user_program_requests(request):
+    form = ProgramRequestForm(request.POST)
+    program_requests = request.user.programrequest_set.all()
+
+    if form.is_valid():
+        req = form.save(commit=False)
+        req.user = request.user
+        req.save()
+
+    return render(
+        request,
+        'user_program_requests.html',
+        context={
+            'form': form,
+            'program_requests': program_requests
         }
     )

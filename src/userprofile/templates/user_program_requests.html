@@ -1,0 +1,64 @@
+{% extends 'profile_base.html' %}
+
+{% block title %}Your program requests{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Your program requests</h1>
+
+    <table class="table">
+    {% for req in program_requests %}
+
+    <tr class="row">
+        <td>
+            <span class="title">
+                {{ req.title }}
+            </span>
+            <span class="info">
+                Requested: {{ req.requested_on }}
+            </span>
+        </td>
+        <td class="right">
+            {% if req.status == 'SUBMITTED' %}
+
+                <span style="display: inline-block; vertical-align:middle;">
+                    Waiting for approval<br/>
+                    Requested play date: {{ req.requested_play_date }}
+                </span>
+                <span style="display: inline-block; vertical-align:middle;" class="circle yellow-bg"></span>
+
+            {% elif req.status == 'SCHEDULED' %}
+
+                <span style="display: inline-block; vertical-align:middle;">
+                    Approved<br/>
+                    Will play: {{ req.requested_play_date }}
+                </span>
+
+                <span style="display: inline-block; vertical-align:middle;" class="circle green-bg"></span>
+
+            {% elif req.status == 'REJECTED' %}
+
+                <span style="display: inline-block; vertical-align:middle;">
+                    Rejected
+                </span>
+                <span style="display: inline-block; vertical-align:middle;" class="circle red-bg"></span>
+
+            {% endif %}
+        </td>
+    </tr>
+
+    {% endfor %}
+    </table>
+</div>
+
+<div class="container">
+    <h3>Request a program</h3>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="button green-bg" value="Submit request" style="width:100%"/>
+    </form>
+</div>
+
+{% endblock content %}
