@@ -1,9 +1,8 @@
 from django.forms import Form, ModelForm
 from .models import Project, ProjectSubmission
 from django import forms
-
-class DateInput(forms.DateInput):
-    input_type = 'date'
+from functools import partial
+DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 
 class SmallProjectForm(ModelForm):
     class Meta:

@@ -6,7 +6,23 @@
 
 <head>
     <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+    <!-- added for date picker -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
+
+<script>
+$(document).ready(function() {
+    $('.datepicker').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "1900:2050",
+        defaultDate: new Date(),});
+
+    $("#id_title").attr('placeholder', '{{project_form.title.label}}');
+});
+</script>
 
 <div class="container">
     <h1>Your Projects</h1>
@@ -46,7 +62,7 @@
         </div>
         <br>
         <div class = "wrapper">
-            <i class="fa fa-calendar" id="fa-cal"></i>
+            <i class="fa fa-calendar" id="fa-icon"></i>
             {{ project_form.expected_completion_date }}
             <p id="pass-help">Expected completion date</p>
         </div>
@@ -54,12 +70,5 @@
         <input type="submit" class="button green-bg" value="Create New Project" style="width:100%"/>
     </form>
 </div>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript" >
-    $(document).ready(function(){
-        $("#id_title").attr('placeholder', '{{project_form.title.label}}');
-    });
-</script>
 
 {% endblock content %}
