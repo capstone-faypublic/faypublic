@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Project, ProjectSubmission
-from .forms import ProjectForm, ProjectSubmissionForm, SmallProjectForm, ProjectInviteUserForm
+from .models import Project
+from .forms import ProjectForm, SmallProjectForm, ProjectInviteUserForm
 from userprofile.models import UserProfile
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -37,12 +37,6 @@ def project(request, id):
     if not project.owner == request.user and not project in request.user.project_set.all():
         return redirect('/profile/projects/')
 
-    submission_form = ProjectSubmissionForm(request.POST, request.FILES)
-    if request.method == 'POST' and submission_form.is_valid():
-        upload = submission_form.save(commit=False)
-        upload.project = project
-        upload.save()
-
     invite_user_form = ProjectInviteUserForm(request.POST)
     if request.method == 'POST' and invite_user_form.is_valid():
         email = invite_user_form.cleaned_data['invited_user_email']
@@ -61,7 +55,6 @@ def project(request, id):
         context={
             'project': project,
             'project_form': ProjectForm(instance=project),
-            'submission_form': ProjectSubmissionForm(),
             'invite_user_form': ProjectInviteUserForm()
         }
     )
