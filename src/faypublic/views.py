@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm
 from django.contrib.auth.forms import AuthenticationForm
 from userprofile.models import UserProfile
-from inventory.tasks import send_equipment_checkout_reminder_email, send_equipment_checkout_reminder_sms
+from .tasks import send_equipment_pickup_reminder
 
 def home(request):
     return render(
@@ -46,6 +46,5 @@ def user_register(request):
     )
 
 def test_notifications(request):
-    send_equipment_checkout_reminder_email()
-    send_equipment_checkout_reminder_sms()
+    send_equipment_pickup_reminder()
     return redirect('/')
