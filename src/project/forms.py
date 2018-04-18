@@ -33,10 +33,6 @@ def validate_user_exists(user_email):
 
 
 class ProjectInviteUserForm(Form):
-    # project_id = forms.IntegerField(
-    #     required=True,
-    #     validators=[validate_project_exists]
-    # )
     invited_user_email = forms.EmailField(
         label='Invite user',
         required=True,
