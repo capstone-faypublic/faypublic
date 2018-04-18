@@ -35,7 +35,13 @@ $(document).ready(function() {
     <h3>Invite user</h3>
     <form action="" method="post">
         {% csrf_token %}
-        {{ invite_user_form.as_p }}
+        <div class = "wrapper">
+            <i class="fa fa-user" id="fa-edit-prof"></i>
+            <label>Invite user by email:</label>
+            {{ invite_user_form.invited_user_email }}
+            <!-- <p id="pass-help">Expected completion date</p> -->
+        </div>
+        <br>
         <input type="submit" class="button green-bg" value="Invite" style="width:100%"/>
     </form>
 </div>
