@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Project
-from .forms import ProjectForm, SmallProjectForm, ProjectInviteUserForm
+from .forms import ProjectForm, SmallProjectForm, ProjectInviteUserForm, ProjectProgramRequestForm
 from userprofile.models import UserProfile
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -45,6 +45,15 @@ def project(request, id):
             invited_user = get_object_or_404(User, email=email)
             project.users.add(invited_user)
 
+    program_request = ProjectProgramRequestForm(request.POST)
+    if request.method == 'POST' and program_request.is_valid():
+        req = program_request.save(commit=False)
+        req.user = request.user
+        req.title = project.title
+        req.description = project.description
+        req.media_link = project.uploaded_file
+        req.save()
+
     project_form = ProjectForm(request.POST, instance=project)
     if request.method == 'POST' and project_form.is_valid():
         project = project_form.save()
@@ -55,6 +64,7 @@ def project(request, id):
         context={
             'project': project,
             'project_form': ProjectForm(instance=project),
-            'invite_user_form': ProjectInviteUserForm()
+            'invite_user_form': ProjectInviteUserForm(),
+            'project_program_request_form': ProjectProgramRequestForm()
         }
     )

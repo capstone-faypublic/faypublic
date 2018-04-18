@@ -1,5 +1,5 @@
 from django.forms import Form, ModelForm
-from .models import Project
+from .models import Project, ProgramRequest
 from django import forms
 from functools import partial
 from django.core.exceptions import ValidationError
@@ -42,3 +42,20 @@ class ProjectInviteUserForm(Form):
         required=True,
         validators=[validate_user_exists]
     )
+
+
+class ProjectProgramRequestForm(ModelForm):
+    class Meta:
+        model = ProgramRequest
+        exclude = ['user', 'title', 'description', 'requested_on', 'media_link', 'status']
+        widgets = {
+            'requested_play_date': DateInput()
+        }
+
+class ProgramRequestForm(ModelForm):
+    class Meta:
+        model = ProgramRequest
+        exclude = ['user', 'requested_on', 'status']
+        widgets = {
+            'requested_play_date': DateInput()
+        }
