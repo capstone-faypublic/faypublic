@@ -98,7 +98,7 @@ def equipment_overdue_notification_sms(userprofile, checkout):
 def class_registration_reminder_email(userprofile, registration):
     subject = 'Reminder: you have class today! ~ FPTV'
     message_body = '''Greetings, ''' + userprofile.user.first_name + ''',\n
-This is a reminder that the class you're registered for, ''' + registration.class_title() + ''' is today!\n
+This is a reminder that the class you're registered for, ''' + registration.class_title() + ''', is today!\n
 Registration details:
 Class: ''' + registration.class_title() + '''
 Class Date: ''' + datetime_format(registration.section()) + '''\n\n
@@ -112,7 +112,7 @@ You are receiving this email because you have subscribed to email notifications 
 
 def class_registration_reminder_sms(userprofile, registration):
     return ''' Hello, ''' + userprofile.user.first_name + '''
-This is a reminder that the class you're registered for, ''' + registration.class_title() + ''' is today! Can't wait to see you there!
+This is a reminder that the class you're registered for, ''' + registration.class_title() + ''', is today! Can't wait to see you there!
 Class date: ''' + datetime_format(registration.section()) + '''\n
 ~ FPTV | (479) 444-3433
 '''

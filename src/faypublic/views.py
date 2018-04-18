@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm
 from django.contrib.auth.forms import AuthenticationForm
 from userprofile.models import UserProfile
-from .tasks import send_equipment_pickup_reminder
+from .tasks import send_equipment_pickup_reminder, send_equipment_due_reminder, send_equipment_overdue_notification, send_class_registration_reminder
 
 def home(request):
     return render(
@@ -47,4 +47,7 @@ def user_register(request):
 
 def test_notifications(request):
     send_equipment_pickup_reminder()
+    send_equipment_due_reminder()
+    send_equipment_overdue_notification()
+    send_class_registration_reminder()
     return redirect('/')
