@@ -1,5 +1,6 @@
 from django.db import models
 from userprofile.models import UserProfile
+from django.contrib.auth.models import User
 
 SUBMITTED = 'SUBMITTED'
 SCHEDULED = 'SCHEDULED'
@@ -17,7 +18,8 @@ class Project(models.Model):
         verbose_name = "project"
         verbose_name_plural = "projects"
 
-    users = models.ManyToManyField(UserProfile)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner_projects')
+    users = models.ManyToManyField(User)
     title = models.CharField(max_length=255, null=True, blank=False)
     created = models.DateField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
@@ -26,7 +28,7 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def __unicode__(self):
         return self.title
 
