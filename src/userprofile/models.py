@@ -1,5 +1,7 @@
+import arrow, os
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -20,10 +22,24 @@ class Badge(models.Model):
         return self.title
 
 
+
+
+
+def handle_file_upload(profile, filename):
+    timestamp = arrow.utcnow().timestamp
+    return 'uploads/{0}/profile-photos/{1}-{2}'.format(profile.user.username, timestamp, filename)
+
+def validate_photo_extension(file):
+    valid_extensions = ['.jpg', '.jpeg', '.png', '.gif']
+    ext = os.path.splitext(file.name)[1]
+    if not ext.lower() in valid_extensions:
+        raise ValidationError('Invalid file type; please use .jpg, .jpeg, .png, or .gif')
+
 class UserProfile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # additional user information we want to collect
+    profile_photo = models.FileField(upload_to=handle_file_upload, null=True, validators=[validate_photo_extension])
     street_address = models.CharField(max_length=255, null=True, blank=False)
     city = models.CharField(max_length=255, null=True, blank=False)
     state = models.CharField(max_length=255, null=True, blank=False)
