@@ -45,7 +45,7 @@ $(document).ready(function() {
                     <label>Project</label>
                     <select name="project_id" required style="width:55%">
                         <option disabled selected>-----</option>
-                        {% for project in userprofile.project_set.all %}
+                        {% for project in userprofile.projects %}
                             <option value="{{ project.id }}">{{ project.title }}</option>
                         {% endfor %}
                     </select>

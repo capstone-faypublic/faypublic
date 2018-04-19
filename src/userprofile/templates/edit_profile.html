@@ -28,8 +28,18 @@ $(document).ready(function() {
 </div>
 
 <div class="container">
-    <form action="" method="post">
+    {% if profile.profile_photo %}
+        <img src="/static/media/{{ profile.profile_photo }}" alt="Profile photo" width="200px"/><br/><br/>
+    {% endif %}
+    <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        {{ profile_form.profile_photo.errors }}
+        <div class = "wrapper">
+            <!-- <i class="fas fa-upload" id="fa-edit-prof"></i> -->
+            <label>Profile photo:</label>
+            {{ profile_form.profile_photo }}
+        </div>
+        <br>
         <div class = "wrapper">
             <i class="fas fa-id-card" id="fa-edit-prof"></i>
             <label>First name:</label>

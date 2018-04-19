@@ -126,8 +126,8 @@ class EquipmentCheckout(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     # additional equipment checkout information we want to collect
-    checkout_date = models.DateField(null=True)
-    due_date = models.DateField(null=True)
+    checkout_date = models.DateTimeField(null=True)
+    due_date = models.DateTimeField(null=True)
 
     checkout_status = models.CharField(
         max_length=15,

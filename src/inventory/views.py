@@ -63,11 +63,11 @@ def equipment_list(request):
 def compute_due_date(timeframe, checkout_date):
     if timeframe == "CHECKOUT_24HR":
         now = arrow.get(checkout_date)
-        due = now.shift(days=2).date()
+        due = now.shift(days=1).replace(hour=17).datetime
         return due
     elif timeframe == "CHECKOUT_WEEK":
         now = arrow.get(checkout_date)
-        due = now.shift(days=6).date()
+        due = now.shift(days=5).replace(hour=17).datetime
         return due
     return None
 
@@ -124,6 +124,7 @@ def equipment_checkout(request, slug):
                 if not user_has_current_checkout(request.user, equipment):
                     checkout.equipment = equipment
                     checkout.user = request.user
+                    checkout.checkout_date = arrow.get(checkout.checkout_date).replace(hour=10).datetime
                     checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
                     checkout.project = project
                     checkout.checkout_status = RESERVED
