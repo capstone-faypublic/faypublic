@@ -28,7 +28,7 @@ urlpatterns = [
         'template_name': 'user_login.html'
     }, name="user_login"),
     path('logout/', auth_views.logout, {
-        'next_page': 'http://www.faypublic.tv/'
+        'next_page': '/'
     }, name="user_logout"),
     path('reset-password/', auth_views.password_reset, {
         'template_name': 'user_password_reset.html'
