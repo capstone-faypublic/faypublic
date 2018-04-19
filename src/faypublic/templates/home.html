@@ -8,100 +8,91 @@
 </head>
 
     <div class="container">
-        {% if user.is_authenticated %}
         
-            <div class="container">
-
-                <h1>Profile Snapshot:</h1>
-                <h3>Your checkouts</h3>
-
-                <table class="table">
-                {% for checkout in checkouts %}
-
-                <tr class="row">
-                    <td>
-                        <span class="title">
-                            {{ checkout.equipment.make }} {{ checkout.equipment.model }}
-                        </span>
-                        <span class="info">
-                            Checked out: {{ checkout.checkout_date }} <br/>
-                            Due: {{ checkout.due_date }}
-                        </span>
-                    </td>
-                    <td class="right">
-                        {% if checkout.checkout_status == 'RESERVED' %}
-
-                            <span style="display: inline-block; vertical-align:middle;">
-                                Reserved<br/>
-                                Pick up {{ checkout.checkout_date }}<br/>
-                                Due {{ checkout.due_date_humanized }}
-                            </span>
-                            <span style="display: inline-block; vertical-align:middle;" class="circle blue-bg"></span>
-
-                        {% elif checkout.checkout_status == 'CHECKED_OUT' %}
-
-                            <span style="display: inline-block; vertical-align:middle;">
-                                Checked out<br/>
-                                Due {{ checkout.due_date_humanized }}
-                            </span>
-
-                            <span style="display: inline-block; vertical-align:middle;" class="circle yellow-bg"></span>
-
-                        {% elif checkout.checkout_status == 'RETURNED' %}
-
-                            <span style="display: inline-block; vertical-align:middle;">
-                                Returned
-                            </span>
-                            <span style="display: inline-block; vertical-align:middle;" class="circle green-bg"></span>
-
-                        {% endif %}
-                    </td>
-                </tr>
-
-                {% endfor %}
-                </table>
-            </div>
-
-            <div class="container">
-                <h3>Your classes</h3>
-
-
-                <table class="table">
-                {% for reg in class_registrations %}
-
-                <tr class="row">
-                    <td>
-                        <span class="title">
-                            {{ reg.class_title }}
-                        </span>
-                        <span class="info">
-                            {{ reg.class_section.date_humanized }}
-                        </span>
-                    </td>
-                    <td class="right">
-                        <span>
-                            {{ reg.section }}<br/>
-                            {% if reg.completed and reg.score_percentage %}
-                                Complete - {{ reg.score_percentage }}%
-                            {% else %}
-                                Incomplete
-                            {% endif %}
-                        </span>
-                    </td>
-                </tr>
-
-                {% endfor %}
-                </table>
-            </div>
-
-        {% else %}
         <div class="container">
-            <h1 style="text-align: center;">Please login!</h1>
-            <i class="far fa-frown fa-10x" id="fa-big-icon"></i>
+
+            <h1>Profile Snapshot:</h1>
+            <h3>Your checkouts</h3>
+
+            <table class="table">
+            {% for checkout in checkouts %}
+
+            <tr class="row">
+                <td>
+                    <span class="title">
+                        {{ checkout.equipment.make }} {{ checkout.equipment.model }}
+                    </span>
+                    <span class="info">
+                        Checked out: {{ checkout.checkout_date }} <br/>
+                        Due: {{ checkout.due_date }}
+                    </span>
+                </td>
+                <td class="right">
+                    {% if checkout.checkout_status == 'RESERVED' %}
+
+                        <span style="display: inline-block; vertical-align:middle;">
+                            Reserved<br/>
+                            Pick up {{ checkout.checkout_date }}<br/>
+                            Due {{ checkout.due_date_humanized }}
+                        </span>
+                        <span style="display: inline-block; vertical-align:middle;" class="circle blue-bg"></span>
+
+                    {% elif checkout.checkout_status == 'CHECKED_OUT' %}
+
+                        <span style="display: inline-block; vertical-align:middle;">
+                            Checked out<br/>
+                            Due {{ checkout.due_date_humanized }}
+                        </span>
+
+                        <span style="display: inline-block; vertical-align:middle;" class="circle yellow-bg"></span>
+
+                    {% elif checkout.checkout_status == 'RETURNED' %}
+
+                        <span style="display: inline-block; vertical-align:middle;">
+                            Returned
+                        </span>
+                        <span style="display: inline-block; vertical-align:middle;" class="circle green-bg"></span>
+
+                    {% endif %}
+                </td>
+            </tr>
+
+            {% endfor %}
+            </table>
         </div>
-        {% endif %}
+
+        <div class="container">
+            <h3>Your classes</h3>
+
+
+            <table class="table">
+            {% for reg in class_registrations %}
+
+            <tr class="row">
+                <td>
+                    <span class="title">
+                        {{ reg.class_title }}
+                    </span>
+                    <span class="info">
+                        {{ reg.class_section.date_humanized }}
+                    </span>
+                </td>
+                <td class="right">
+                    <span>
+                        {{ reg.section }}<br/>
+                        {% if reg.completed and reg.score_percentage %}
+                            Complete - {{ reg.score_percentage }}%
+                        {% else %}
+                            Incomplete
+                        {% endif %}
+                    </span>
+                </td>
+            </tr>
+
+            {% endfor %}
+            </table>
+        </div>
+        
     </div>
 
-
-    
 {% endblock content %}
