@@ -39,9 +39,6 @@ class Project(models.Model):
     def get_absolute_url(self):
         return "/profile/projects/%i/" % self.id
 
-    def number_of_submissions(self):
-        return len(self.projectsubmission_set.all())
-
 
 
 class ProgramRequest(models.Model):

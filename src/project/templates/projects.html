@@ -41,12 +41,11 @@ $(document).ready(function() {
                     </a>
                 </span>
                 <span class="info">
-                    Created: {{ project.created }} <br/>
-                    Estimated completion: {{ project.expected_completion_date }}
+                    Created: {{ project.created }}
                 </span>
             </td>
             <td class="right">
-                {{ project.number_of_submissions }} submission(s)
+                Estimated completion: {{ project.expected_completion_date }}
             </td>
         </tr>
     {% endfor %}
