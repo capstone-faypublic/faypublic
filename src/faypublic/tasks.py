@@ -23,7 +23,8 @@ logger = get_task_logger(__name__)
 # Equipment checkout reminder
 
 @periodic_task(
-    run_every=(crontab(minute=0, hour=9)), # run every day at 9am
+    # run_every=(crontab(minute=0, hour=19)), # run every day at 9am
+    run_every=(crontab(minute='*/1')), # run every minute
     name='task_send_equipment_pickup_reminder',
     ignore_result=True
 )
@@ -71,7 +72,8 @@ def send_equipment_pickup_reminder():
 ## Equipment due reminder
 
 @periodic_task(
-    run_every=(crontab(minute=0, hour=9)), # run every day at 9am
+    # run_every=(crontab(minute=0, hour=19)), # run every day at 9am
+    run_every=(crontab(minute='*/1')), # run every minute
     name='task_send_equipment_due_reminder',
     ignore_result=True
 )
@@ -119,14 +121,15 @@ def send_equipment_due_reminder():
 ## Equipment overdue notification
 
 @periodic_task(
-    run_every=(crontab(minute=0, hour=9)), # run every day at 9am
+    # run_every=(crontab(minute=0, hour=19)), # run every day at 9am
+    run_every=(crontab(minute='*/1')), # run every minute
     name='task_send_equipment_overdue_notification',
     ignore_result=True
 )
 def send_equipment_overdue_notification():
     today = arrow.utcnow().datetime
     check_out_today = EquipmentCheckout.objects.filter(
-        Q(due_date__lte=arrow.utcnow().replace(hour=23, minute=59, second=59).datetime)
+        Q(due_date__lte=arrow.utcnow().replace(hour=0, minute=0, second=0).datetime)
         & Q(checkout_status='CHECKED_OUT')
     )
 
@@ -164,13 +167,17 @@ def send_equipment_overdue_notification():
 ##
 
 @periodic_task(
-    run_every=(crontab(minute=0, hour=9)), # run every day at 9am
+    # run_every=(crontab(minute=0, hour=19)), # run every day at 9am
+    run_every=(crontab(minute='*/1')), # run every minute
     name='task_send_class_registration_reminder',
     ignore_result=True
 )
 def send_class_registration_reminder():
     today = arrow.utcnow().date()
-    check_out_today = ClassRegistration.objects.filter(class_section__date__gte=today)
+    check_out_today = ClassRegistration.objects.filter(
+        Q(class_section__date__gte=arrow.utcnow().replace(hour=0, minute=0, second=0).datetime)
+        & Q(class_section__date__lte=arrow.utcnow().replace(hour=23, minute=59, second=59).datetime)
+    )
 
     logger.info('Run task: task_send_class_registration_reminder')
     print('Run task: task_send_class_registration_reminder')
