@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Fayetteville Public Television{% endblock title %}
+
+{% block pagecontent %}
+<head>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+</head>
+
+    <div class="container">
+        <h1 style="text-align: center;">Please login or register!</h1>
+        <i class="far fa-frown fa-10x" id="fa-big-icon"></i>
+        <hr>
+        <div class="hours-row">
+            <div class="button-column">
+                <a href="/login/" class="button green-bg" style="width: 90%">Login</a>
+            </div>
+            <div class="button-column">
+                <a href="/register/" class="button blue-bg" style="width: 90%">Register</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock pagecontent %}

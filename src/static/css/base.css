@@ -347,4 +347,33 @@ select {
 /* Edit Project Details Form styling */
 
 #fa-edit-proj { position: absolute; top: 33px; left: 315px; color: black;}
-/* */
+
+/* big FA icon styling */
+
+#fa-big-icon { 
+  display: block;
+  margin: auto;
+  font-size: 300px; 
+}
+
+/* FPTV Hours Styling */
+
+/* Create two equal columns that floats next to each other */
+.hours-column {
+    float: left;
+    width: 50%;
+}
+
+.button-column {
+    float: left;
+    width: 50%;
+    text-align: center;
+}
+
+/* Clear floats after the columns */
+.hours-row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+/* 
