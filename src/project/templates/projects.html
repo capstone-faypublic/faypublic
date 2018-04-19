@@ -48,6 +48,17 @@ $(document).ready(function() {
                 Estimated completion: {{ project.expected_completion_date }}
             </td>
         </tr>
+
+    {% empty %}
+
+    <tr class="row">
+            <td>
+                <span class="title">
+                    No projects here!
+                </span>
+            </td>
+        </tr>
+
     {% endfor %}
     </table>
 
@@ -70,6 +81,17 @@ $(document).ready(function() {
                 {{ project.number_of_submissions }} submission(s)
             </td>
         </tr>
+
+    {% empty %}
+
+        <tr class="row">
+            <td>
+                <span class="title">
+                    No projects here!
+                </span>
+            </td>
+        </tr>
+    
     {% endfor %}
     </table>
 </div>

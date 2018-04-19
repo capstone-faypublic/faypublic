@@ -11,25 +11,35 @@
 
 <div class="container">
     <h2>Your projects</h2>
-    <a href="/profile/projects" class="button green-bg">Start a project</a>
-    <br/><br/>
 
     <table class="table">
-        {% for project in profile.projects %}
-            <tr class="row">
-                <td>
-                    <span class="title">
-                        <a href="{{ project.get_absolute_url }}">
-                            {{ project.title }}
-                        </a>
-                    </span>
-                    <span class="info">
-                        Created: {{ project.created }}
-                    </span>
-                </td>
-            </tr>
-        {% endfor %}
-        </table>
+    {% for project in profile.projects %}
+        <tr class="row">
+            <td>
+                <span class="title">
+                    <a href="{{ project.get_absolute_url }}">
+                        {{ project.title }}
+                    </a>
+                </span>
+                <span class="info">
+                    Created: {{ project.created }}
+                </span>
+            </td>
+        </tr>
+
+    {% empty %}
+
+        <tr class="row">
+            <td>
+                <span class="title">
+                    No projects here!
+                </span>
+            </td>
+        </tr>
+
+    {% endfor %}
+    </table>
+    <a href="/profile/projects" class="button green-bg">Start a project</a>
 
 
     <br/>
@@ -42,6 +52,17 @@
             <td class="media"><img src="/static/media/{{ badge.image }}" alt="{{ badge.title }}"/></td>
             <td>{{ badge.title }}</td>
         </tr>
+
+    {% empty %}
+
+        <tr class="row">
+            <td>
+                <span class="title">
+                    You don't have any badges!
+                </span>
+            </td>
+        </tr>
+
     {% endfor %}
     </table>
 

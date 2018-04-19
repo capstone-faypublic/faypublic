@@ -57,6 +57,16 @@
                 </td>
             </tr>
 
+            {% empty %}
+            
+            <tr class="row">
+                <td>
+                    <span class="title">
+                        You have nothing checked out!
+                    </span>
+                </td>
+            </tr>
+
             {% endfor %}
             </table>
         </div>
@@ -85,6 +95,16 @@
                         {% else %}
                             Incomplete
                         {% endif %}
+                    </span>
+                </td>
+            </tr>
+
+            {% empty %}
+
+            <tr class="row">
+                <td>
+                    <span class="title">
+                        You're not registered for any classes!
                     </span>
                 </td>
             </tr>
