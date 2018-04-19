@@ -12,6 +12,17 @@
     <link rel="stylesheet" type="text/css" media="screen" href="/static/css/base.css" />
     <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
 
+    <!-- navbar highlight for active page -->
+    <script>
+        $(function(){
+            $('a').each(function(){
+                if ($(this).prop('href') == window.location.href) {
+                    $(this).addClass('active'); $(this).parents('li').addClass('active');
+                }
+            });
+        });
+    </script>
+
 </head>
 <body>
 
@@ -25,7 +36,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/" style="color: black;">FPTV</a>
+            <a class="navbar-brand" href="http://www.faypublic.tv/" style="color: black;"><img src="/static/media/fptv_logo.png" class="navbar-image"></img></a>
           </div>
 
 

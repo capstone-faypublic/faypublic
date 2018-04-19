@@ -37,6 +37,26 @@ h1, h2, h3, h4, h5, h6, p {
     background-color: #000;
 }
 
+.navbar-default .navbar-collapse li.active a, 
+.navbar-default .navbar-brand li.active a,
+.navbar-default .navbar-collapse li.active a:hover, 
+.navbar-default .navbar-brand li.active a:hover  {
+  background-color: #fff08c;
+  color: #fff08c;
+}
+
+.navbar-image {
+  display: inline-block;
+  text-indent: -9999em;
+  height: 40px;
+  width: 100px;
+  margin-top: -9px;
+  margin-left: -9px;
+  margin-right: -9px;
+  margin-bottom: -9px;
+  background-position: 0 -500px;
+}
+
 .flex-container {
   display: flex;
   display: -webkit-flex;
