@@ -24,7 +24,7 @@ def user_profile(request):
 @login_required
 def edit_profile(request):
     userprofile = get_object_or_404(UserProfile, user=request.user)
-    profile_form = UserProfileForm(request.POST, instance=userprofile)
+    profile_form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
 
     if profile_form.is_valid():
         userprofile = profile_form.save(commit=False)
