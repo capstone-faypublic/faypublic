@@ -27,7 +27,7 @@ admin.site.register(EquipmentCategory, EquipmentCategoryAdmin)
 
 class EquipmentCheckoutAdmin(admin.ModelAdmin):
     list_display = ('equipment_name', 'user_name', 'project_title', 'checkout_date', 'due_date', 'due_date_humanized', 'checkout_status')
-    list_editable = ('checkout_status','due_date',)
+    list_editable = ('checkout_status', 'checkout_date', 'due_date',)
     list_filter = ('due_date', 'checkout_status')
     search_fields = ('user__first_name', 'user__last_name', 'equipment__make', 'equipment__model', 'equipment__category__title')
     fields = ('checkout_status',)
