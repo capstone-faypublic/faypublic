@@ -200,12 +200,12 @@ def send_class_registration_reminder():
         
         if profile.get_sms_reminders:
             msg = class_registration_reminder_sms(profile, checkout)
-            # try:
-            message = client.messages.create(
-                to=profile.phone_number,
-                from_='+19728107378',
-                body=msg
-            )
+            try:
+                message = client.messages.create(
+                    to=profile.phone_number,
+                    from_='+19728107378',
+                    body=msg
+                )
             except:
-                # logger.info('Failed to send to ' + profile.phone_number + ' - invalid number')
-                # print('Failed to send to ' + profile.phone_number + ' - invalid number')
+                logger.info('Failed to send to ' + profile.phone_number + ' - invalid number')
+                print('Failed to send to ' + profile.phone_number + ' - invalid number')
