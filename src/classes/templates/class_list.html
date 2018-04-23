@@ -42,7 +42,7 @@
             <td>
                 {{ item.get_open_sections|length }} open section(s)
             </td>
-            <td>
+            <td style="text-align: right">
                 {% if user.is_authenticated %}
                     <a href="{{ item.get_register_url }}" class="button blue-bg">Register</a>
                 {% else %}

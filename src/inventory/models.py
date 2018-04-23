@@ -83,6 +83,7 @@ class Equipment(models.Model):
     checkout_timeframe = models.CharField(max_length=15, choices=CHECKOUT_TIMEFRAMES, default=CHECKOUT_WEEK)
     image = models.FileField(upload_to=handle_file_upload, null=True)
     manual_url = models.URLField(null=True, blank=True)
+    serial_number = models.CharField(max_length=255, null=True, blank=True)
 
 
     def save(self, *args, **kwargs):
