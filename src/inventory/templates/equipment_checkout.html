@@ -25,6 +25,11 @@ $(document).ready(function() {
         <h1>{{ equipment.make }} {{ equipment.model }}</h1>
         <p>{{ equipment.description }}</p>
         <p>{{ equipment.available }} unit(s) available</p>
+
+        <p><b>Badges required</b></p>
+        {% for badge in equipment.prerequisite_badges.all %}
+            <p>{{ badge.title }}</p>
+        {% endfor %}
     </div>
 
     <div class="flex-item space">
