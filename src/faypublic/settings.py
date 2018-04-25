@@ -67,7 +67,8 @@ TEMPLATES = [
             './userprofile/templates'
             './inventory/templates',
             './project/templates',
-            './classes/templates'
+            './classes/templates',
+            './report/templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
