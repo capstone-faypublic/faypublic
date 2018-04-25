@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'userprofile',
     'inventory',
     'project',
-    'classes'
+    'classes',
+    'report'
 ]
 
 MIDDLEWARE = [
