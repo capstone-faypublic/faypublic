@@ -37,6 +37,10 @@ $(document).ready(function() {
 
         <p>{{ err_msg }}</p>
 
+        {% if err_msg %}
+            <p>HIIIIII</p>
+        {% else %}
+        {% endif %}
         <form action="" method="post">
             {% csrf_token %}
             <div class = "wrapper">
