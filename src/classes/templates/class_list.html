@@ -6,54 +6,94 @@
     <meta charset="UTF-8">
     <title>Classes</title>
     <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+
+    <!-- fancy tabs -->
+    <link rel="stylesheet" type="text/css" href="/static/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/tabstyles.css" />
+    <script src="/static/js/modernizr.custom.js"></script>
 </head>
 <body>
 
-
 <div class="container">
-    <h1>Classes</h1>
-</div>
+    <section>
+        <div class="tabs tabs-style-circle">
+            <nav>
+                <ul>
+                    <li><a href="#section-circle-1"><span><i class="fas fa-list" id="fa-tab-icon"></i></span><br><br><span>List</span></a></li>
+                    <li><a href="#section-circle-2"><span><i class="fas fa-calendar-alt" id="fa-tab-icon"></i></span><br><br><span>Calendar</span></a></li>
+                </ul>
+            </nav>
+            <div class="content-wrap">
+                <section id="section-circle-1">
+                    <div class="container">
+                        <h1>Classes</h1>
+                    </div>
 
-<div class="container">
+                    <div class="container">
 
-    <form action="" method="get">
-        <div class = "wrapper">
-            <i class="fa fa-search" id="fa-search"></i>
-            <input type="text" name="q" placeholder="Search" value="{{ search }}" class="search-bar">
-            <input type="submit" class="button blue-bg search-button" value="Search">
-        </div>
-    </form>
+                        <form action="" method="get">
+                            <div class = "wrapper">
+                                <input type="text" name="q" placeholder="Search" value="{{ search }}" class="search-bar">
+                                <input type="submit" class="button blue-bg search-button" value="Search">
+                            </div>
+                        </form>
 
-    <br/>
+                        <br/>
 
-    <table class="table">
-    {% for item in classes %}
-        <tr class="row">
-            <td>
-                <span class="title">
-                    <a href="{{ item.get_register_url }}">
-                        {{ item.class_title }}
-                    </a>
-                </span>
-                <span class="info">
-                    {{ item.class_description }}
-                </span>
-            </td>
-            <td>
-                {{ item.get_open_sections|length }} open section(s)
-            </td>
-            <td style="text-align: right">
-                {% if user.is_authenticated %}
-                    <a href="{{ item.get_register_url }}" class="button blue-bg">Register</a>
-                {% else %}
-                    <a href="{{ item.get_register_url }}">Log in</a> to register
-                {% endif %}
-            </td>
-        </tr>
-    {% endfor %}
-    </table>
+                        <table class="table">
+                        {% for item in classes %}
+                            <tr class="row">
+                                <td>
+                                    <span class="title">
+                                        <a href="{{ item.get_register_url }}">
+                                            {{ item.class_title }}
+                                        </a>
+                                    </span>
+                                    <span class="info">
+                                        {{ item.class_description }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{ item.get_open_sections|length }} open section(s)
+                                </td>
+                                <td style="text-align: right">
+                                    {% if user.is_authenticated %}
+                                        <a href="{{ item.get_register_url }}" class="button blue-bg">Register</a>
+                                    {% else %}
+                                        <a href="{{ item.get_register_url }}">Log in</a> to register
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </table>
 
-</div>
+                    </div>
+                </section>
+
+                <section id="section-circle-2">
+                    <div class="container">
+                        <h1>Calendar</h1>
+                    </div>
+                    <div class="container">
+                        <iframe src="https://calendar.google.com/calendar/b/2/embed?showPrint=0&amp;showCalendars=0&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=email.uark.edu_punp0hsh0ekg6dsu08vv04hofs%40group.calendar.google.com&amp;color=%238C500B&amp;ctz=America%2FChicago" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+                    </div>
+                </section>
+            </div><!-- /content -->
+        </div><!-- /tabs -->
+    </section>
+</div><!-- /container -->
+<script src="/static/js/cbpFWTabs.js"></script>
+<script>
+    (function() {
+
+        [].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
+            new CBPFWTabs( el );
+        });
+
+    })();
+</script>
 {% endblock pagecontent %}
 
 </body>

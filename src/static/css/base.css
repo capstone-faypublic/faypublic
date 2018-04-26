@@ -376,6 +376,10 @@ select {
   font-size: 300px; 
 }
 
+#fa-tab-icon {
+  font-size: 15px;
+}
+
 /* FPTV Hours Styling */
 
 /* Create two equal columns that floats next to each other */
