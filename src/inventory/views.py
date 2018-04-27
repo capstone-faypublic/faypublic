@@ -147,8 +147,6 @@ def equipment_checkout(request, slug):
                 err_msg = 'Sorry, there are no units available for that date'
         else:
             err_msg = 'Sorry, you haven\'t completed the prerequisites necessary to check out this item'
-    else:
-        err_msg = 'Sorry, you must have a project, in order to check out equipment'
 
     return render(
         request,

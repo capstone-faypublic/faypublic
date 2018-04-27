@@ -37,11 +37,34 @@ $(document).ready(function() {
 
         <p>{{ err_msg }}</p>
 
-        {% if err_msg %}
-            <p>HIIIIII</p>
+        {% if request.user.owner_projects.exists or request.user.project_set.exists %}
+          <form action="" method="post">
+              {% csrf_token %}
+              <div class = "wrapper">
+                  <i class="fa fa-calendar" id="fa-edit-prof"></i>
+                  <label>Checkout date:</label>
+                  {{ checkout_form.checkout_date }}
+              </div>
+              <br>
+              <div>
+                  <p>
+                      <label>Project</label>
+                      <select name="project_id" required style="width:55%">
+                          <option disabled selected>-----</option>
+                          {% for project in userprofile.projects %}
+                              <option value="{{ project.id }}">{{ project.title }}</option>
+                          {% endfor %}
+                      </select>
+                  </p>
+              </div>
+              <input type="submit" class="button green-bg" value="Check out" style="width:100%"/>
+          </form>
         {% else %}
+          <div class="alert alert-danger">
+            <strong>Sorry!</strong> You should <a href="/profile/projects" class="alert-link">create a project</a> in order to check out equipment.
+          </div>
         {% endif %}
-        <form action="" method="post">
+        <!-- <form action="" method="post">
             {% csrf_token %}
             <div class = "wrapper">
                 <i class="fa fa-calendar" id="fa-edit-prof"></i>
@@ -61,7 +84,7 @@ $(document).ready(function() {
                 </p>
             </div>
             <input type="submit" class="button green-bg" value="Check out" style="width:100%"/>
-        </form>
+        </form> -->
     </div>
 </div>
 {% endblock pagecontent %}
