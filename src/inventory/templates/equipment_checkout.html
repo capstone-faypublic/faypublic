@@ -35,7 +35,9 @@ $(document).ready(function() {
     <div class="flex-item space">
         <h2>Check out "{{ equipment.make }} {{ equipment.model }}"</h2>
 
-        <p>{{ err_msg }}</p>
+        <div class="alert alert-danger">
+          <strong>{{ err_msg }}</strong>
+        </div>
 
         {% if request.user.owner_projects.exists or request.user.project_set.exists %}
           <form action="" method="post">
