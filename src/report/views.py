@@ -109,6 +109,65 @@ def get_project_data(start_date, end_date):
     return project_data
 
 def get_userprofile_data(start_date, end_date):
+    profiles = UserProfile.objects.order_by('user__last_name', 'user__first_name')
+    badges = Badge.objects.order_by('title')
+    classes = Class.objects.order_by('class_title')
+    equipment = Equipment.objects.order_by('make', 'model')
+
+    userprofile_data = {
+        'profiles': [],
+        'badges': [b.title for b in badges],
+        'classes': [c.class_title for c in classes],
+        'equipment': [e.name() for e in equipment]
+    }
+
+    for p in profiles:
+        user_badges = p.earned_badges()
+        badge_indicators = []
+        for b in badges:
+            if b in user_badges:
+                badge_indicators.append(True)
+            else:
+                badge_indicators.append(False)
+
+
+        user_registrations = p.user.classregistration_set.all()
+        class_completions = []
+        for c in classes:
+            ex = False
+            for r in user_registrations:
+                if r.class_section.class_key == c:
+                    class_completions.append({
+                        'completed': r.completed,
+                        'score': r.score_percentage
+                    })
+                    ex = True
+            if not ex:
+                class_completions.append({
+                    'completed': False,
+                    'score': None
+                })
+
+
+        checkouts = []
+        for e in equipment:
+            num = p.user.equipmentcheckout_set.all().filter(
+                Q(equipment=e)
+                & Q(checkout_date__gte=start_date)
+                & Q(checkout_date__lte=end_date)
+            ).count()
+            checkouts.append(num)
+
+
+        data = {
+            'user': p.user,
+            'badges': badge_indicators,
+            'classes': class_completions,
+            'checkouts': checkouts,
+        }
+
+        userprofile_data['profiles'].append(data)
+
     return userprofile_data
 
 @staff_member_required
@@ -138,6 +197,7 @@ def reporting(request):
 
             'classes_data': get_classes_data(start_date, end_date),
             'inventory_data': get_inventory_data(start_date, end_date),
-            'project_data': get_project_data(start_date, end_date)
+            'project_data': get_project_data(start_date, end_date),
+            'userprofile_data': get_userprofile_data(start_date, end_date),
         }
     )   

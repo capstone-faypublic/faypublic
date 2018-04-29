@@ -108,7 +108,52 @@
 
 <div class="container">
     <h2>Users</h2>
-
+    <table class="data-table">
+        <tr>
+            <th>Last name</th>
+            <th>First name</th>
+            <th>Username</th>
+            {% for b in userprofile_data.badges %}
+                <th>{{ b }}</th>
+            {% endfor %}
+            {% for c in userprofile_data.classes %}
+                <th>{{ c }}</th>
+            {% endfor %}
+            {% for e in userprofile_data.equipment %}
+                <th>{{ e }}</th>
+            {% endfor %}
+        </tr>
+        {% for p in userprofile_data.profiles %}
+            <tr>
+                <td>{{ p.user.last_name }}</td>
+                <td>{{ p.user.first_name }}</td>
+                <td>{{ p.user.username }}</td>
+                {% for b in p.badges %}
+                    <td>
+                        {% if b %}
+                            1
+                        {% else %}
+                            0
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                {% for c in p.classes %}
+                    <td>
+                        {% if c.completed %}
+                            Complete
+                        {% else %}
+                            Incomplete
+                        {% endif %}
+                        <br/>
+                        {{ c.score }}
+                    </td>
+                {% endfor %}
+                {% for c in p.checkouts %}
+                    <td>{{ c }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
 </div>
 
 {% endblock pagecontent %}
