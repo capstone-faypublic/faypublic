@@ -54,7 +54,7 @@ def project(request, id):
         req.media_link = project.uploaded_file
         req.save()
 
-    project_form = ProjectForm(request.POST, instance=project)
+    project_form = ProjectForm(request.POST, request.FILES, instance=project)
     if request.method == 'POST' and project_form.is_valid():
         project = project_form.save()
 
