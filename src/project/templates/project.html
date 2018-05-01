@@ -75,6 +75,11 @@ $(document).ready(function() {
             <!-- <p id="pass-help">Expected completion date</p> -->
         </div>
         <br>
+        {% for error in project_form.uploaded_file.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
         <div class = "wrapper">
             <i class="fa fa-upload" id="fa-edit-prof"></i>
             <label>Upload</label>
