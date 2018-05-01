@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm
@@ -11,12 +11,14 @@ def home(request):
     if request.user.is_authenticated:
         checkouts = EquipmentCheckout.objects.filter(user=request.user).order_by('-due_date', '-checkout_date')
         class_registrations = request.user.classregistration_set.all().order_by('-class_section__date')
+        userprofile = get_object_or_404(UserProfile, user=request.user)
         return render(
             request,
             'home.html',
             context={
                 'checkouts': checkouts,
-                'class_registrations': class_registrations
+                'class_registrations': class_registrations,
+                'profile': userprofile,
             }
         )
     else:

@@ -23,8 +23,8 @@ logger = get_task_logger(__name__)
 # Equipment checkout reminder
 
 @periodic_task(
-    # run_every=(crontab(minute=0, hour=19)), # run every day at 9am
-    run_every=(crontab(minute='*/1')), # run every minute
+    run_every=(crontab(minute=0, hour=19)), # run every day at 9am
+    # run_every=(crontab(minute='*/1')), # run every minute
     name='task_send_equipment_pickup_reminder',
     ignore_result=True
 )
@@ -72,8 +72,8 @@ def send_equipment_pickup_reminder():
 ## Equipment due reminder
 
 @periodic_task(
-    # run_every=(crontab(minute=0, hour=19)), # run every day at 9am
-    run_every=(crontab(minute='*/1')), # run every minute
+    run_every=(crontab(minute=0, hour=19)), # run every day at 9am
+    # run_every=(crontab(minute='*/1')), # run every minute
     name='task_send_equipment_due_reminder',
     ignore_result=True
 )
@@ -121,8 +121,8 @@ def send_equipment_due_reminder():
 ## Equipment overdue notification
 
 @periodic_task(
-    # run_every=(crontab(minute=0, hour=19)), # run every day at 9am
-    run_every=(crontab(minute='*/1')), # run every minute
+    run_every=(crontab(minute=0, hour=19)), # run every day at 9am
+    # run_every=(crontab(minute='*/1')), # run every minute
     name='task_send_equipment_overdue_notification',
     ignore_result=True
 )
@@ -167,8 +167,8 @@ def send_equipment_overdue_notification():
 ##
 
 @periodic_task(
-    # run_every=(crontab(minute=0, hour=19)), # run every day at 9am
-    run_every=(crontab(minute='*/1')), # run every minute
+    run_every=(crontab(minute=0, hour=19)), # run every day at 9am
+    # run_every=(crontab(minute='*/1')), # run every minute
     name='task_send_class_registration_reminder',
     ignore_result=True
 )

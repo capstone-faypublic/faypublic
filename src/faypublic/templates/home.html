@@ -112,6 +112,40 @@
             {% endfor %}
             </table>
         </div>
+
+        <div class="container">
+
+            <h3>Your projects</h3>
+
+            <table class="table">
+            {% for project in profile.projects %}
+                <tr class="row">
+                    <td>
+                        <span class="title">
+                            <a href="{{ project.get_absolute_url }}">
+                                {{ project.title }}
+                            </a>
+                        </span>
+                        <span class="info">
+                            Created: {{ project.created }}
+                        </span>
+                    </td>
+                </tr>
+
+            {% empty %}
+
+                <tr class="row">
+                    <td>
+                        <span class="title">
+                            No projects here!
+                        </span>
+                    </td>
+                </tr>
+
+            {% endfor %}
+            </table>
+
+        </div>
         
     </div>
 

@@ -18,6 +18,11 @@
     <div class="flex-item space">
         <h1>{{ class.class_title }}</h1>
         <p> {{ class.class_description }}</p>
+
+        <p><b>Badges required</b></p>
+        {% for badge in class.prerequisite_badges.all %}
+            <p>{{ badge.title }}</p>
+        {% endfor %}
     </div>
 
     <div class="flex-item space">

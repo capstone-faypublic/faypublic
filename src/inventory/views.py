@@ -63,12 +63,22 @@ def equipment_list(request):
 def compute_due_date(timeframe, checkout_date):
     if timeframe == "CHECKOUT_24HR":
         now = arrow.get(checkout_date)
-        due = now.shift(days=1).replace(hour=17).datetime
-        return due
+        due = now.shift(days=1).replace(hour=17)
+
+        # mon=0, tues=1, wed=2, thurs=3, fri=4, sat=5, sun=6
+        # if due on wed or sun, shift one day
+        if due.weekday() == 2 or due.weekday() == 6:
+            due = due.shift(days=1)
+
+        return due.datetime
+
     elif timeframe == "CHECKOUT_WEEK":
         now = arrow.get(checkout_date)
-        due = now.shift(days=5).replace(hour=17).datetime
-        return due
+
+        # always due on a tuesday
+        due = now.shift(weekday=1).replace(hour=17)
+
+        return due.datetime
     return None
 
 
