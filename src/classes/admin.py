@@ -4,7 +4,7 @@ from .models import Class, ClassSection, ClassRegistration
 # Register your models here.
 class ClassSectionInline(admin.TabularInline):
     model = ClassSection
-    fields = ['date', 'seat_avaliable']
+    fields = ['date', 'seats_available']
 
 
 class ClassesAdmin(admin.ModelAdmin):
