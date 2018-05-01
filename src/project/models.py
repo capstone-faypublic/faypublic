@@ -1,6 +1,8 @@
+import arrow, os
 from django.db import models
 from userprofile.models import UserProfile
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 SUBMITTED = 'SUBMITTED'
 SCHEDULED = 'SCHEDULED'
@@ -13,8 +15,16 @@ PROGRAM_REQUEST_STATUS = (
 )
 
 
-def handle_file_upload(instance, filename):
-    return 'uploads/project_{0}/{1}'.format(instance.project.id, filename)
+def handle_file_upload(project, filename):
+    timestamp = arrow.utcnow().timestamp
+    return 'uploads/{0}/project-uploads/{1}-{2}'.format(project.owner.username, timestamp, filename)
+
+
+def validate_video_extension(file):
+    valid_extensions = ['.mp4']
+    ext = os.path.splitext(file.name)[1]
+    if not ext.lower() in valid_extensions:
+        raise ValidationError('Invalid file type; please use .mp4')
 
 
 class Project(models.Model):
@@ -28,7 +38,7 @@ class Project(models.Model):
     created = models.DateField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
     expected_completion_date = models.DateField(null=True, blank=False)
-    uploaded_file = models.FileField(upload_to=handle_file_upload, null=True, blank=True)
+    uploaded_file = models.FileField(upload_to=handle_file_upload, null=True, blank=True, validators=[validate_video_extension])
 
     def __str__(self):
         return self.title

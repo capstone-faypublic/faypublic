@@ -12,6 +12,10 @@
     <link rel="stylesheet" type="text/css" media="screen" href="/static/css/base.css" />
     <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <!-- navbar highlight for active page -->
     <script>
         $(function(){
@@ -93,6 +97,18 @@
     </nav>
 
     {% block pagecontent %}{% endblock pagecontent %}
+
+    <script>
+        $(document).ready(function() {
+            $('.datepicker').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "1900:2050",
+                defaultDate: new Date(),});
+        
+            $("#id_title").attr('placeholder', '{{project_form.title.label}}');
+        });
+    </script>
 
 </body>
 </html>

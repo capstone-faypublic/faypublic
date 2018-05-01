@@ -49,7 +49,7 @@ class ClassSection(models.Model):
 
     class_key = models.ForeignKey(Class, on_delete=models.CASCADE)
     date = models.DateTimeField()
-    seats_avaliable = models.IntegerField(null=True, blank=True, default=0)
+    seats_available = models.IntegerField(null=True, blank=True, default=0)
 
     def __str__(self):
         return self.class_key.class_title
@@ -58,7 +58,7 @@ class ClassSection(models.Model):
         return self.class_key.class_title
 
     def number_open_seats(self):
-        return self.seats_avaliable - len(self.classregistration_set.all())
+        return self.seats_available - len(self.classregistration_set.all())
 
     def number_registered(self):
         return len(self.classregistration_set.all())

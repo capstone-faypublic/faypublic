@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load index %}
+
+{% block pagecontent %}
+
+<div class="container">
+    <h1>Reports</h1>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="button green-bg" value="Get report"/>
+    </form>
+</div>
+
+<div class="container">
+    <h2>Classes</h2>
+
+    {% for c in classes_data %}
+        <p><b>{{ c.title }}</b></p>
+
+        <table class="data-table">
+            <tr>
+                <th>Section date</th>
+                <th>Seats available</th>
+                <th>Registered</th>
+                <th>Completed</th>
+                <th>Incomplete</th>
+            </tr>
+        {% for s in c.sections %}
+            <tr>
+                <td>{{ s.date }}</td>
+                <td>{{ s.seats_available }}</td>
+                <td>{{ s.registered }}</td>
+                <td>{{ s.completed }}</td>
+                <td>{{ s.incomplete }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endfor %}
+
+</div>
+
+<div class="container">
+    <h2>Inventory</h2>
+
+    {% for c in inventory_data %}
+        <p><b>{{ c.category }}</b></p>
+
+        <table class="data-table">
+            <tr>
+                <th>Item</th>
+                <th>Checkouts</th>
+            </tr>
+        {% for e in c.equipment %}
+            <tr>
+                <td>{{ e.name }}</td>
+                <td>{{ e.checkouts }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endfor %}
+</div>
+
+<div class="container">
+    <h2>Projects</h2>
+    <table class="data-table">
+        <tr>
+            <th>Title</th>
+            <th>Owner</th>
+            <th>Other users (count)</th>
+            <th>Other users (list)</th>
+            <th>Created (during timeframe)</th>
+            <th>Expected completion (during timeframe)</th>
+            {% for e in project_data.equipment %}
+                <th>{{ e }}</th>
+            {% endfor %}
+        </tr>
+        {% for p in project_data.projects %}
+            <td>{{ p.title }}</td>
+            <td>{{ p.owner }}</td>
+            <td>{{ p.users.count }}</td>
+            <td>
+                {% for u in p.users %}
+                    {{ u }}
+                {% endfor %}
+            </td>
+            <td>
+                {% if p.created %}
+                    1
+                {% else %}
+                    0
+                {% endif %}
+            </td>
+            <td>
+                {% if p.expected_completion %}
+                    1
+                {% else %}
+                    0
+                {% endif %}
+            </td>
+            {% for c in p.equipment_checkouts %}
+                <td>{{ c }}</td>
+            {% endfor %}
+        {% endfor %}
+    </table>
+</div>
+
+<div class="container">
+    <h2>Users</h2>
+    <table class="data-table">
+        <tr>
+            <th>Last name</th>
+            <th>First name</th>
+            <th>Username</th>
+            {% for b in userprofile_data.badges %}
+                <th>{{ b }}</th>
+            {% endfor %}
+            {% for c in userprofile_data.classes %}
+                <th>{{ c }}</th>
+            {% endfor %}
+            {% for e in userprofile_data.equipment %}
+                <th>{{ e }}</th>
+            {% endfor %}
+        </tr>
+        {% for p in userprofile_data.profiles %}
+            <tr>
+                <td>{{ p.user.last_name }}</td>
+                <td>{{ p.user.first_name }}</td>
+                <td>{{ p.user.username }}</td>
+                {% for b in p.badges %}
+                    <td>
+                        {% if b %}
+                            1
+                        {% else %}
+                            0
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                {% for c in p.classes %}
+                    <td>
+                        {% if c.completed %}
+                            Complete
+                        {% else %}
+                            Incomplete
+                        {% endif %}
+                        <br/>
+                        {{ c.score }}
+                    </td>
+                {% endfor %}
+                {% for c in p.checkouts %}
+                    <td>{{ c }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock pagecontent %}
