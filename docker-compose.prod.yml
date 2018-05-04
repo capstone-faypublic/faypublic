@@ -13,16 +13,11 @@ services:
   django:
     restart: always
     command: gunicorn -w 3 --bind 0.0.0.0:8080 faypublic.wsgi
-    environment:
-      DEBUG: 0
 
   postgres:
     restart: always
     volumes:
       - ./postgres:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: "${PSQL_PROD_DB}"
-      POSTGRES_PASSWORD: "${PSQL_PROD_PASS}"
 
   celery:
     restart: always
