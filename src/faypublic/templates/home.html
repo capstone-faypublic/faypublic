@@ -1,20 +1,152 @@
-{% extends 'base.html' %}
+{% extends 'snapshot_base.html' %}
 
 {% block title %}Fayetteville Public Television{% endblock title %}
 
-{% block pagecontent %}
+{% block content %}
+<head>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+</head>
+
     <div class="container">
-        <h1>Fayetteville Public Television</h1>
-        <p>Welcome to FPTV's production and class management application.</p>
+        
+        <div class="container">
+
+            <h1>Profile Snapshot:</h1>
+            <h3>Your checkouts</h3>
+
+            <table class="table">
+            {% for checkout in checkouts %}
+
+            <tr class="row">
+                <td>
+                    <span class="title">
+                        {{ checkout.equipment.make }} {{ checkout.equipment.model }}
+                    </span>
+                    <span class="info">
+                        Checked out: {{ checkout.checkout_date }} <br/>
+                        Due: {{ checkout.due_date }}
+                    </span>
+                </td>
+                <td class="right">
+                    {% if checkout.checkout_status == 'RESERVED' %}
+
+                        <span style="display: inline-block; vertical-align:middle;">
+                            Reserved<br/>
+                            Pick up {{ checkout.checkout_date }}<br/>
+                            Due {{ checkout.due_date_humanized }}
+                        </span>
+                        <span style="display: inline-block; vertical-align:middle;" class="circle blue-bg"></span>
+
+                    {% elif checkout.checkout_status == 'CHECKED_OUT' %}
+
+                        <span style="display: inline-block; vertical-align:middle;">
+                            Checked out<br/>
+                            Due {{ checkout.due_date_humanized }}
+                        </span>
+
+                        <span style="display: inline-block; vertical-align:middle;" class="circle yellow-bg"></span>
+
+                    {% elif checkout.checkout_status == 'RETURNED' %}
+
+                        <span style="display: inline-block; vertical-align:middle;">
+                            Returned
+                        </span>
+                        <span style="display: inline-block; vertical-align:middle;" class="circle green-bg"></span>
+
+                    {% endif %}
+                </td>
+            </tr>
+
+            {% empty %}
+            
+            <tr class="row">
+                <td>
+                    <span class="title">
+                        You have nothing checked out!
+                    </span>
+                </td>
+            </tr>
+
+            {% endfor %}
+            </table>
+        </div>
+
+        <div class="container">
+            <h3>Your classes</h3>
+
+
+            <table class="table">
+            {% for reg in class_registrations %}
+
+            <tr class="row">
+                <td>
+                    <span class="title">
+                        {{ reg.class_title }}
+                    </span>
+                    <span class="info">
+                        {{ reg.class_section.date_humanized }}
+                    </span>
+                </td>
+                <td class="right">
+                    <span>
+                        {{ reg.section }}<br/>
+                        {% if reg.completed and reg.score_percentage %}
+                            Complete - {{ reg.score_percentage }}%
+                        {% else %}
+                            Incomplete
+                        {% endif %}
+                    </span>
+                </td>
+            </tr>
+
+            {% empty %}
+
+            <tr class="row">
+                <td>
+                    <span class="title">
+                        You're not registered for any classes!
+                    </span>
+                </td>
+            </tr>
+
+            {% endfor %}
+            </table>
+        </div>
+
+        <div class="container">
+
+            <h3>Your projects</h3>
+
+            <table class="table">
+            {% for project in profile.projects %}
+                <tr class="row">
+                    <td>
+                        <span class="title">
+                            <a href="{{ project.get_absolute_url }}">
+                                {{ project.title }}
+                            </a>
+                        </span>
+                        <span class="info">
+                            Created: {{ project.created }}
+                        </span>
+                    </td>
+                </tr>
+
+            {% empty %}
+
+                <tr class="row">
+                    <td>
+                        <span class="title">
+                            No projects here!
+                        </span>
+                    </td>
+                </tr>
+
+            {% endfor %}
+            </table>
+
+        </div>
+        
     </div>
-    <div class="container">
-        <p>
-            <a href="/login/" class="button green-bg">Login</a>
-            <a href="/register/" class="button blue-bg">Register</a>
-        </p>
-    </div>
-    <div class="container">
-        <p>The City of Fayetteville supports the free speech efforts of its residents by providing a platform that can be used to express your views and opinions on any subject. Fayetteville Public Television is your channel. You, the residents, decide what is telecast.</p>
-        <p>All resources are FREE for residents of Fayetteville, students attending the University of Arkansas or Fayetteville Public Schools, and employees of public institutions and non-­‐profit organizations based in Fayetteville. Residents of Washington and Benton Counties can utilize the resources for a $50 annual membership fee.</p>
-    </div>
-{% endblock pagecontent %}
+
+{% endblock content %}

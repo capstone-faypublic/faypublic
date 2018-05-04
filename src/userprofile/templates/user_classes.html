@@ -1,0 +1,50 @@
+{% extends 'profile_base.html' %}
+
+{% block title %}Your classes{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Your classes</h1>
+
+
+    <table class="table">
+    {% for reg in class_registrations %}
+
+    <tr class="row">
+        <td>
+            <span class="title">
+                {{ reg.class_title }}
+            </span>
+            <span class="info">
+                {{ reg.class_section.date_humanized }}
+            </span>
+        </td>
+        <td class="right">
+            <span>
+                {{ reg.section }}<br/>
+                {% if reg.completed and reg.score_percentage %}
+                    Complete - {{ reg.score_percentage }}%
+                {% else %}
+                    Incomplete
+                {% endif %}
+            </span>
+        </td>
+    </tr>
+
+    {% empty %}
+
+    <tr class="row">
+        <td>
+            <span class="title">
+                You're not registered for any classes!
+            </span>
+        </td>
+    </tr>
+
+    {% endfor %}
+    </table>
+
+</div>
+
+{% endblock content %}

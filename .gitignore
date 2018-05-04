@@ -110,3 +110,4 @@ src/static/media/uploads/*
 # editors
 .idea
 .vscode
+.DS_Store

@@ -1,48 +1,97 @@
-{% extends 'profile-base.html' %}
+{% extends 'profile_base.html' %}
 
-{% block title %}Your projects{% endblock title %}
+{% block title %}Your Projects{% endblock title %}
 
 {% block content %}
 
 <div class="container">
-    <h1>Your projects</h1> 
+    <h1>Your Projects</h1>
     <p>This is a way to collaborate on and submit projects you're working on to play on-air</p>
 </div>
 
 <div class="container">
-    {% for project in userprofile.project_set.all %}
-        <div class="flex-container project-container">
+    <h2>Projects you've started</h2>
+    <table class="table">
+    {% for project in request.user.owner_projects.all %}
+        <tr class="row">
+            <td>
+                <span class="title">
+                    <a href="{{ project.get_absolute_url }}">
+                        {{ project.title }}
+                    </a>
+                </span>
+                <span class="info">
+                    Created: {{ project.created }}
+                </span>
+            </td>
+            <td class="right">
+                Estimated completion: {{ project.expected_completion_date }}
+            </td>
+        </tr>
 
-            <div class="flex-item">
-                <h2>
-                    <span><a href="{{ project.get_absolute_url }}">{{ project.title}}</a>
-                </h2>
-                <span>Created: {{ project.created }}</span>
-            </div>
+    {% empty %}
 
-            <div class="flex-item right">
-                <h3>Submissions</h3>
-                {% for sub in project.recent_submissions %}
-                    <div>
-                        <span>{{ sub.title }}</span>
-                        <span>{{ sub.get_status_display }}</span>
-                    </div>
-                {% endfor %}
-                {% if project.projectsubmission_set.all|length > 3 %}
-                    <span><a href="{{ project.get_absolute_url }}">...</a></span>
-                {% endif %}
-            </div>
+    <tr class="row">
+            <td>
+                <span class="title">
+                    No projects here!
+                </span>
+            </td>
+        </tr>
 
-        </div>
     {% endfor %}
+    </table>
+
+    <h2>Projects you work on</h2>
+    <table class="table">
+    {% for project in request.user.project_set.all %}
+        <tr class="row">
+            <td>
+                <span class="title">
+                    <a href="{{ project.get_absolute_url }}">
+                        {{ project.title }}
+                    </a>
+                </span>
+                <span class="info">
+                    Created: {{ project.created }} <br/>
+                    Estimated completion: {{ project.expected_completion_date }}
+                </span>
+            </td>
+            <td class="right">
+                {{ project.number_of_submissions }} submission(s)
+            </td>
+        </tr>
+
+    {% empty %}
+
+        <tr class="row">
+            <td>
+                <span class="title">
+                    No projects here!
+                </span>
+            </td>
+        </tr>
+    
+    {% endfor %}
+    </table>
 </div>
 
 <div class="container">
-    <p><i>Make a new project</i></p>
+    <h2>Create a new project:</h2>
     <form action="" method="post">
         {% csrf_token %}
-        {{ project_form.as_p }}
-        <input type="submit" class="button green-bg"/>
+        <div class = "wrapper">
+            <i class="fas fa-pencil-alt" id="fa-icon"></i>
+            {{ project_form.title }}
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="fa fa-calendar" id="fa-icon"></i>
+            {{ project_form.expected_completion_date }}
+            <p id="pass-help">Expected completion date</p>
+        </div>
+        <br>
+        <input type="submit" class="button green-bg" value="Create New Project" style="width:100%"/>
     </form>
 </div>
 

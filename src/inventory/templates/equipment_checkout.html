@@ -1,25 +1,63 @@
 {% extends 'base.html' %}
-
 {% block pagecontent %}
 
-<div class="container">
-    <h1>Equipment Checkout</h1>
-    <p>This is where you can checkout equipment!</p>
-</div>
-<div class="container">
-    <h1>{{ item.make }} {{ item.model }}</h1>
+<head>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+    <!-- added for date picker -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
 
-    <img src="/static/media/{{ item.image }}" width="300">
+<script>
+$(document).ready(function() {
+    $('.datepicker').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "1900:2050",
+        defaultDate: new Date(),});
+});
+</script>
 
-    <p>{{ item.description }}</p>
+<div class="container flex-container">
+    <div class="flex-item space">
+        <img src="/static/media/{{ equipment.image }}" width="300">
+        <h1>{{ equipment.make }} {{ equipment.model }}</h1>
+        <p>{{ equipment.description }}</p>
+        <p>{{ equipment.available }} unit(s) available</p>
 
+        <p><b>Badges required</b></p>
+        {% for badge in equipment.prerequisite_badges.all %}
+            <p>{{ badge.title }}</p>
+        {% endfor %}
+    </div>
 
+    <div class="flex-item space">
+        <h2>Check out "{{ equipment.make }} {{ equipment.model }}"</h2>
 
+        <p>{{ err_msg }}</p>
 
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ checkout_form.as_p }}
-        <input type="submit" class="button green-bg"/>
-    </form>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class = "wrapper">
+                <i class="fa fa-calendar" id="fa-edit-prof"></i>
+                <label>Checkout date:</label>
+                {{ checkout_form.checkout_date }}
+            </div>
+            <br>
+            <div>
+                <p>
+                    <label>Project</label>
+                    <select name="project_id" required style="width:55%">
+                        <option disabled selected>-----</option>
+                        {% for project in userprofile.projects %}
+                            <option value="{{ project.id }}">{{ project.title }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+            <input type="submit" class="button green-bg" value="Check out" style="width:100%"/>
+        </form>
+    </div>
 </div>
 {% endblock pagecontent %}

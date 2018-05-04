@@ -7,6 +7,7 @@ from .models import Equipment, EquipmentCategory, EquipmentCheckout
 from .forms import EquipmentCheckoutForm
 import arrow
 from .models import RESERVED
+from project.models import Project
 
 
 
@@ -62,14 +63,52 @@ def equipment_list(request):
 def compute_due_date(timeframe, checkout_date):
     if timeframe == "CHECKOUT_24HR":
         now = arrow.get(checkout_date)
-        due = now.shift(days=2).date()
-        return due
-    if timeframe == "CHECKOUT_WEEK":
+        due = now.shift(days=1).replace(hour=17)
+
+        # mon=0, tues=1, wed=2, thurs=3, fri=4, sat=5, sun=6
+        # if due on wed or sun, shift one day
+        if due.weekday() == 2 or due.weekday() == 6:
+            due = due.shift(days=1)
+
+        return due.datetime
+
+    elif timeframe == "CHECKOUT_WEEK":
         now = arrow.get(checkout_date)
-        due = now.shift(days=6).date()
-        return due
-    else:
-        return "5555-05-05"
+
+        # always due on a tuesday
+        due = now.shift(weekday=1).replace(hour=17)
+
+        return due.datetime
+    return None
+
+
+
+def available_units(item, start_date, end_date):
+    checkouts = EquipmentCheckout.objects.filter(
+        Q(equipment=item)
+        & (
+            Q(checkout_date__gte=start_date)
+            & Q(due_date__lte=end_date)
+        )
+        & (
+            Q(checkout_status='RESERVED')
+            | Q(checkout_status='CHECKED_OUT')
+        )
+    )
+    return item.quantity - len(checkouts)
+
+def user_has_current_checkout(user, item):
+    today = arrow.utcnow().date()
+    checkouts = EquipmentCheckout.objects.filter(
+        Q(equipment=item)
+        & Q(user=user)
+        & (
+            Q(checkout_status='RESERVED')
+            | Q(checkout_status='CHECKED_OUT')
+        )
+    )
+    return len(checkouts) > 0
+
 
 @login_required
 def equipment_checkout(request, slug):
@@ -78,15 +117,36 @@ def equipment_checkout(request, slug):
 
     checkout_form = EquipmentCheckoutForm(request.POST)
 
-    if checkout_form.is_valid():
-        checkout = checkout_form.save(commit=False)
-        checkout.equipment = equipment
-        checkout.user = request.user
-        checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
-        checkout.checkout_status = RESERVED
-        checkout.save()
+    err_msg = ''
 
-        return redirect('equipment_list')
+    if checkout_form.is_valid():
+        project_id = request.POST.get('project_id')
+        project = get_object_or_404(Project, id=project_id)
+
+        if userprofile.can_checkout_equipment(equipment):
+            checkout = checkout_form.save(commit=False)
+            checkout_date = checkout.checkout_date
+            due_date = compute_due_date(
+                equipment.checkout_timeframe, checkout.checkout_date
+            )
+
+            if available_units(equipment, checkout_date, due_date) > 0:
+                if not user_has_current_checkout(request.user, equipment):
+                    checkout.equipment = equipment
+                    checkout.user = request.user
+                    checkout.checkout_date = arrow.get(checkout.checkout_date).replace(hour=10).datetime
+                    checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
+                    checkout.project = project
+                    checkout.checkout_status = RESERVED
+                    checkout.save()
+
+                    return redirect('user_checkouts')
+                else:
+                    err_msg = 'Sorry, you currently have this item checked out'
+            else:
+                err_msg = 'Sorry, there are units available for that date'
+        else:
+            err_msg = 'Sorry, you haven\'t completed the prerequisites necessary to check out this item'
 
     return render(
         request,
@@ -94,6 +154,7 @@ def equipment_checkout(request, slug):
         context={
             'equipment': equipment,
             'userprofile': userprofile,
-            'checkout_form': checkout_form
+            'checkout_form': checkout_form,
+            'err_msg': err_msg
         }
     )

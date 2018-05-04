@@ -1,4 +1,4 @@
-{% extends 'profile-base.html' %}
+{% extends 'profile_base.html' %}
 
 {% block title %}Your profile{% endblock title %}
 
@@ -6,15 +6,66 @@
 
 <div class="container">
     <h1>Your profile</h1>
-    <p>Complete your profile to be able to sign out equipment, register for classes, and submit your projects to be viewed on-air</p>
+    <p>Welcome back, {{ profile.user.first_name }}</p>
 </div>
 
 <div class="container">
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ profile_form.as_p }}
-        <input type="submit" class="button green-bg" value="Save profile"/>
-    </form>
+    <h2>Your projects</h2>
+
+    <table class="table">
+    {% for project in profile.projects %}
+        <tr class="row">
+            <td>
+                <span class="title">
+                    <a href="{{ project.get_absolute_url }}">
+                        {{ project.title }}
+                    </a>
+                </span>
+                <span class="info">
+                    Created: {{ project.created }}
+                </span>
+            </td>
+        </tr>
+
+    {% empty %}
+
+        <tr class="row">
+            <td>
+                <span class="title">
+                    No projects here!
+                </span>
+            </td>
+        </tr>
+
+    {% endfor %}
+    </table>
+    <a href="/profile/projects" class="button green-bg">Start a project</a>
+
+
+    <br/>
+
+    <h2>Your badges</h2>
+
+    <table class="table">
+    {% for badge in profile.earned_badges %}
+        <tr class="row">
+            <td class="media"><img src="/static/media/{{ badge.image }}" alt="{{ badge.title }}"/></td>
+            <td>{{ badge.title }}</td>
+        </tr>
+
+    {% empty %}
+
+        <tr class="row">
+            <td>
+                <span class="title">
+                    You don't have any badges!
+                </span>
+            </td>
+        </tr>
+
+    {% endfor %}
+    </table>
+
 </div>
 
 {% endblock content %}

@@ -1,12 +1,11 @@
 from django.contrib import admin
-from .models import Project, ProjectSubmission
+from .models import Project, ProgramRequest
 
 # Register your models here.
 class ProjectAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Project, ProjectAdmin)
 
-
-class ProjectSubmissionAdmin(admin.ModelAdmin):
+class ProgramRequestAdmin(admin.ModelAdmin):
     pass
-admin.site.register(ProjectSubmission, ProjectSubmissionAdmin)
+admin.site.register(ProgramRequest, ProgramRequestAdmin)

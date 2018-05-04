@@ -4,6 +4,7 @@ from project.models import Project
 from django.template.defaultfilters import slugify
 from django.db.models import Q
 import arrow
+from userprofile.models import Badge
 
 # AUDIO = 'AUDIO'
 # VIDEO = 'VIDEO'
@@ -40,7 +41,7 @@ class EquipmentCategory(models.Model):
         verbose_name_plural = "categories"
 
     title = models.CharField(max_length=255)
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField(blank=True, unique=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -74,12 +75,15 @@ class Equipment(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     quantity = models.IntegerField()
     description = models.TextField(null=True, blank=True)
+    prerequisite_badges = models.ManyToManyField(Badge, related_name="equipment_with_badge_prerequisite", blank=True)
+    # awarded_badges = models.ManyToManyField(Badge, related_name="equipment_with_badge_awarded", blank=True)
 
     category = models.ForeignKey(EquipmentCategory, on_delete=models.CASCADE)
 
     checkout_timeframe = models.CharField(max_length=15, choices=CHECKOUT_TIMEFRAMES, default=CHECKOUT_WEEK)
     image = models.FileField(upload_to=handle_file_upload, null=True)
     manual_url = models.URLField(null=True, blank=True)
+    serial_number = models.CharField(max_length=255, null=True, blank=True)
 
 
     def save(self, *args, **kwargs):
@@ -123,8 +127,8 @@ class EquipmentCheckout(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     # additional equipment checkout information we want to collect
-    checkout_date = models.DateField(null=True)
-    due_date = models.DateField(null=True)
+    checkout_date = models.DateTimeField(null=True)
+    due_date = models.DateTimeField(null=True)
 
     checkout_status = models.CharField(
         max_length=15,

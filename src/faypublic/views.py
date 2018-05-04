@@ -1,19 +1,37 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm
 from django.contrib.auth.forms import AuthenticationForm
 from userprofile.models import UserProfile
+from inventory.models import EquipmentCheckout
+from .tasks import send_equipment_pickup_reminder, send_equipment_due_reminder, send_equipment_overdue_notification, send_class_registration_reminder
 
 def home(request):
-    return render(
-        request,
-        'home.html',
-        context={
-        }
-    )
+    if request.user.is_authenticated:
+        checkouts = EquipmentCheckout.objects.filter(user=request.user).order_by('-due_date', '-checkout_date')
+        class_registrations = request.user.classregistration_set.all().order_by('-class_section__date')
+        userprofile = get_object_or_404(UserProfile, user=request.user)
+        return render(
+            request,
+            'home.html',
+            context={
+                'checkouts': checkouts,
+                'class_registrations': class_registrations,
+                'profile': userprofile,
+            }
+        )
+    else:
+        return render(
+            request,
+            'home_login.html',
+            context={
+                
+            }
+        )
 
 def user_register(request):
-    form = UserRegistrationForm(request.POST)
+    form = UserRegistrationForm(request.POST or None)
 
     if form.is_valid():
         form.save()
@@ -33,7 +51,7 @@ def user_register(request):
             requested_page = request.GET['next']
             return redirect(requested_page)
 
-        return redirect('user_profile')
+        return redirect('edit_profile')
 
     return render(
         request,
@@ -42,3 +60,10 @@ def user_register(request):
             'form': form
         }
     )
+
+def test_notifications(request):
+    send_equipment_pickup_reminder()
+    send_equipment_due_reminder()
+    send_equipment_overdue_notification()
+    send_class_registration_reminder()
+    return redirect('/')

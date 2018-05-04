@@ -4,6 +4,9 @@
 
 {% block pagecontent %}
 
+<head>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+</head>
 
 <div class="container flex-container">
     <div class="container flex-item sidebar submenu">
@@ -27,33 +30,45 @@
         <br/>
 
         <form action="" method="get">
-            <input type="text" name="q" placeholder="Search" value="{{ search }}" class="search-bar">
-            <input type="submit" class="button blue-bg search-button">
+            <div class = "wrapper">
+                <i class="fa fa-search" id="fa-search"></i>
+                <input type="text" name="q" placeholder="Search" value="{{ search }}" class="search-bar">
+                <input type="submit" class="button blue-bg search-button" value="Search">
+            </div>
         </form>
 
         <br/>
 
 
+        <table class="table">
         {% for equip in equipment %}
-            <div class="equipment-item flex-container">
-                <div class="thumbnail flex-item">
-                    <img src="/static/media/{{ equip.image }}"/>
-                </div>
-                
-                <div class="info flex-item">
-                    <p>
-                        <b>{{ equip.make }} {{ equip.model }}</b>
-                    </p>
-                    <p>Available: {{ equip.available }}</p>
-                    <p>{{ equip.description }}</p>
+            <tr class="row">
+                <td class="media">
+                    <a href="{{ equip.get_checkout_url }}">
+                        <img src="/static/media/{{ equip.image }}"/>
+                    </a>
+                </td>
+                <td>
+                    <span class="title">
+                        <a href="{{ equip.get_checkout_url }}">
+                            {{ equip.make }} {{ equip.model }}
+                        </a>
+                    </span>
+                    <span class="info">
+                        {{ equip.description }}
+                    </span>
+                </td>
+                <td style="text-align: right">
                     {% if user.is_authenticated %}
-                        <p><a href="{{ equip.get_checkout_url }}" class="button blue-bg">Check out</a></p>
+                        <a href="{{ equip.get_checkout_url }}" class="button blue-bg">Check out</a>
                     {% else %}
-                        <p><a href="{{ equip.get_checkout_url }}">Log in</a> to check out this item</p>
+                        <a href="{{ equip.get_checkout_url }}">Log in</a> to check out
                     {% endif %}
-                </div>
-            </div>
+                </td>
+            </tr>
         {% endfor %}
+        </table>
+
     </div>
 
 </div>

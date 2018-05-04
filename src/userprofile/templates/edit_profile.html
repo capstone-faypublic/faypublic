@@ -1,0 +1,123 @@
+{% extends 'profile_base.html' %}
+
+{% block title %}Your profile{% endblock title %}
+
+{% block content %}
+
+<head>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+    <!-- added for date picker -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+
+<script>
+$(document).ready(function() {
+    $('.datepicker').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "1900:2050",
+        defaultDate: new Date(),});
+});
+</script>
+
+<div class="container">
+    <h1>Your profile</h1>
+    <p>Complete your profile to be able to sign out equipment, register for classes, and submit your projects to be viewed on-air</p>
+</div>
+
+<div class="container">
+    {% if profile.profile_photo %}
+        <img src="/static/media/{{ profile.profile_photo }}" alt="Profile photo" width="200px"/><br/><br/>
+    {% endif %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ profile_form.profile_photo.errors }}
+        <div class = "wrapper">
+            <!-- <i class="fas fa-upload" id="fa-edit-prof"></i> -->
+            <label>Profile photo:</label>
+            {{ profile_form.profile_photo }}
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="fas fa-id-card" id="fa-edit-prof"></i>
+            <label>First name:</label>
+            <input type="text" name="user_first_name" value="{{ request.user.first_name }}" required>
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="far fa-id-card" id="fa-edit-prof"></i>
+            <label>Last name:</label>
+            <input type="text" name="user_last_name" value="{{ request.user.last_name }}" required>
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="fas fa-envelope" id="fa-edit-prof"></i>
+            <label>Email:</label>
+            <input type="text" name="user_email" value="{{ request.user.email }}" required>
+        </div>
+        <br>
+
+        <div class = "wrapper">
+            <i class="fa fa-map-signs" id="fa-edit-prof"></i>
+            <label>Street Address:</label>
+            {{ profile_form.street_address }}
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="fa fa-building" id="fa-edit-prof"></i>
+            <label>City:</label>
+            {{ profile_form.city }}
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="fa fa-map-marker-alt" id="fa-edit-prof"></i>
+            <label>State:</label>
+            {{ profile_form.state }}
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="fa fa-map-pin" id="fa-edit-prof"></i>
+            <label>Zipcode:</label>
+            {{ profile_form.zipcode }}
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="fa fa-mobile" id="fa-edit-prof"></i>
+            <label>Phone Number:</label>
+            {{ profile_form.phone_number }}
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="fa fa-birthday-cake" id="fa-edit-prof"></i>
+            <label>Birthday:</label>
+            {{ profile_form.birthdate }}
+        </div>
+        <br>
+
+        <table>
+            <tr>
+                <td style="padding-top: 4px; padding-right: 20px;">
+                    <input type="checkbox" name="user_get_email_reminders" id="user_get_email_reminders" {{ profile.get_email_reminders|yesno:'checked,'}}/>
+                </td>
+                <td style="padding-top: 14px;">
+                    <label for="user_get_email_reminders" class="title">Get email reminders</label>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-top: 4px; padding-right: 20px">
+                    <input type="checkbox" name="user_get_sms_reminders" id="user_get_sms_reminders" {{ profile.get_sms_reminders|yesno:'checked,'}}/>
+                </td>
+                <td style="padding-top: 14px;">
+                    <label for="user_get_sms_reminders" class="title">Get sms reminders</label>
+                </td>
+            </tr>
+        </table>
+        <br>
+
+        <input type="submit" class="button green-bg" value="Save Profile" style="width:100%"/>
+    </form>
+</div>
+
+{% endblock content %}

@@ -1,59 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load staticfiles %}
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" media="screen" href="/static/css/base.css" />
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- navbar highlight for active page -->
+    <script>
+        $(function(){
+            $('a').each(function(){
+                if ($(this).prop('href') == window.location.href) {
+                    $(this).addClass('active'); $(this).parents('li').addClass('active');
+                }
+            });
+        });
+    </script>
+
 </head>
 <body>
 
-    <nav class="navigation">
-        <div id="account-navigation">
-            <div class="container">
-                <ul>
-                    {% if user.is_authenticated %}
-                        <li>
-                            <a href="/profile/">Profile</a>
-                        </li>
-                        <li>
-                            <a href="/logout/">Logout</a>
-                        </li>
-                    {% else %}
-                        <li>
-                            <a href="/login/">Login</a>
-                        </li>
-                        <li>
-                            <a href="/register/">Register</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
+    <nav class="navbar navbar-default" style="background-color: #f6d600;">
+      <div class="container-fluid">
+
+        <!-- Header -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar" style="border-color: black;">
+                <span class="icon-bar" style="color: black;"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://www.faypublic.tv/" style="color: black;"><img src="/static/media/fptv_logo.png" class="navbar-image"></img></a>
+          </div>
+
+
+        <!-- Items -->
+        <div class="collapse navbar-collapse" id="topNavBar">
+          <ul class="nav navbar-nav">
+            <li class="">
+              <a href="/" style="color: black;">
+                <span class="fa fa-home" aria-hidden="true"></span>&nbsp; Home
+              </a>
+            </li>
+            <li class="">
+              <a href="/classes/" style="color: black;">
+                <span class="fa fa-graduation-cap" aria-hidden="true"></span>&nbsp; Classes
+              </a>
+            </li>
+            <li class="">
+              <a href="/equipment/" style="color: black;">
+                <span class="fa fa-video" aria-hidden="true"></span>&nbsp; Equipment
+              </a>
+            </li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+              <li class="">
+                <a href="/profile/" style="color: black;">
+                  <span class="fa fa-user" aria-hidden="true"></span>&nbsp; Profile
+                </a>
+              </li>
+              <li class="">
+                <a href="/logout/" style="color: black;">
+                  <span class="fa fa-sign-out-alt" aria-hidden="true"></span>&nbsp; Logout
+                </a>
+              </li>
+            {% else %}
+              <li class="">
+                <a href="/login/" style="color: black;">
+                  <span class="fa fa-sign-in-alt" aria-hidden="true"></span>&nbsp; Login
+                </a>
+              </li>
+              <li class="">
+                <a href="/register/" style="color: black;">
+                  <span class="fas fa-clipboard" aria-hidden="true"></span>&nbsp; Register
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+
         </div>
-        <div id="main-navigation">
-            <div class="container flex-container">
-                <div id="brand" class="flex-item">
-                    <a href="/">FPTV</a>
-                </div>
-                <div id="links" class="flex-item">
-                    <ul>
-                        <li>
-                            <a href="/">Home</a>
-                        </li>
-                        <li>
-                            <a href="/classes/">Classes</a>
-                        </li>
-                        <li>
-                            <a href="/equipment/">Equipment</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+
+      </div>
+      
     </nav>
 
     {% block pagecontent %}{% endblock pagecontent %}
+
+    <script>
+        $(document).ready(function() {
+            $('.datepicker').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "1900:2050",
+                defaultDate: new Date(),});
+        
+            $("#id_title").attr('placeholder', '{{project_form.title.label}}');
+        });
+    </script>
 
 </body>
 </html>

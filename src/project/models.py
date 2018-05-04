@@ -1,15 +1,30 @@
+import arrow, os
 from django.db import models
 from userprofile.models import UserProfile
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 SUBMITTED = 'SUBMITTED'
 SCHEDULED = 'SCHEDULED'
 REJECTED = 'REJECTED'
 
-PROJECT_SUBMISSION_STATUS = (
+PROGRAM_REQUEST_STATUS = (
     (SUBMITTED, 'Submitted'),
     (SCHEDULED, 'Approved'),
     (REJECTED, 'Rejected')
 )
+
+
+def handle_file_upload(project, filename):
+    timestamp = arrow.utcnow().timestamp
+    return 'uploads/{0}/project-uploads/{1}-{2}'.format(project.owner.username, timestamp, filename)
+
+
+def validate_video_extension(file):
+    valid_extensions = ['.mp4']
+    ext = os.path.splitext(file.name)[1]
+    if not ext.lower() in valid_extensions:
+        raise ValidationError('Invalid file type; please use .mp4')
 
 
 class Project(models.Model):
@@ -17,37 +32,45 @@ class Project(models.Model):
         verbose_name = "project"
         verbose_name_plural = "projects"
 
-    users = models.ManyToManyField(UserProfile)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner_projects')
+    users = models.ManyToManyField(User)
     title = models.CharField(max_length=255, null=True, blank=False)
     created = models.DateField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
     expected_completion_date = models.DateField(null=True, blank=False)
+    uploaded_file = models.FileField(upload_to=handle_file_upload, null=True, blank=True, validators=[validate_video_extension])
+
+    def __str__(self):
+        return self.title
+
+    def __unicode__(self):
+        return self.title
 
     def get_absolute_url(self):
         return "/profile/projects/%i/" % self.id
 
-    def recent_submissions(self):
-        return self.projectsubmission_set.all()[:3]
 
 
-
-
-
-def handle_file_upload(instance, filename):
-    return 'uploads/project_{0}/{1}'.format(instance.project.id, filename)
-
-class ProjectSubmission(models.Model):
+class ProgramRequest(models.Model):
     class Meta:
-        verbose_name = "submission"
-        verbose_name_plural = "submission"
+        verbose_name = "program request"
+        verbose_name_plural = "program requests"
 
-
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, null=True, blank=False)
-    created = models.DateField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now_add=False, auto_now=True)
-    status = models.CharField(max_length=15, choices=PROJECT_SUBMISSION_STATUS, default=SUBMITTED)
-    description = models.TextField(blank=True, null=True)
-    admin_notes = models.TextField(blank=True, null=True)
-    scheduled_time = models.DateTimeField(null=True)
-    uploaded_file = models.FileField(upload_to=handle_file_upload)
+    description = models.TextField(null=True, blank=True)
+    requested_on = models.DateField(auto_now_add=True)
+    requested_play_date = models.DateTimeField(null=True, blank=False)
+    media_link = models.URLField(null=True, blank=False)
+    status = models.CharField(
+        max_length = 20,
+        choices = PROGRAM_REQUEST_STATUS,
+        default = SUBMITTED
+    )
+
+
+    def __str__(self):
+        return self.title
+    
+    def __unicode__(self):
+        return self.title
