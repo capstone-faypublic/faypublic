@@ -9,7 +9,7 @@ services:
     volumes:
       - ./src/static:/var/www/static
       - ./nginx/sites-enabled.prod.conf:/etc/nginx/conf.d/sites-enabled.conf
-
+      - /etc/letsencrypt/copy:/etc/letsencrypt/login.faypublic.tv
   django:
     restart: always
     command: gunicorn -w 3 --bind 0.0.0.0:8080 faypublic.wsgi
