@@ -35,9 +35,12 @@ $(document).ready(function() {
     <div class="flex-item space">
         <h2>Check out "{{ equipment.make }} {{ equipment.model }}"</h2>
 
-        <div class="alert alert-danger">
-          <strong>{{ err_msg }}</strong>
-        </div>
+        {% if err_msg %}
+          <div class="alert alert-danger">
+            <strong>{{ err_msg }}</strong>
+          </div>
+        {% else %}
+        {% endif %}
 
         {% if request.user.owner_projects.exists or request.user.project_set.exists %}
           <form action="" method="post">
@@ -52,7 +55,7 @@ $(document).ready(function() {
                   <p>
                       <label>Project</label>
                       <select name="project_id" required style="width:55%">
-                          <option disabled selected>-----</option>
+                          <option value="">Please select</option>
                           {% for project in userprofile.projects %}
                               <option value="{{ project.id }}">{{ project.title }}</option>
                           {% endfor %}
@@ -66,27 +69,6 @@ $(document).ready(function() {
             <strong>Sorry!</strong> You should <a href="/profile/projects" class="alert-link">create a project</a> in order to check out equipment.
           </div>
         {% endif %}
-        <!-- <form action="" method="post">
-            {% csrf_token %}
-            <div class = "wrapper">
-                <i class="fa fa-calendar" id="fa-edit-prof"></i>
-                <label>Checkout date:</label>
-                {{ checkout_form.checkout_date }}
-            </div>
-            <br>
-            <div>
-                <p>
-                    <label>Project</label>
-                    <select name="project_id" required style="width:55%">
-                        <option disabled selected>-----</option>
-                        {% for project in userprofile.projects %}
-                            <option value="{{ project.id }}">{{ project.title }}</option>
-                        {% endfor %}
-                    </select>
-                </p>
-            </div>
-            <input type="submit" class="button green-bg" value="Check out" style="width:100%"/>
-        </form> -->
     </div>
 </div>
 {% endblock pagecontent %}

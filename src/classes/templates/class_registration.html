@@ -10,7 +10,7 @@
 
 
 <div class="container">
-    
+
 </div>
 
 <div class="container flex-container">
@@ -29,8 +29,13 @@
 
         <h2>Select a section to register</h2>
 
-        <p>{{ err_msg }}</p>
-
+        {% if err_msg %}
+          <div class="alert alert-danger">
+            <strong>{{ err_msg }}</strong>
+          </div>
+        {% else %}
+        {% endif %}
+        
         <form action="" method="post">
             {% csrf_token %}
 
@@ -38,7 +43,7 @@
                 {% for sect in class.get_open_sections %}
                 <tr class="row">
                     <td>
-                        <input type="radio" name="section_id" value="{{ sect.id }}" id="sect_{{ sect.id }}"/> 
+                        <input type="radio" name="section_id" value="{{ sect.id }}" id="sect_{{ sect.id }}"/>
                     </td>
                     <td>
                         <label for="sect_{{ sect.id }}" class="title">
@@ -64,5 +69,3 @@
 
 </body>
 </html>
-
- 
