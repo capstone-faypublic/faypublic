@@ -51,7 +51,7 @@ def project(request, id):
         req.user = request.user
         req.title = project.title
         req.description = project.description
-        req.media_link = project.uploaded_file
+        req.media_link = project.uploaded_file.url
         req.save()
 
     project_form = ProjectForm(request.POST, request.FILES, instance=project)
