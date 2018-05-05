@@ -1,4 +1,5 @@
 import arrow, os
+from faypublic.settings import AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -95,3 +96,8 @@ class UserProfile(models.Model):
             projects.append(p)
 
         return projects
+
+    def get_profile_photo_uri(self):
+        if self.profile_photo:
+            return AWS_S3_ENDPOINT_URL + '/' + AWS_STORAGE_BUCKET_NAME + '/' + self.profile_photo
+        return None
