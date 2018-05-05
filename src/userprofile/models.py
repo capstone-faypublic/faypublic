@@ -99,5 +99,5 @@ class UserProfile(models.Model):
 
     def get_profile_photo_uri(self):
         if self.profile_photo:
-            return AWS_S3_ENDPOINT_URL + '/' + AWS_STORAGE_BUCKET_NAME + '/' + self.profile_photo.url
+            return self.profile_photo.url
         return None
