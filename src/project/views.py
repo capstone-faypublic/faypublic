@@ -46,7 +46,7 @@ def project(request, id):
             project.users.add(invited_user)
 
     program_request = ProjectProgramRequestForm(request.POST)
-    if request.method == 'POST' and program_request.is_valid():
+    if request.method == 'POST' and program_request.is_valid() and project.uploaded_file:
         req = program_request.save(commit=False)
         req.user = request.user
         req.title = project.title

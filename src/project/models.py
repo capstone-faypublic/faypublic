@@ -61,7 +61,7 @@ class ProgramRequest(models.Model):
     description = models.TextField(null=True, blank=True)
     requested_on = models.DateField(auto_now_add=True)
     requested_play_date = models.DateTimeField(null=True, blank=False)
-    media_link = models.URLField(null=True, blank=False)
+    media_link = models.URLField(max_length=500, null=True, blank=False)
     status = models.CharField(
         max_length = 20,
         choices = PROGRAM_REQUEST_STATUS,
