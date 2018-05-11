@@ -54,6 +54,8 @@ def project(request, id):
         req.media_link = project.uploaded_file.url
         req.save()
 
+        redirect('/profile/requests/')
+
     project_form = ProjectForm(request.POST, request.FILES, instance=project)
     if request.method == 'POST' and project_form.is_valid():
         project = project_form.save()
