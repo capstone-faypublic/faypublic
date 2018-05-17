@@ -14,11 +14,18 @@
 <div class="container">
     <form action="" method="post">
         {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+        {{ form.username.errors }}
         <div class = "wrapper">
-        	<i class="fas fa-user-circle" id="fa-icon"></i>
-        	{{ form.username }}
+            <i class="fas fa-user-circle" id="fa-icon"></i>
+            {{ form.username }}
         </div>
         <br>
+        <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+        {{ form.password.errors }}
         <div class = "wrapper">
         	<i class="fa fa-unlock-alt" id="fa-icon"></i>
         	{{ form.password }}
