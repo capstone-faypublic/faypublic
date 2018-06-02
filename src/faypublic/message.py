@@ -22,7 +22,7 @@ Please remember to return your equipment by the due date listed above. Thank you
 Fayetteville Public Television
 (479) 444-3433
 101 West Rock Street, Fayetteville, AR 72701\n\n
-You are receiving this email because you have subscribed to email notifications via https://superapp.faypublic.tv
+You are receiving this email because you have subscribed to email notifications via https://login.faypublic.tv
 '''
     return subject, message_body
 
@@ -52,7 +52,7 @@ You have until the office closes today to return this item. Thank you!\n
 Fayetteville Public Television
 (479) 444-3433
 101 West Rock Street, Fayetteville, AR 72701\n\n
-You are receiving this email because you have subscribed to email notifications via https://superapp.faypublic.tv
+You are receiving this email because you have subscribed to email notifications via https://login.faypublic.tv
 '''
     return subject, message_body
 
@@ -81,7 +81,7 @@ Checked out to: ''' + checkout.user_name() + '''\n\n
 Fayetteville Public Television
 (479) 444-3433
 101 West Rock Street, Fayetteville, AR 72701\n\n
-You are receiving this email because you have subscribed to email notifications via https://superapp.faypublic.tv
+You are receiving this email because you have subscribed to email notifications via https://login.faypublic.tv
 '''
     return subject, message_body
 
@@ -106,7 +106,7 @@ We're excited to see you there!\n
 Fayetteville Public Television
 (479) 444-3433
 101 West Rock Street, Fayetteville, AR 72701\n\n
-You are receiving this email because you have subscribed to email notifications via https://superapp.faypublic.tv
+You are receiving this email because you have subscribed to email notifications via https://login.faypublic.tv
 '''
     return subject, message_body
 
