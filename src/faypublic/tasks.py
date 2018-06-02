@@ -50,7 +50,7 @@ def send_equipment_pickup_reminder():
             send_mail(
                 subject=subj,
                 message=msg,
-                from_email='timpe31@gmail.com',
+                from_email='notifications@your-media.org',
                 recipient_list=[user.email],
                 fail_silently=True,
             )
@@ -60,7 +60,7 @@ def send_equipment_pickup_reminder():
             try:
                 message = client.messages.create(
                     to=profile.phone_number,
-                    from_='+19728107378',
+                    from_='+14793164259',
                     body=msg
                 )
             except:
@@ -99,7 +99,7 @@ def send_equipment_due_reminder():
             send_mail(
                 subject=subj,
                 message=msg,
-                from_email='timpe31@gmail.com',
+                from_email='notifications@your-media.org',
                 recipient_list=[user.email],
                 fail_silently=True,
             )
@@ -109,7 +109,7 @@ def send_equipment_due_reminder():
             try:
                 message = client.messages.create(
                     to=profile.phone_number,
-                    from_='+19728107378',
+                    from_='+14793164259',
                     body=msg
                 )
             except:
@@ -147,7 +147,7 @@ def send_equipment_overdue_notification():
             send_mail(
                 subject=subj,
                 message=msg,
-                from_email='timpe31@gmail.com',
+                from_email='notifications@your-media.org',
                 recipient_list=[user.email],
                 fail_silently=True,
             )
@@ -157,7 +157,7 @@ def send_equipment_overdue_notification():
             try:
                 message = client.messages.create(
                     to=profile.phone_number,
-                    from_='+19728107378',
+                    from_='+14793164259',
                     body=msg
                 )
             except:
@@ -193,7 +193,7 @@ def send_class_registration_reminder():
             send_mail(
                 subject=subj,
                 message=msg,
-                from_email='timpe31@gmail.com',
+                from_email='notifications@your-media.org',
                 recipient_list=[user.email],
                 fail_silently=True,
             )
@@ -203,7 +203,7 @@ def send_class_registration_reminder():
             try:
                 message = client.messages.create(
                     to=profile.phone_number,
-                    from_='+19728107378',
+                    from_='+14793164259',
                     body=msg
                 )
             except:

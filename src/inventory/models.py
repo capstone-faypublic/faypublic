@@ -63,7 +63,7 @@ class EquipmentCategory(models.Model):
 
 
 def handle_file_upload(instance, filename):
-    return 'uploads/equip_{0}/{1}'.format(instance.id, filename)
+    return 'uploads/equip/{0}'.format(filename)
 
 class Equipment(models.Model):
     class Meta:
