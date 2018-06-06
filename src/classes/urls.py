@@ -4,5 +4,6 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.class_list, name="class_list"),
-    path('<slug>/', views.class_registration, name="class_registration")
+    path('<slug>/', views.class_registration, name="class_registration"),
+    path('cancel/<registration_id>/', views.cancel_registration, name="cancel_registration")
 ]

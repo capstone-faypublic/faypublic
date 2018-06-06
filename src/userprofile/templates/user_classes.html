@@ -27,6 +27,8 @@
                     Complete - {{ reg.score_percentage }}%
                 {% else %}
                     Incomplete
+                    <br/>
+                    <a href="/classes/cancel/{{ reg.id }}" class="button red-bg">Cancel</a>
                 {% endif %}
             </span>
         </td>

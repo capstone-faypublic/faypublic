@@ -78,4 +78,11 @@ def class_list(request):
     )
 
 
+@login_required
+def cancel_registration(request, registration_id):
+    registration = get_object_or_404(ClassRegistration, id=registration_id)
 
+    if registration.user == request.user and not registration.completed:
+        registration.delete()
+    
+    return redirect('user_classes')
