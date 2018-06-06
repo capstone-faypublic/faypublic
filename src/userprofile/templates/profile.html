@@ -49,7 +49,7 @@
     <table class="table">
     {% for badge in profile.earned_badges %}
         <tr class="row">
-            <td class="media"><img src="/static/media/{{ badge.image }}" alt="{{ badge.title }}"/></td>
+            <td class="media"><img src="{{ badge.image.url }}" alt="{{ badge.title }}"/></td>
             <td>{{ badge.title }}</td>
         </tr>
 
