@@ -7,6 +7,30 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+    <link rel='stylesheet' href='/static/js/fullcalendar-3.9.0/fullcalendar.css' />
+    <script src='/static/js/fullcalendar-3.9.0/lib/jquery.min.js'></script>
+    <script src='/static/js/fullcalendar-3.9.0/lib/moment.min.js'></script>
+    <script src='/static/js/fullcalendar-3.9.0/fullcalendar.js'></script>
+
+    <script type="text/javascript">
+
+    $(function() {
+
+        // page is now ready, initialize the calendar...
+
+        $('#calendar').fullCalendar({
+        // put your options and callbacks here
+        })
+
+    });
+        
+    
+    </script>
+
+
 </head>
 
 <script>
@@ -20,8 +44,8 @@ $(document).ready(function() {
 </script>
 
 <div class="container flex-container">
-    <div class="flex-item space">
-        <img src="/static/media/{{ equipment.image }}" width="300">
+    <div class="flex-item space" style="max-width: 70%;">
+        <img src="{{ equipment.image.url }}" width="300">
         <h1>{{ equipment.make }} {{ equipment.model }}</h1>
         <p>{{ equipment.description }}</p>
         <p>{{ equipment.available }} unit(s) available</p>
@@ -30,6 +54,11 @@ $(document).ready(function() {
         {% for badge in equipment.prerequisite_badges.all %}
             <p>{{ badge.title }}</p>
         {% endfor %}
+
+        <br/><br/>
+
+        <div id='calendar'></div>
+
     </div>
 
     <div class="flex-item space">
