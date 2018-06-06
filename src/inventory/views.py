@@ -158,3 +158,14 @@ def equipment_checkout(request, slug):
             'err_msg': err_msg
         }
     )
+
+
+@login_required
+def cancel_checkout(request, checkout_id):
+    checkout = get_object_or_404(EquipmentCheckout, id=checkout_id)
+
+    if checkout.user == request.user and checkout.checkout_status == 'RESERVED':
+        checkout.checkout_status = 'CANCELED'
+        checkout.save()
+
+    return redirect('user_checkouts')

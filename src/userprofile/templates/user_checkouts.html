@@ -30,6 +30,9 @@
                 </span>
                 <span style="display: inline-block; vertical-align:middle;" class="circle blue-bg"></span>
 
+                <br/><br/>
+                <a href="/equipment/checkout/cancel/{{ checkout.id }}" class="button red-bg">Cancel</a>
+
             {% elif checkout.checkout_status == 'CHECKED_OUT' %}
 
                 <span style="display: inline-block; vertical-align:middle;">
@@ -45,6 +48,13 @@
                     Returned
                 </span>
                 <span style="display: inline-block; vertical-align:middle;" class="circle green-bg"></span>
+
+            {% elif checkout.checkout_status == 'CANCELED' %}
+
+                <span style="display: inline-block; vertical-align: middle;">
+                    Canceled
+                </span>
+                <span style="display: inline-block; vertical-align:middle;" class="circle red-bg"></span>
 
             {% endif %}
         </td>
