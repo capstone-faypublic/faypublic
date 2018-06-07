@@ -11,7 +11,7 @@
 
 
     <link rel='stylesheet' href='/static/js/fullcalendar-3.9.0/fullcalendar.css' />
-    <script src='/static/js/fullcalendar-3.9.0/lib/jquery.min.js'></script>
+    <!-- <script src='/static/js/fullcalendar-3.9.0/lib/jquery.min.js'></script> -->
     <script src='/static/js/fullcalendar-3.9.0/lib/moment.min.js'></script>
     <script src='/static/js/fullcalendar-3.9.0/fullcalendar.js'></script>
 
@@ -23,6 +23,10 @@
 
         $('#calendar').fullCalendar({
         // put your options and callbacks here
+            themeSystem: 'bootstrap4',
+            defaultView: 'basicWeek',
+            events: '/equipment/checkouts/',
+            allDayDefault: true
         })
 
     });
@@ -34,13 +38,11 @@
 </head>
 
 <script>
-$(document).ready(function() {
-    $('.datepicker').datepicker({
-        changeMonth: true,
-        changeYear: true,
-        yearRange: "1900:2050",
-        defaultDate: new Date(),});
-});
+    $(document).ready(function() {
+        $('.datepicker').datepicker({
+            defaultView: 'basicWeek',
+        });
+    });
 </script>
 
 <div class="container flex-container">
@@ -54,10 +56,6 @@ $(document).ready(function() {
         {% for badge in equipment.prerequisite_badges.all %}
             <p>{{ badge.title }}</p>
         {% endfor %}
-
-        <br/><br/>
-
-        <div id='calendar'></div>
 
     </div>
 
@@ -87,6 +85,10 @@ $(document).ready(function() {
             </div>
             <input type="submit" class="button green-bg" value="Check out" style="width:100%"/>
         </form>
+    </div>
+
+    <div class="space">
+        <div id='calendar'></div>
     </div>
 </div>
 {% endblock pagecontent %}

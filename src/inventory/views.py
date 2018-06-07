@@ -8,7 +8,7 @@ from .forms import EquipmentCheckoutForm
 import arrow
 from .models import RESERVED
 from project.models import Project
-
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -169,3 +169,37 @@ def cancel_checkout(request, checkout_id):
         checkout.save()
 
     return redirect('user_checkouts')
+
+
+def all_checkouts(request):
+    start = request.GET.get('start')
+    end = request.GET.get('end')
+
+    start_date = arrow.get(start, 'YYYY-MM-DD').datetime
+    end_date = arrow.get(end, 'YYYY-MM-DD').datetime
+
+
+    all_checkouts = EquipmentCheckout.objects.filter(
+        (Q(checkout_status='RESERVED')
+        | Q(checkout_status='CHECKED_OUT'))
+        & (Q(checkout_date__gte=start_date)
+        & Q(due_date__lte=end_date))
+    )
+
+    checkouts = []
+    for checkout in all_checkouts:
+
+        checkout_date = checkout.checkout_date.strftime('%Y-%m-%d')
+        due_date = checkout.due_date.strftime('%Y-%m-%d')
+        checkouts.append({
+            'equipment_id': checkout.equipment.id,
+            'equipment_name': checkout.equipment.name(),
+            'checkout_timeframe': checkout.equipment.checkout_timeframe,
+            'start': checkout_date,
+            'end': due_date,
+            'status': checkout.checkout_status,
+            'title': checkout.equipment.name(),
+            'allDay': True
+        })
+
+    return JsonResponse(checkouts, safe=False)

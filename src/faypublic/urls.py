@@ -33,7 +33,7 @@ urlpatterns = [
     path('reset-password/', auth_views.password_reset, {
         'template_name': 'user_password_reset.html'
     }, name="password_reset"),
-    path('reset-password/done/', auth_views.password_reset_done, {
+    path('reset-password/done/',  auth_views.password_reset_done, {
         'template_name': 'user_password_reset_done.html'
     }, name="password_reset_done"),
     path('reset-password/<uidb64>/<token>/', auth_views.password_reset_confirm, {
