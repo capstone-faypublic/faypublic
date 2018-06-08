@@ -61,9 +61,16 @@ def equipment_list(request):
 
 
 def compute_due_date(timeframe, checkout_date):
-    if timeframe == "CHECKOUT_24HR":
-        now = arrow.get(checkout_date)
-        due = now.shift(days=1).replace(hour=17)
+
+    if timeframe == 'CHECKOUT_3HR':
+        res = arrow.get(checkout_date)
+        due = res.shift(hours=3)
+
+        return due.datetime
+
+    elif timeframe == "CHECKOUT_24HR":
+        res = arrow.get(checkout_date)
+        due = res.shift(days=1).replace(hour=17)
 
         # mon=0, tues=1, wed=2, thurs=3, fri=4, sat=5, sun=6
         # if due on wed or sun, shift one day
@@ -73,10 +80,11 @@ def compute_due_date(timeframe, checkout_date):
         return due.datetime
 
     elif timeframe == "CHECKOUT_WEEK":
-        now = arrow.get(checkout_date)
+        res = arrow.get(checkout_date)
 
         # always due on a tuesday
-        due = now.shift(weekday=1).replace(hour=17)
+        # shift a day to combat reserved-on-tues/due-on-tues
+        due = res.shift(day=1).shift(weekday=1).replace(hour=17)
 
         return due.datetime
     return None
@@ -121,6 +129,7 @@ def equipment_checkout(request, slug):
 
     if checkout_form.is_valid():
         project_id = request.POST.get('project_id')
+        checkout_time = int(request.POST.get('checkout_time'))
         project = get_object_or_404(Project, id=project_id)
 
         if userprofile.can_checkout_equipment(equipment):
@@ -134,7 +143,14 @@ def equipment_checkout(request, slug):
                 if not user_has_current_checkout(request.user, equipment):
                     checkout.equipment = equipment
                     checkout.user = request.user
-                    checkout.checkout_date = arrow.get(checkout.checkout_date).replace(hour=10).datetime
+
+                    # checkouts starting
+                    if not checkout.equipment.checkout_timeframe == 'CHECKOUT_3HR':
+                        checkout.checkout_date = arrow.get(checkout.checkout_date).replace(hour=10).datetime
+                    else:
+                        checkout.checkout_date = arrow.get(checkout_date).replace(hour=checkout_time).datetime
+
+
                     checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
                     checkout.project = project
                     checkout.checkout_status = RESERVED

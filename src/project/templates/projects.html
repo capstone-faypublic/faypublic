@@ -26,6 +26,10 @@
             </td>
             <td class="right">
                 Estimated completion: {{ project.expected_completion_date }}
+
+                <br/><br/>
+
+                <a href="/profile/projects/cancel/{{ project.id }}" class="button red-bg" onclick="return confirm('Are you sure?')">Cancel</a>
             </td>
         </tr>
 

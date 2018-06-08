@@ -70,3 +70,13 @@ def project(request, id):
             'project_program_request_form': ProjectProgramRequestForm()
         }
     )
+
+
+@login_required
+def cancel_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+
+    if project.owner == request.user:
+        project.delete()
+
+    return redirect('user_projects')

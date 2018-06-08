@@ -71,6 +71,20 @@
                 <label>Checkout date:</label>
                 {{ checkout_form.checkout_date }}
             </div>
+            <br/>
+            <div class="wrapper">
+                <label>Checkout Time</label>
+                <select name="checkout_time" required style="width: 55%;">
+                    <option disabled selected>-----</option>
+                    <option value="10">10:00 am</option>
+                    <option value="11">11:00 am</option>
+                    <option value="12">12:00 pm</option>
+                    <option value="13">1:00 pm</option>
+                    <option value="14">2:00 pm</option>
+                    <option value="15">3:00 pm</option>
+                    <option value="16">4:00 pm</option>
+                </select>
+            </div>
             <br>
             <div>
                 <p>
