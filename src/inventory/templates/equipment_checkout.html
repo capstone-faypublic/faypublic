@@ -72,7 +72,7 @@
                 {{ checkout_form.checkout_date }}
             </div>
             <br/>
-            <div class="wrapper">
+            <div class="wrapper" id="checkout_time">
                 <label>Checkout Time</label>
                 <select name="checkout_time" required style="width: 55%;">
                     <option disabled selected>-----</option>
@@ -105,4 +105,20 @@
         <div id='calendar'></div>
     </div>
 </div>
+
+
+<script type="text/javascript">
+    var checkout_time = document.getElementById('checkout_time');
+    var checkout_timeframe = "{{ equipment.checkout_timeframe }}";
+
+    console.log(checkout_timeframe)
+
+    if (checkout_timeframe == "CHECKOUT_3HR") {
+        checkout_time.style.display = "block";
+    }
+    else {
+        checkout_time.style.display = "none";
+    }
+</script>
+
 {% endblock pagecontent %}
