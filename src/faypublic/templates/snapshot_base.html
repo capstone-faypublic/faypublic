@@ -9,10 +9,19 @@
         <h1>Fayetteville Public Television</h1>
         <p>Welcome to FPTV's production and class management application.</p>
         
-        {% if user.is_authenticated %}
-        <p>
-            <a href="/profile/" class="button green-bg">Your Profile</a>
-        </p>
+        {% if request.user.is_authenticated %}
+
+            {% if request.user.is_superuser %}
+                <p>
+                    <a href="/admin/" class="button green-bg">Admin</a>
+                    <a href="/report/" class="button blue-bg">Report</a>
+                    <a href="/equipment/admin-calendar/" class="button red-bg">Equipment Calendar</a>
+                </p>
+            {% else %}
+                <p>
+                    <a href="/profile/" class="button green-bg">Your Profile</a>
+                </p>
+            {% endif %}
         <hr>
         <p>
             <a href="tel:479-444-3433">(479) 444-3433</a>

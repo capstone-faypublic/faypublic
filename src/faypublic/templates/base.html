@@ -65,7 +65,7 @@
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and not user.is_superuser %}
               <li class="">
                 <a href="/profile/" style="color: black;">
                   <span class="fa fa-user" aria-hidden="true"></span>&nbsp; Profile
@@ -76,6 +76,17 @@
                   <span class="fa fa-sign-out-alt" aria-hidden="true"></span>&nbsp; Logout
                 </a>
               </li>
+            {% elif user.is_authenticated %}
+                <li class="">
+                    <a href="/admin/" style="color: black;">
+                      <span class="fa fa-user" aria-hidden="true"></span>&nbsp; Admin
+                    </a>
+                  </li>
+                  <li class="">
+                    <a href="/logout/" style="color: black;">
+                      <span class="fa fa-sign-out-alt" aria-hidden="true"></span>&nbsp; Logout
+                    </a>
+                  </li>
             {% else %}
               <li class="">
                 <a href="/login/" style="color: black;">

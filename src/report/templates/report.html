@@ -77,6 +77,7 @@
             {% endfor %}
         </tr>
         {% for p in project_data.projects %}
+        <tr>
             <td>{{ p.title }}</td>
             <td>{{ p.owner }}</td>
             <td>{{ p.users.count }}</td>
@@ -102,6 +103,7 @@
             {% for c in p.equipment_checkouts %}
                 <td>{{ c }}</td>
             {% endfor %}
+        </tr>
         {% endfor %}
     </table>
 </div>

@@ -121,15 +121,21 @@ def user_has_current_checkout(user, item):
 @login_required
 def equipment_checkout(request, slug):
     equipment = get_object_or_404(Equipment, slug=slug)
-    userprofile = get_object_or_404(UserProfile, user=request.user)
 
     checkout_form = EquipmentCheckoutForm(request.POST)
 
     err_msg = ''
 
+    userprofile = None
+    try:
+        userprofile = UserProfile.objects.get(user=request.user)
+    except:
+        userprofile = None
+
     if checkout_form.is_valid():
+        userprofile = get_object_or_404(UserProfile, user=request.user)
         project_id = request.POST.get('project_id')
-        checkout_time = int(request.POST.get('checkout_time'))
+        checkout_time = int(request.POST.get('checkout_time')) if request.POST.get('checkout_time') else 0
         project = get_object_or_404(Project, id=project_id)
 
         if userprofile.can_checkout_equipment(equipment):

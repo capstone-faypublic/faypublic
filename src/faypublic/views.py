@@ -8,10 +8,12 @@ from inventory.models import EquipmentCheckout
 from .tasks import send_equipment_pickup_reminder, send_equipment_due_reminder, send_equipment_overdue_notification, send_class_registration_reminder
 
 def home(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and not request.user.is_superuser:
         checkouts = EquipmentCheckout.objects.filter(user=request.user).order_by('-due_date', '-checkout_date')
         class_registrations = request.user.classregistration_set.all().order_by('-class_section__date')
+
         userprofile = get_object_or_404(UserProfile, user=request.user)
+
         return render(
             request,
             'home.html',
@@ -21,12 +23,18 @@ def home(request):
                 'profile': userprofile,
             }
         )
+    elif request.user.is_authenticated:
+        return render(
+            request,
+            'admin_home.html',
+            context={
+            }
+        )
     else:
         return render(
             request,
             'home_login.html',
             context={
-                
             }
         )
 
