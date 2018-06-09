@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block pagecontent %}
+
+<head>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+    <link rel='stylesheet' href='/static/js/fullcalendar-3.9.0/fullcalendar.css' />
+    <!-- <script src='/static/js/fullcalendar-3.9.0/lib/jquery.min.js'></script> -->
+    <script src='/static/js/fullcalendar-3.9.0/lib/moment.min.js'></script>
+    <script src='/static/js/fullcalendar-3.9.0/fullcalendar.js'></script>
+
+</head>
+
+<div class="container space">
+
+    <div id='calendar'></div>
+
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        // page is now ready, initialize the calendar...
+        $('#calendar').fullCalendar({
+        // put your options and callbacks here
+            themeSystem: 'bootstrap4',
+            defaultView: 'agendaWeek',
+            events: '/equipment/admin-calendar/events/',
+            minTime: '10:00:00',
+            maxTime: '19:00:00',
+            slotDuration: '00:30:00',
+            nowIndicator: true,
+
+            // eventRender: function(event, $element) {
+            //     $element.popover({
+            //         title: event.equipment_name,
+            //         content: event.title,
+            //         trigger: 'hover',
+            //         placement: 'top',
+            //         container: 'body'
+            //     });
+            // }
+        })
+
+    });
+</script>
+
+{% endblock pagecontent %}

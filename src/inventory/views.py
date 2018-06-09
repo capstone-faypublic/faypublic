@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
+from django.contrib.admin.views.decorators import staff_member_required
 from userprofile.models import UserProfile
 from django.db.models import Q
 from .models import Equipment, EquipmentCategory, EquipmentCheckout
@@ -221,7 +222,54 @@ def all_checkouts(request):
             'end': due_date,
             'status': checkout.checkout_status,
             'title': checkout.equipment.name(),
-            'allDay': True
+            'allDay': False if checkout.equipment.checkout_timeframe == 'CHECKOUT_3HR' else True
+        })
+
+    return JsonResponse(checkouts, safe=False)
+
+
+@staff_member_required
+def admin_calendar(request):
+    return render(
+        request,
+        'admin_calendar.html',
+        context={
+        }
+    )
+
+@staff_member_required
+def admin_events(request):
+    start = request.GET.get('start')
+    end = request.GET.get('end')
+
+    start_date = arrow.get(start, 'YYYY-MM-DD').datetime
+    end_date = arrow.get(end, 'YYYY-MM-DD').datetime
+
+
+    all_checkouts = EquipmentCheckout.objects.filter(
+        (Q(checkout_status='RESERVED')
+        | Q(checkout_status='CHECKED_OUT'))
+        & (Q(checkout_date__gte=start_date)
+        & Q(due_date__lte=end_date))
+    )
+
+    checkouts = []
+    for checkout in all_checkouts:
+
+        checkout_date = checkout.checkout_date.strftime('%Y-%m-%d %H:%M')
+        due_date = checkout.due_date.strftime('%Y-%m-%d %H:%M')
+        checkouts.append({
+            'equipment_id': checkout.equipment.id,
+            'equipment_name': checkout.equipment.name(),
+            'checkout_timeframe': checkout.equipment.checkout_timeframe,
+            'start': checkout_date,
+            'end': due_date,
+            'status': checkout.checkout_status,
+            'title': str(checkout.user) + ' - ' + checkout.equipment.name(),
+            'allDay': False if checkout.equipment.checkout_timeframe == 'CHECKOUT_3HR' else True,
+            'description': 'atestasdfasdfa',
+            'displayEventTime': True,
+            'displayEventEnd': True
         })
 
     return JsonResponse(checkouts, safe=False)
