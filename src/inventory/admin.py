@@ -30,7 +30,7 @@ class EquipmentCheckoutAdmin(admin.ModelAdmin):
     list_editable = ('checkout_status', 'checkout_date', 'due_date',)
     list_filter = ('due_date', 'checkout_status')
     search_fields = ('user__first_name', 'user__last_name', 'equipment__make', 'equipment__model', 'equipment__category__title')
-    fields = ('checkout_status',)
+    fields = ('user', 'project', 'equipment', 'checkout_date', 'due_date', 'checkout_status',)
 
     ordering = ('-due_date',)
 admin.site.register(EquipmentCheckout, EquipmentCheckoutAdmin)
