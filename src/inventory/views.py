@@ -194,20 +194,26 @@ def cancel_checkout(request, checkout_id):
     return redirect('user_checkouts')
 
 
-def all_checkouts(request):
+def item_checkouts(request, item_id):
     start = request.GET.get('start')
     end = request.GET.get('end')
 
-    start_date = arrow.get(start, 'YYYY-MM-DD').datetime
-    end_date = arrow.get(end, 'YYYY-MM-DD').datetime
+    start_date = arrow.get(start, 'YYYY-MM-DDThh:mm:ss').datetime
+    end_date = arrow.get(end, 'YYYY-MM-DDThh:mm:ss').datetime
+
+    print(start_date)
+    print(end_date)
 
 
     all_checkouts = EquipmentCheckout.objects.filter(
         (Q(checkout_status='RESERVED')
         | Q(checkout_status='CHECKED_OUT'))
         & (Q(checkout_date__gte=start_date)
-        & Q(due_date__lte=end_date))
+        | Q(due_date__lte=end_date))
+        & Q(equipment__id=item_id)
     )
+
+    print(len(all_checkouts))
 
     checkouts = []
     for checkout in all_checkouts:
@@ -222,7 +228,7 @@ def all_checkouts(request):
             'end': due_date,
             'status': checkout.checkout_status,
             'title': checkout.equipment.name(),
-            'allDay': False if checkout.equipment.checkout_timeframe == 'CHECKOUT_3HR' else True
+            'allDay': False
         })
 
     return JsonResponse(checkouts, safe=False)
@@ -242,8 +248,8 @@ def admin_events(request):
     start = request.GET.get('start')
     end = request.GET.get('end')
 
-    start_date = arrow.get(start, 'YYYY-MM-DD').datetime
-    end_date = arrow.get(end, 'YYYY-MM-DD').datetime
+    start_date = arrow.get(start, 'YYYY-MM-DDThh:mm:ss').datetime
+    end_date = arrow.get(end, 'YYYY-MM-DDThh:mm:ss').datetime
 
 
     all_checkouts = EquipmentCheckout.objects.filter(
@@ -266,8 +272,7 @@ def admin_events(request):
             'end': due_date,
             'status': checkout.checkout_status,
             'title': str(checkout.user) + ' - ' + checkout.equipment.name(),
-            'allDay': False if checkout.equipment.checkout_timeframe == 'CHECKOUT_3HR' else True,
-            'description': 'atestasdfasdfa',
+            'allDay': False,
             'displayEventTime': True,
             'displayEventEnd': True
         })
