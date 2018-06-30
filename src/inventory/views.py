@@ -10,6 +10,7 @@ import arrow
 from .models import RESERVED
 from project.models import Project
 from django.http import JsonResponse
+import dateutil
 
 
 # Create your views here.
@@ -71,7 +72,7 @@ def compute_due_date(timeframe, checkout_date):
 
     elif timeframe == "CHECKOUT_24HR":
         res = arrow.get(checkout_date)
-        due = res.shift(days=1).replace(hour=17)
+        due = res.shift(days=1).replace(hour=19)
 
         # mon=0, tues=1, wed=2, thurs=3, fri=4, sat=5, sun=6
         # if due on wed or sun, shift one day
@@ -85,7 +86,7 @@ def compute_due_date(timeframe, checkout_date):
 
         # always due on a tuesday
         # shift a day to combat reserved-on-tues/due-on-tues
-        due = res.shift(day=1).shift(weekday=1).replace(hour=17)
+        due = res.shift(day=1).shift(weekday=1).replace(hour=19)
 
         return due.datetime
     return None
@@ -163,6 +164,8 @@ def equipment_checkout(request, slug):
                     checkout.checkout_status = RESERVED
                     checkout.save()
 
+                    print(checkout.checkout_date)
+
                     return redirect('user_checkouts')
                 else:
                     err_msg = 'Sorry, you currently have this item checked out'
@@ -201,9 +204,6 @@ def item_checkouts(request, item_id):
     start_date = arrow.get(start, 'YYYY-MM-DDThh:mm:ss').datetime
     end_date = arrow.get(end, 'YYYY-MM-DDThh:mm:ss').datetime
 
-    print(start_date)
-    print(end_date)
-
 
     all_checkouts = EquipmentCheckout.objects.filter(
         (Q(checkout_status='RESERVED')
@@ -213,13 +213,13 @@ def item_checkouts(request, item_id):
         & Q(equipment__id=item_id)
     )
 
-    print(len(all_checkouts))
-
     checkouts = []
     for checkout in all_checkouts:
 
-        checkout_date = checkout.checkout_date.strftime('%Y-%m-%d')
-        due_date = checkout.due_date.strftime('%Y-%m-%d')
+        print(checkout.checkout_date)
+
+        checkout_date = checkout.checkout_date.strftime('%Y-%m-%d %H:%M')
+        due_date = checkout.due_date.strftime('%Y-%m-%d %H:%M')
         checkouts.append({
             'equipment_id': checkout.equipment.id,
             'equipment_name': checkout.equipment.name(),
@@ -262,8 +262,10 @@ def admin_events(request):
     checkouts = []
     for checkout in all_checkouts:
 
-        checkout_date = checkout.checkout_date.strftime('%Y-%m-%d %H:%M')
-        due_date = checkout.due_date.strftime('%Y-%m-%d %H:%M')
+        print(checkout.checkout_date)
+
+        checkout_date = checkout.checkout_date.strftime('%Y-%m-%d %H:%M:%S%Z')
+        due_date = checkout.due_date.strftime('%Y-%m-%d %H:%M:%S%Z')
         checkouts.append({
             'equipment_id': checkout.equipment.id,
             'equipment_name': checkout.equipment.name(),

@@ -70,7 +70,7 @@ This is a reminder that the ''' + checkout.equipment_name() + ''' you have check
 def equipment_overdue_notification_email(userprofile, checkout):
     subject = 'Equipment OVERDUE ~ FPTV'
     message_body = '''Hey, ''' + userprofile.user.first_name + ''',\n
-Our records are indicating that you have an item checked out past its due date. Please return it as soon as possible, or call us at (479) 444-3433 and beg for an extension.\n
+Our records are indicating that you have an item checked out past its due date. Please return it as soon as possible, or call us at (479) 444-3433 and request an extension.\n
 The Fayetteville Public Television office is open from 10am-7pm on Monday, Tuesday, Thursday, Friday, and Saturday.\n\n
 Checkout details:
 Item: ''' + checkout.equipment.make + ' ' + checkout.equipment.model + '''

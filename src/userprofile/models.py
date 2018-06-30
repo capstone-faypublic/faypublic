@@ -40,7 +40,7 @@ class UserProfile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # additional user information we want to collect
-    profile_photo = models.FileField(upload_to=handle_file_upload, null=True, validators=[validate_photo_extension])
+    profile_photo = models.FileField(upload_to=handle_file_upload, null=True, validators=[validate_photo_extension], blank=True)
     street_address = models.CharField(max_length=255, null=True, blank=False)
     city = models.CharField(max_length=255, null=True, blank=False)
     state = models.CharField(max_length=255, null=True, blank=False)
