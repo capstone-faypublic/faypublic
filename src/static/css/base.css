@@ -407,4 +407,24 @@ select {
     display: table;
     clear: both;
 }
-/* 
+/* */
+
+
+/* Footer */
+
+#contact-footer {
+  width: 100%;
+  background: #424242;
+  color: #fff;
+}
+
+a {
+  color: #fff;
+  text-decoration: underline;
+}
+a:hover {
+  color: #b2b2b2;
+  text-decoration: none 
+}
+
+/* */
