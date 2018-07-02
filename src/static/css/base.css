@@ -418,11 +418,11 @@ select {
   color: #fff;
 }
 
-a {
+#contact-footer a {
   color: #fff;
   text-decoration: underline;
 }
-a:hover {
+#contact-footer a:hover {
   color: #b2b2b2;
   text-decoration: none 
 }
