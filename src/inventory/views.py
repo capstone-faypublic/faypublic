@@ -218,8 +218,10 @@ def item_checkouts(request, item_id):
 
         print(checkout.checkout_date)
 
-        checkout_date = checkout.checkout_date.strftime('%Y-%m-%d %H:%M')
-        due_date = checkout.due_date.strftime('%Y-%m-%d %H:%M')
+        # checkout_date = checkout.checkout_date.strftime('%Y-%m-%d %H:%M')
+        # due_date = checkout.due_date.strftime('%Y-%m-%d %H:%M')
+        checkout_date = arrow.get(checkout.checkout_date).shift(hours=-5).datetime
+        due_date = arrow.get(checkout.due_date).shift(hours=-5).datetime
         checkouts.append({
             'equipment_id': checkout.equipment.id,
             'equipment_name': checkout.equipment.name(),
@@ -248,8 +250,8 @@ def admin_events(request):
     start = request.GET.get('start')
     end = request.GET.get('end')
 
-    start_date = arrow.get(start, 'YYYY-MM-DDThh:mm:ss').datetime
-    end_date = arrow.get(end, 'YYYY-MM-DDThh:mm:ss').datetime
+    start_date = arrow.get(start, 'YYYY-MM-DDThh:mm:ss').shift(hours=-5).datetime
+    end_date = arrow.get(end, 'YYYY-MM-DDThh:mm:ss').shift(hours=-5).datetime
 
 
     all_checkouts = EquipmentCheckout.objects.filter(
@@ -264,8 +266,8 @@ def admin_events(request):
 
         print(checkout.checkout_date)
 
-        checkout_date = checkout.checkout_date.strftime('%Y-%m-%d %H:%M:%S%Z')
-        due_date = checkout.due_date.strftime('%Y-%m-%d %H:%M:%S%Z')
+        checkout_date = arrow.get(checkout.checkout_date).datetime
+        due_date = arrow.get(checkout.due_date).datetime
         checkouts.append({
             'equipment_id': checkout.equipment.id,
             'equipment_name': checkout.equipment.name(),
