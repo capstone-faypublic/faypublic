@@ -2,7 +2,13 @@ from django.contrib import admin
 from .models import Equipment, EquipmentCategory, EquipmentCheckout
 
 # Register your models here.
+
+class EquipmentCheckoutInline(admin.TabularInline):
+    model = EquipmentCheckout
+    fields = ('user', 'project', 'equipment', 'checkout_date', 'due_date', 'checkout_status')
+
 class EquipmentAdmin(admin.ModelAdmin):
+    inlines = [EquipmentCheckoutInline]
     list_display = ('make', 'model', 'quantity', 'available', 'checkout_timeframe')
     list_filter = ('make', 'checkout_timeframe', 'category__title')
     exclude = ('slug',)
