@@ -414,17 +414,7 @@ select {
 
 #contact-footer {
   width: 100%;
-  background: #424242;
-  color: #fff;
-}
-
-#contact-footer a {
-  color: #fff;
-  text-decoration: underline;
-}
-#contact-footer a:hover {
-  color: #b2b2b2;
-  text-decoration: none 
+  text-align: right;
 }
 
 /* */
