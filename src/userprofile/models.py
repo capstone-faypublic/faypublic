@@ -50,6 +50,7 @@ class UserProfile(models.Model):
     badges = models.ManyToManyField(Badge, related_name="users_with_badge_awarded", blank=True)
     get_sms_reminders = models.BooleanField(default=False, blank=True)
     get_email_reminders = models.BooleanField(default=False, blank=True)
+    how_did_you_hear_about_us = models.TextField(blank=True, null=True)
 
     def earned_badges(self):
         registrations = self.user.classregistration_set.filter(completed=True)
