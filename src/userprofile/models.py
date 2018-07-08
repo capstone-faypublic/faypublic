@@ -30,6 +30,10 @@ def handle_file_upload(profile, filename):
     timestamp = arrow.utcnow().timestamp
     return 'uploads/{0}/profile-photos/{1}-{2}'.format(profile.user.username, timestamp, filename)
 
+def handle_proof_of_residency_upload(profile, filename):
+    timestamp = arrow.utcnow().timestamp
+    return 'uploads/{0}/proof-of-residency/{1}-{2}'.format(profile.user.username, timestamp, filename)
+
 def validate_photo_extension(file):
     valid_extensions = ['.jpg', '.jpeg', '.png', '.gif']
     ext = os.path.splitext(file.name)[1]
@@ -51,6 +55,7 @@ class UserProfile(models.Model):
     get_sms_reminders = models.BooleanField(default=False, blank=True)
     get_email_reminders = models.BooleanField(default=False, blank=True)
     how_did_you_hear_about_us = models.TextField(blank=True, null=True)
+    proof_of_residency = models.FileField(upload_to=handle_proof_of_residency_upload, null=True, blank=True)
 
     def earned_badges(self):
         registrations = self.user.classregistration_set.filter(completed=True)
