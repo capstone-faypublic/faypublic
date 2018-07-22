@@ -27,6 +27,14 @@
 
     <div class="flex-item space">
 
+        {% if class.is_by_appointment %}
+
+        <h2>This class is offered by appointment</h2>
+
+        <p>Please contact us at <a href="tel:4794443433">(479) 444-3433</a> or <a href="mailto:info@faypublic.tv">info@faypublic.tv</a> to register</p>
+
+        {% else %}
+
         <h2>Select a section to register</h2>
 
         <p>{{ err_msg }}</p>
@@ -56,6 +64,8 @@
             <input type="submit" value="Register" class="button green-bg" style="min-width:100%">
 
         </form>
+
+        {% endif %}
 
     </div>
 

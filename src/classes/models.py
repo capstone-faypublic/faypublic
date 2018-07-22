@@ -18,6 +18,7 @@ class Class(models.Model):
     prerequisite_badges = models.ManyToManyField(Badge, related_name="courses_with_badge_prerequisite", blank=True)
     awarded_badges = models.ManyToManyField(Badge, related_name="courses_with_badge_awarded", blank=True)
     slug = models.SlugField(blank=True, unique=True)
+    is_by_appointment = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.id:
