@@ -56,6 +56,9 @@ class UserProfile(models.Model):
     get_email_reminders = models.BooleanField(default=False, blank=True)
     how_did_you_hear_about_us = models.TextField(blank=True, null=True)
     proof_of_residency = models.FileField(upload_to=handle_proof_of_residency_upload, null=True, blank=True)
+    parent_name = models.CharField(max_length=255, null=True, blank=True)
+    parent_email = models.EmailField(null=True, blank=True)
+    parent_phone = models.CharField(max_length=15, null=True, blank=True)
 
     def earned_badges(self):
         registrations = self.user.classregistration_set.filter(completed=True)

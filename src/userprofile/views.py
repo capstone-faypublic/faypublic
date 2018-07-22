@@ -24,7 +24,10 @@ def user_profile(request):
 @login_required
 def edit_profile(request):
     userprofile = get_object_or_404(UserProfile, user=request.user)
-    profile_form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+    profile_form = UserProfileForm(instance=userprofile)
+
+    if request.POST:
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
 
     if profile_form.is_valid():
         userprofile = profile_form.save(commit=False)
@@ -48,7 +51,7 @@ def edit_profile(request):
         context={
             'name': request.user.first_name + ' ' + request.user.last_name,
             'profile': userprofile,
-            'profile_form': UserProfileForm(instance=userprofile)
+            'profile_form': profile_form
         }
     )
 

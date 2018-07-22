@@ -121,6 +121,26 @@ $(document).ready(function() {
         </table>
         <br>
 
+        <br/>
+
+        <p>If you are under 18, please fill out the following:</p>
+        <div class="wrapper">
+            <label>Parent name:</label>
+            {{ profile_form.parent_name }}
+        </div>
+        <br/>
+        <div class="wrapper">
+            <label>Parent email:</label>
+            {{ profile_form.parent_email }}
+        </div>
+        <br/>
+        <div class="wrapper">
+            <label>Parent phone:</label>
+            {{ profile_form.parent_phone }}
+        </div>
+
+        <br/>
+
         <input type="submit" class="button green-bg" value="Save Profile" style="width:100%"/>
     </form>
 </div>
