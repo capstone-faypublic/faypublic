@@ -67,6 +67,7 @@ class ProgramRequest(models.Model):
         choices = PROGRAM_REQUEST_STATUS,
         default = SUBMITTED
     )
+    contains_mature_content = models.BooleanField(default=False)
 
 
     def __str__(self):
