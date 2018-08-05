@@ -2,7 +2,7 @@ import arrow
 
 
 def datetime_format(dt):
-    return arrow.get(dt).format('dddd MMM D, YYYY h:mm a')
+    return arrow.get(dt).shift(hours=-5).format('dddd MMM D, YYYY h:mm a')
 
 
 # Equipment pickup reminders
