@@ -13,12 +13,17 @@ User registration, production management, and class scheduling rolled into a hap
 3. Rename `.env.example` to `.env`
 4. Run the following commands
 ```bash
-docker-compose up -d
+docker-compose up
+```
+5. In a new terminal window, run
+```bash
+docker-compose restart django # might or might not need this one; wait about 20-30 seconds for postres to start before running it
 docker-compose exec django python manage.py makemigrations
 docker-compose exec django python manage.py migrate
-docker-compose exec django python manage.py runserver
+docker-compose restart django
+docker-compose restart celery
 ```
-5. Visit [`http://localhost:8000`](http://localhost:8000)
+6. Visit [`http://localhost:8000`](http://localhost:8000)
 
 ### Other runtime options
 
