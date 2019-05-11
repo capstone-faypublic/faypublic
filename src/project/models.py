@@ -3,6 +3,7 @@ from django.db import models
 from userprofile.models import UserProfile
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from faypublic.settings import DEBUG
 
 SUBMITTED = 'SUBMITTED'
 SCHEDULED = 'SCHEDULED'
@@ -48,6 +49,11 @@ class Project(models.Model):
 
     def get_absolute_url(self):
         return "/profile/projects/%i/" % self.id
+
+    def get_uploaded_file_url(self):
+        if DEBUG:
+            return '/static/media/' + self.uploaded_file.url
+        return self.uploaded_file.url
 
 
 

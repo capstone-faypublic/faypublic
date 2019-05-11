@@ -5,6 +5,7 @@ from django.template.defaultfilters import slugify
 from django.db.models import Q
 import arrow
 from userprofile.models import Badge
+from faypublic.settings import DEBUG
 
 # AUDIO = 'AUDIO'
 # VIDEO = 'VIDEO'
@@ -64,7 +65,6 @@ class EquipmentCategory(models.Model):
         return len(Equipment.objects.filter(category=self))
 
 
-
 def handle_file_upload(instance, filename):
     return 'uploads/equip/{0}'.format(filename)
 
@@ -118,6 +118,10 @@ class Equipment(models.Model):
 
         return self.quantity - len(taken_units)
 
+    def get_image_url(self):
+        if DEBUG:
+            return '/static/media/' + self.image.url
+        return self.image.url
 
 
 class EquipmentCheckout(models.Model):
