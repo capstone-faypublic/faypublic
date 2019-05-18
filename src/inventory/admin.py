@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Equipment, EquipmentCategory, EquipmentCheckout
+from .models import Equipment, EquipmentCategory, EquipmentCheckout, ClosedDay
 
 # Register your models here.
 
@@ -40,3 +40,13 @@ class EquipmentCheckoutAdmin(admin.ModelAdmin):
 
     ordering = ('-due_date',)
 admin.site.register(EquipmentCheckout, EquipmentCheckoutAdmin)
+
+
+class ClosedDayAdmin(admin.ModelAdmin):
+    list_display = ('day_of_week', 'begin_date', 'end_date')
+    list_editable = ('begin_date', 'end_date')
+    list_filter = ('day_of_week', 'begin_date', 'end_date')
+    search_fields = ('day_of_week', 'begin_date', 'end_date')
+    fields = ('day_of_week', 'begin_date', 'end_date')
+    ordering = ('-begin_date',)
+admin.site.register(ClosedDay, ClosedDayAdmin)
