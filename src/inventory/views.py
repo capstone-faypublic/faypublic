@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.admin.views.decorators import staff_member_required
 from userprofile.models import UserProfile
 from django.db.models import Q
-from .models import Equipment, EquipmentCategory, EquipmentCheckout
+from .models import Equipment, EquipmentCategory, EquipmentCheckout, ClosedDay
 from .forms import EquipmentCheckoutForm
 import arrow
 from .models import RESERVED, CHECKED_OUT
@@ -76,6 +76,7 @@ def compute_due_date(timeframe, checkout_date):
 
         # mon=0, tues=1, wed=2, thurs=3, fri=4, sat=5, sun=6
         # if due on wed or sun, shift one day
+        # this is a naive shift, more handling will be done in the checkout_or_due_date_on_closed_day function
         if due.weekday() == 2 or due.weekday() == 6:
             due = due.shift(days=1)
 
@@ -117,6 +118,19 @@ def user_has_current_checkout(user, item):
     )
     return len(checkouts) > 0
 
+def closed_on_day(date):
+    weekday = arrow.get(date).weekday()
+    closed_days = ClosedDay.objects.filter(
+        Q(day_of_week=weekday)
+        & (
+            (Q(begin_date=None) & Q(end_date=None))
+            | (Q(begin_date__lte=date) & Q(end_date=None))
+            | (Q(begin_date=None) & Q(end_date__gte=date))
+            | (Q(begin_date__lte=date) & Q(end_date__gte=date))
+        )
+    )
+
+    return len(closed_days) > 0
 
 @login_required
 def equipment_checkout(request, slug):
@@ -155,17 +169,20 @@ def equipment_checkout(request, slug):
             checkout.project = project
             checkout.checkout_status = RESERVED
 
-            units = available_units(equipment, checkout.checkout_date, checkout.due_date)
+            if not closed_on_day(checkout.checkout_date):
+                units = available_units(equipment, checkout.checkout_date, checkout.due_date)
 
-            if units > 0:
-                if not user_has_current_checkout(request.user, equipment):
-                    checkout.save()
+                if units > 0:
+                    if not user_has_current_checkout(request.user, equipment):
+                        checkout.save()
 
-                    return redirect('user_checkouts')
+                        return redirect('user_checkouts')
+                    else:
+                        err_msg = 'Sorry, you currently have this item checked out'
                 else:
-                    err_msg = 'Sorry, you currently have this item checked out'
+                    err_msg = 'Sorry, there are no units available for that date'
             else:
-                err_msg = 'Sorry, there are units available for that date'
+                err_msg = 'Sorry, we are closed that day!'
         else:
             err_msg = 'Sorry, you haven\'t completed the prerequisites necessary to check out this item'
 
