@@ -111,3 +111,6 @@ src/static/media/uploads/*
 .idea
 .vscode
 .DS_Store
+
+# assets
+!src/static/**/lib
