@@ -22,7 +22,7 @@ CHECKOUT_WEEK = 'CHECKOUT_WEEK'
 CHECKOUT_TIMEFRAMES = [
     (CHECKOUT_3HR, '3hr checkout'),
     (CHECKOUT_24HR, '24hr checkout'),
-    (CHECKOUT_WEEK, 'Thurs-Tues checkout')
+    (CHECKOUT_WEEK, 'Checkout due Tues')
 ]
 
 
