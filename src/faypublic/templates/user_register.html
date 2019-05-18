@@ -14,37 +14,51 @@
 <div class="container">
     <form action="" method="post">
         {% csrf_token %}
+        {{ form.non_field_errors }}
+
         <div class = "wrapper">
-        	<i class="fas fa-user-circle" id="fa-icon"></i>
-        	{{ form.username }}
+            <i class="fas fa-user-circle" id="fa-icon"></i>
+            {{ form.username }}
         </div>
+        {{ form.username.errors }}
         <br>
+
         <div class = "wrapper">
         	<i class="fa fa-id-card" id="fa-icon"></i>
         	{{ form.first_name }}
         </div>
+        {{ form.first_name.errors }}
         <br>
+
         <div class = "wrapper">
         	<i class="far fa-id-card" id="fa-icon"></i>
         	{{ form.last_name }}
         </div>
+        {{ form.last_name.errors }}
         <br>
+
         <div class = "wrapper">
         	<i class="fa fa-envelope" id="fa-icon"></i>
         	{{ form.email }}
         </div>
+        {{ form.email.errors }}
         <br>
+
         <div class = "wrapper">
         	<i class="fas fa-unlock-alt" id="fa-icon"></i>
         	{{ form.password1 }}
         	<p id="pass-help">Must contain 8 characters, with at least 1 letter</p>
         </div>
+        {{ form.password1.errors }}
         <br>
+
         <div class = "wrapper">
         	<i class="fa fa-check-circle" id="fa-icon"></i>
         	{{ form.password2 }}
         </div>
+        {{ form.password2.errors }}
         <br/>
+
         <p>
             <input type="checkbox" name="user_application" style="display: inline;" required> I agree to the User Application Terms (shown below)
         </p>
