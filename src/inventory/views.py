@@ -86,7 +86,7 @@ def compute_due_date(timeframe, checkout_date):
 
         # always due on a tuesday
         # shift a day to combat reserved-on-tues/due-on-tues
-        due = res.shift(day=1).shift(weekday=1).replace(hour=19)
+        due = res.shift(days=+1).shift(weekday=1).replace(hour=19)
 
         return due.datetime
     return None
