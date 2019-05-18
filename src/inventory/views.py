@@ -7,7 +7,7 @@ from django.db.models import Q
 from .models import Equipment, EquipmentCategory, EquipmentCheckout
 from .forms import EquipmentCheckoutForm
 import arrow
-from .models import RESERVED
+from .models import RESERVED, CHECKED_OUT
 from project.models import Project
 from django.http import JsonResponse
 import dateutil
@@ -94,18 +94,16 @@ def compute_due_date(timeframe, checkout_date):
 
 
 def available_units(item, start_date, end_date):
-    checkouts = EquipmentCheckout.objects.filter(
-        Q(equipment=item)
-        & (
-            Q(checkout_date__gte=start_date)
-            & Q(due_date__lte=end_date)
-        )
-        & (
-            Q(checkout_status='RESERVED')
-            | Q(checkout_status='CHECKED_OUT')
-        )
+    all_item_checkouts = EquipmentCheckout.objects.filter(equipment=item)
+    checked_out_on_date = all_item_checkouts.filter(
+        (Q(checkout_date__gte=start_date) & Q(checkout_date__lte=end_date) & Q(due_date__gte=end_date)) # overlaps the checkout_date
+        | (Q(checkout_date__lte=start_date) & Q(due_date__gte=start_date) &Q(due_date__lte=end_date)) # overlaps the due_date
+        | (Q(checkout_date__lte=start_date) & Q(due_date__gte=end_date)) # within checkout_date and due_date
+        | (Q(checkout_date__gte=start_date) & Q(due_date__lte=end_date)) # wraps checkout_date and due_date
     )
-    return item.quantity - len(checkouts)
+    checked_out_by_status = checked_out_on_date.filter(Q(checkout_status=RESERVED) | Q(checkout_status=CHECKED_OUT))
+
+    return item.quantity - len(checked_out_by_status)
 
 def user_has_current_checkout(user, item):
     today = arrow.utcnow().date()
@@ -142,29 +140,26 @@ def equipment_checkout(request, slug):
 
         if userprofile.can_checkout_equipment(equipment):
             checkout = checkout_form.save(commit=False)
-            checkout_date = checkout.checkout_date
-            due_date = compute_due_date(
-                equipment.checkout_timeframe, checkout.checkout_date
-            )
 
-            if available_units(equipment, checkout_date, due_date) > 0:
+            checkout.equipment = equipment
+            checkout.user = request.user
+
+            # checkouts starting
+            if not checkout.equipment.checkout_timeframe == 'CHECKOUT_3HR':
+                checkout.checkout_date = arrow.get(checkout.checkout_date).replace(hour=10).datetime
+            else:
+                checkout.checkout_date = arrow.get(checkout.checkout_date).replace(hour=checkout_time).datetime
+
+
+            checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
+            checkout.project = project
+            checkout.checkout_status = RESERVED
+
+            units = available_units(equipment, checkout.checkout_date, checkout.due_date)
+
+            if units > 0:
                 if not user_has_current_checkout(request.user, equipment):
-                    checkout.equipment = equipment
-                    checkout.user = request.user
-
-                    # checkouts starting
-                    if not checkout.equipment.checkout_timeframe == 'CHECKOUT_3HR':
-                        checkout.checkout_date = arrow.get(checkout.checkout_date).replace(hour=10).datetime
-                    else:
-                        checkout.checkout_date = arrow.get(checkout_date).replace(hour=checkout_time).datetime
-
-
-                    checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
-                    checkout.project = project
-                    checkout.checkout_status = RESERVED
                     checkout.save()
-
-                    print(checkout.checkout_date)
 
                     return redirect('user_checkouts')
                 else:
