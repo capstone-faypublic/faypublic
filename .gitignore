@@ -114,3 +114,6 @@ src/static/media/uploads/*
 
 # assets
 !src/static/**/lib
+
+# certificates
+data/certbot
