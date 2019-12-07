@@ -14,7 +14,7 @@ services:
 
   django:
     restart: always
-    command: gunicorn -w 3 --bind 0.0.0.0:8080 faypublic.wsgi
+    command: ./wait-for-it.sh postgres:5432 -- gunicorn -w 3 --bind 0.0.0.0:8080 faypublic.wsgi
 
   postgres:
     restart: always

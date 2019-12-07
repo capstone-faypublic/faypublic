@@ -13,7 +13,7 @@ services:
 
   django:
     build: ./src
-    command: python /usr/src/app/manage.py runserver 0:8080
+    command: ./wait-for-it.sh postgres:5432 -- python /usr/src/app/manage.py runserver 0:8080
     volumes:
       - ./src:/usr/src/app
       - ./src/static/media:/media
@@ -27,7 +27,7 @@ services:
   celery:
     build: ./src
     # command: celery multi start w1 -A faypublic -l info && celery -A faypublic beat -l info
-    command: celery -A faypublic worker -l info -B
+    command: ./wait-for-it.sh postgres:5432 -- celery -A faypublic worker -l info -B
     volumes:
       - ./src:/usr/src/app
     links:
