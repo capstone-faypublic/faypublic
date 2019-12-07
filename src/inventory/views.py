@@ -136,7 +136,7 @@ def closed_on_day(date):
 def equipment_checkout(request, slug):
     equipment = get_object_or_404(Equipment, slug=slug)
 
-    checkout_form = EquipmentCheckoutForm(request.POST)
+    checkout_form = EquipmentCheckoutForm(request.POST or None)
 
     err_msg = ''
 
@@ -148,7 +148,7 @@ def equipment_checkout(request, slug):
 
     if checkout_form.is_valid():
         userprofile = get_object_or_404(UserProfile, user=request.user)
-        project_id = request.POST.get('project_id')
+        project_id = request.POST.get('project')
         checkout_time = int(request.POST.get('checkout_time')) if request.POST.get('checkout_time') else 0
         project = get_object_or_404(Project, id=project_id)
 

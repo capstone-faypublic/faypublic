@@ -8,7 +8,7 @@ DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 class EquipmentCheckoutForm(ModelForm):
     class Meta:
         model = EquipmentCheckout
-        exclude = ['user', 'equipment', 'checkout_status', 'due_date', 'project']
+        exclude = ['user', 'equipment', 'checkout_status', 'due_date']
         widgets = {
             'checkout_date' : DateInput(),
         }
