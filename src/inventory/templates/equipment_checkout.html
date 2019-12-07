@@ -70,10 +70,12 @@
 
         <form action="" method="post">
             {% csrf_token %}
+            {{ form.non_field_errors }}
             <div class = "wrapper">
                 <i class="fa fa-calendar" id="fa-edit-prof"></i>
                 <label>Checkout date:</label>
                 {{ checkout_form.checkout_date }}
+                {{ checkout_form.checkout_date.errors }}
             </div>
             <br/>
             <div class="wrapper" id="checkout_time">
@@ -93,13 +95,14 @@
             <div>
                 <p>
                     <label>Project</label>
-                    <select name="project_id" required style="width:55%">
+                    <select name="project" required style="width:55%">
                         <option disabled selected>-----</option>
                         {% for project in userprofile.projects %}
                             <option value="{{ project.id }}">{{ project.title }}</option>
                         {% endfor %}
                     </select>
                 </p>
+                {{ checkout_form.project.errors }}
             </div>
             <input type="submit" class="button green-bg" value="Check out" style="width:100%"/>
         </form>
