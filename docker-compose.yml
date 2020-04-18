@@ -1,45 +1,72 @@
 version: '3'
 
 services:
+  traefik:
+    image: traefik:v2.0
+    command:
+      - --log.level=DEBUG
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+    depends_on:
+      - django
+      - nginx
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
   nginx:
-    image: nginx
+    image: nginx:alpine
+    restart: always
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - ./src/static:/static
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nginx.rule=Host(`login.faypublic.local`) && PathPrefix(`/static/`) # be sure to add login.faypublic.local to your /etc/hosts file
+      - traefik.http.routers.nginx.entrypoints=web
+
+  django:
+    build: .
+    # restart: always
+    command: ./wait-for-it.sh $POSTGRES_HOST:$POSTGRES_PORT -t 60 -- python manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
     volumes:
-      - ./src/static:/var/www/static
-      - ./nginx/sites-enabled.conf:/etc/nginx/conf.d/sites-enabled.conf
-    depends_on:
-      - django
-
-  django:
-    build: ./src
-    command: ./wait-for-it.sh postgres:5432 -- python /usr/src/app/manage.py runserver 0:8080
-    volumes:
-      - ./src:/usr/src/app
-      - ./src/static/media:/media
+      - ./src:/src/faypublic
     depends_on:
       - postgres
     links:
       - redis
+    env_file:
+      - .env
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.django.rule=Host(`login.faypublic.local`) # be sure to add login.faypublic.local to your /etc/hosts file
+      - traefik.http.routers.django.entrypoints=web
+
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.data:/var/lib/postgresql/data
     env_file:
       - .env
 
   celery:
-    build: ./src
+    build: .
     # command: celery multi start w1 -A faypublic -l info && celery -A faypublic beat -l info
-    command: ./wait-for-it.sh postgres:5432 -- celery -A faypublic worker -l info -B
+    command: ./wait-for-it.sh $POSTGRES_HOST:$POSTGRES_PORT -t 60 -- celery -A faypublic worker -l info -B
     volumes:
-      - ./src:/usr/src/app
+      - ./src:/src/faypublic
     links:
       - postgres
       - redis
-    env_file:
-      - .env
-
-  postgres:
-    image: postgres
-    volumes:
-      - ./postgres:/var/lib/postgresql/data
     env_file:
       - .env
 
