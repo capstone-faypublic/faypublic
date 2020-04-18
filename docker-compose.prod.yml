@@ -21,7 +21,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   django:
-    image: registry.gitlab.com/jantimpe/strikelab_web:latest
+    build: .
     command: ./wait-for-it.sh $POSTGRES_HOST:$POSTGRES_PORT -t 60 -- gunicorn faypublic.wsgi -w 4 -b 0.0.0.0:8000
     ports:
       - 8000:8000
