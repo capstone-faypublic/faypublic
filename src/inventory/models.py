@@ -6,6 +6,7 @@ from django.db.models import Q
 import arrow
 from userprofile.models import Badge
 from faypublic.settings import DEBUG
+from userprofile.models import UserProfile
 
 # AUDIO = 'AUDIO'
 # VIDEO = 'VIDEO'
@@ -163,6 +164,9 @@ class EquipmentCheckout(models.Model):
 
     def user_name(self):
         return self.user.first_name + " " + self.user.last_name
+    
+    def user_profile(self):
+        return UserProfile.objects.get(user=self.user)
 
     def project_title(self):
         return self.project.title

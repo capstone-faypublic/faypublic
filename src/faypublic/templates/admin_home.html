@@ -5,6 +5,30 @@
 {% block content %}
 
     <div class="container">
+        <h2>Overdue checkouts</h2>
+
+        <table class="table">
+            <tr class="row">
+                <th>User</th>
+                <th>Equipment</th>
+            </tr>
+
+            {% for checkout in overdue_checkouts %}
+
+             <tr class="row">
+                <td>
+                    <b>{{ checkout.user_name }}</b> <br/>
+                    {{ checkout.user.email }} - {{ checkout.user_profile.phone_number }}
+                </td>
+                <td>
+                    <b>{{ checkout.equipment.make }} {{ checkout.equipment.model }}</b> <br/>
+                    <b>Checked out</b>: {{ checkout.checkout_date }} <br/>
+                    <b>Due</b>: {{ checkout.due_date }} - {{ checkout.due_date_humanized }}
+                </td>
+             </tr>
+
+            {% endfor %}
+        </table>
     </div>
 
 {% endblock content %}
