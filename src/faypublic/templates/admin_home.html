@@ -28,7 +28,36 @@
              </tr>
 
             {% endfor %}
+
         </table>
+
+    </div>
+
+    <div class="container">
+        <h2>Today's classes</h2>
+
+        {% for class in todays_classes %}
+
+            <table class="table">
+
+                <tr class="row">
+                    <th>{{ class.class_key.class_title }}</th>
+                    <th>{{ class.date }} - {{ class.date_humanized }}</th>
+                    <th>Registrations: {{ class.class_key.number_registered }}</th>
+                </tr>
+
+                {% for registration in class.classregistration_set.all %}
+                    <tr class="row">
+                        <td>{{ registration.user }}</td>
+                        <td>{{ registration.user }}</td>
+                        <td>{{ registration.user }}</td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+
+        {% endfor %}
+
     </div>
 
 {% endblock content %}
