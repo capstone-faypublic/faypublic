@@ -1,36 +1,66 @@
 version: '3'
 
 services:
-  nginx:
-    restart: always
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  traefik:
+    image: traefik:v2.0
+    command:
+      - --api.insecure=false
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.tlschal.acme.tlschallenge=true
+      - --certificatesresolvers.tlschal.acme.email=notifications@your-media.org
+      - --certificatesresolvers.tlschal.acme.storage=/letsencrypt/acme.json
+    depends_on:
+      - django
+      - nginx
     ports:
-      - 80:80
       - 443:443
     volumes:
-      - ./src/static:/var/www/static
-      - ./nginx/sites-enabled.prod.conf:/etc/nginx/conf.d/sites-enabled.conf
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
+      - ./letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   django:
-    restart: always
-    command: ./wait-for-it.sh postgres:5432 -- gunicorn -w 3 --bind 0.0.0.0:8080 faypublic.wsgi
+    build: .
+    command: ./wait-for-it.sh $POSTGRES_HOST:$POSTGRES_PORT -t 60 -- gunicorn faypublic.wsgi -w 4 -b 0.0.0.0:8000
+    ports:
+      - 8000:8000
+    volumes:
+      - ./src:/src/faypublic
+    links:
+      - redis
+    env_file:
+      - .env
+    labels:
+      - traefik.enable=true
+      # - traefik.http.routers.django.rule=Host(`login.faypublic.tv`)
+      - traefik.http.routers.django.rule=Host(`faypublic.jantimpe.dev`)
+      - traefik.http.routers.django.entrypoints=websecure
+      - traefik.http.routers.django.tls.certresolver=tlschal
 
-  postgres:
+  nginx:
+    image: nginx:alpine
     restart: always
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - ./src/static:/static
+    labels:
+      - traefik.enable=true
+      # - traefik.http.routers.nginx.rule=Host(`login.faypublic.tv`) && PathPrefix(`/static/`)
+      - traefik.http.routers.nginx.rule=Host(`faypublic.jantimpe.dev`) && PathPrefix(`/static/`)
+      - traefik.http.routers.nginx.entrypoints=websecure
+      - traefik.http.routers.nginx.tls.certresolver=tlschal
 
   celery:
-    restart: always
+    build: .
+    # command: celery multi start w1 -A faypublic -l info && celery -A faypublic beat -l info
+    command: ./wait-for-it.sh $POSTGRES_HOST:$POSTGRES_PORT -t 60 -- celery -A faypublic worker -l info -B
+    volumes:
+      - ./src:/src/faypublic
+    links:
+      - redis
+    env_file:
+      - .env
 
   redis:
-    restart: always
-
-  certbot:
-    image: certbot/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-    volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
+    image: redis

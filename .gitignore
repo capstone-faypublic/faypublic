@@ -117,3 +117,4 @@ src/static/media/uploads/*
 
 # certificates
 data/certbot
+.data
