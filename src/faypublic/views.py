@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -24,10 +25,12 @@ def home(request):
             }
         )
     elif request.user.is_authenticated:
+        overdue_checkouts = EquipmentCheckout.objects.filter(due_date__lte=timezone.now(), checkout_status='CHECKED_OUT').order_by('-due_date', '-checkout_date')
         return render(
             request,
             'admin_home.html',
             context={
+                'overdue_checkouts': overdue_checkouts
             }
         )
     else:
