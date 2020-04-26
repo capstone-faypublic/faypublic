@@ -42,10 +42,10 @@ class Project(models.Model):
     uploaded_file = models.FileField(upload_to=handle_file_upload, null=True, blank=True, validators=[validate_video_extension])
 
     def __str__(self):
-        return self.title
+        return self.title + ' - ' + str(self.owner)
 
     def __unicode__(self):
-        return self.title
+        return self.title + ' - ' + str(self.owner)
 
     def get_absolute_url(self):
         return "/profile/projects/%i/" % self.id

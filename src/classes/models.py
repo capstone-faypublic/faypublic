@@ -53,10 +53,10 @@ class ClassSection(models.Model):
     seats_available = models.IntegerField(null=True, blank=True, default=0)
 
     def __str__(self):
-        return self.class_key.class_title
+        return self.class_key.class_title + ' - ' + arrow.get(self.date).format('MM/DD/YYYY HH:mm')
 
     def __unicode__(self):
-        return self.class_key.class_title
+        return self.class_key.class_title + ' - ' + arrow.get(self.date).format('MM/DD/YYYY HH:mm')
 
     def number_open_seats(self):
         return self.seats_available - len(self.classregistration_set.all())
