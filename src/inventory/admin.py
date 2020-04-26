@@ -14,7 +14,9 @@ class EquipmentAdmin(admin.ModelAdmin):
     exclude = ('slug',)
     ordering = ('make', 'model')
     filter_horizontal = ('prerequisite_badges',)
-    search_fields = ('make', 'model', '')
+    search_fields = ('make', 'model')
+    autocomplete_fields = ['category']
+
 admin.site.register(Equipment, EquipmentAdmin)
 
 
@@ -37,6 +39,7 @@ class EquipmentCheckoutAdmin(admin.ModelAdmin):
     list_filter = ('due_date', 'checkout_status')
     search_fields = ('user__first_name', 'user__last_name', 'equipment__make', 'equipment__model', 'equipment__category__title')
     fields = ('user', 'project', 'equipment', 'checkout_date', 'due_date', 'checkout_status',)
+    autocomplete_fields = ['user', 'equipment', 'project']
 
     ordering = ('-due_date',)
 admin.site.register(EquipmentCheckout, EquipmentCheckoutAdmin)

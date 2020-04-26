@@ -3,7 +3,7 @@ from .models import Project, ProgramRequest
 
 # Register your models here.
 class ProjectAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ['title', 'owner__first_name', 'owner__last_name', 'owner__username']
 admin.site.register(Project, ProjectAdmin)
 
 class ProgramRequestAdmin(admin.ModelAdmin):
