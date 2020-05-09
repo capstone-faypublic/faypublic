@@ -2,6 +2,7 @@ import arrow, os
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
 
 # Create your models here.
@@ -108,7 +109,7 @@ class UserProfile(models.Model):
 
     def get_profile_photo_uri(self):
         if self.profile_photo:
-            if DEBUG:
+            if settings.DEBUG:
                 return '/static/media/' + self.profile_photo.url
             return self.profile_photo.url
         return None
