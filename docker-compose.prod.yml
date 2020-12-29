@@ -34,8 +34,7 @@ services:
       - .env
     labels:
       - traefik.enable=true
-      # - traefik.http.routers.django.rule=Host(`login.faypublic.tv`)
-      - traefik.http.routers.django.rule=Host(`faypublic.jantimpe.dev`)
+      - traefik.http.routers.django.rule=Host(`login.faypublic.tv`)
       - traefik.http.routers.django.entrypoints=websecure
       - traefik.http.routers.django.tls.certresolver=tlschal
 
@@ -47,8 +46,7 @@ services:
       - ./src/static:/static
     labels:
       - traefik.enable=true
-      # - traefik.http.routers.nginx.rule=Host(`login.faypublic.tv`) && PathPrefix(`/static/`)
-      - traefik.http.routers.nginx.rule=Host(`faypublic.jantimpe.dev`) && PathPrefix(`/static/`)
+      - traefik.http.routers.nginx.rule=Host(`login.faypublic.tv`) && PathPrefix(`/static/`)
       - traefik.http.routers.nginx.entrypoints=websecure
       - traefik.http.routers.nginx.tls.certresolver=tlschal
 
