@@ -209,4 +209,5 @@ LOGGING = {
             'handlers': ['file'],
             'level': 'DEBUG',
         },
-   
+    }
+}
