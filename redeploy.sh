@@ -4,3 +4,4 @@ docker-compose -f docker-compose.prod.yml exec django python manage.py collectst
 docker-compose -f docker-compose.prod.yml exec django python manage.py makemigrations;
 docker-compose -f docker-compose.prod.yml exec django python manage.py migrate;
 docker-compose -f docker-compose.prod.yml restart django;
+docker-compose -f docker-compose.prod.yml restart traefik;
