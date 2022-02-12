@@ -31,6 +31,8 @@ def home(request):
         today_start = today.floor('day').datetime
         today_end = today.ceil('day').datetime
 
+        checkouts = EquipmentCheckout.objects.filter(due_date__gte=today_end) # todo: order by params? why u no work
+
         overdue_checkouts = EquipmentCheckout.objects.filter(
             due_date__lte=today_end,
             checkout_status='CHECKED_OUT'
@@ -44,6 +46,7 @@ def home(request):
             request,
             'admin_home.html',
             context={
+                'checkouts': checkouts,
                 'overdue_checkouts': overdue_checkouts,
                 'todays_classes': todays_classes
             }
