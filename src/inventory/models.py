@@ -4,6 +4,7 @@ from project.models import Project
 from django.template.defaultfilters import slugify
 from django.db.models import Q
 import arrow
+from datetime import date
 from userprofile.models import Badge
 from faypublic.settings import DEBUG
 from userprofile.models import UserProfile
@@ -170,6 +171,10 @@ class EquipmentCheckout(models.Model):
 
     def project_title(self):
         return self.project.title
+
+    @property
+    def is_past_due(self):
+        return date.today() > self.due_date
 
 
 class ClosedDay(models.Model):

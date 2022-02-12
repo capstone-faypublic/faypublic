@@ -35,10 +35,21 @@
 
             {% elif checkout.checkout_status == 'CHECKED_OUT' %}
 
+                {% if checkout.is_past_due %}
+
+                <span style="display: inline-block; vertical-align:middle; background-color: red;">
+                    Checked out<br/>
+                    Due {{ checkout.due_date_humanized }}
+                </span>
+
+                {% else %}
+
                 <span style="display: inline-block; vertical-align:middle;">
                     Checked out<br/>
                     Due {{ checkout.due_date_humanized }}
                 </span>
+
+                {% endif %}
 
                 <span style="display: inline-block; vertical-align:middle;" class="circle yellow-bg"></span>
 
