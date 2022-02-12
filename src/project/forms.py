@@ -18,7 +18,7 @@ class SmallProjectForm(ModelForm):
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        exclude = ['owner', 'users']
+        exclude = ['owner', 'users', 'uploaded_file']
         widgets = {
         	'expected_completion_date' : DateInput(),
         }

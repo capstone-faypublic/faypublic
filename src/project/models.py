@@ -39,6 +39,7 @@ class Project(models.Model):
     created = models.DateField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
     expected_completion_date = models.DateField(null=True, blank=False)
+    media_link = models.CharField(max_length=255, null=True, blank=True)
     uploaded_file = models.FileField(upload_to=handle_file_upload, null=True, blank=True, validators=[validate_video_extension])
 
     def __str__(self):

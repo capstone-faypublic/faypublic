@@ -46,12 +46,12 @@ def project(request, id):
             project.users.add(invited_user)
 
     program_request = ProjectProgramRequestForm(request.POST)
-    if request.method == 'POST' and program_request.is_valid() and project.uploaded_file:
+    if request.method == 'POST' and program_request.is_valid() and project.media_link:
         req = program_request.save(commit=False)
         req.user = request.user
         req.title = project.title
         req.description = project.description
-        req.media_link = project.uploaded_file.url
+        req.media_link = project.media_link
         req.save()
 
         redirect('/profile/requests/')
