@@ -33,6 +33,8 @@ $(document).ready(function() {
     {% endif %}
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        {{ form.non_field_errors }}
+
         {{ profile_form.profile_photo.errors }}
         <div class = "wrapper">
             <!-- <i class="fas fa-upload" id="fa-edit-prof"></i> -->
@@ -63,41 +65,48 @@ $(document).ready(function() {
             <i class="fa fa-map-signs" id="fa-edit-prof"></i>
             <label>Street Address:</label>
             {{ profile_form.street_address }}
+            <!-- {{ profile_form.street_address.errors }} -->
         </div>
         <br>
         <div class = "wrapper">
             <i class="fa fa-building" id="fa-edit-prof"></i>
             <label>City:</label>
             {{ profile_form.city }}
+            {{ profile_form.city.errors }}
         </div>
         <br>
         <div class = "wrapper">
             <i class="fa fa-map-marker-alt" id="fa-edit-prof"></i>
             <label>State:</label>
             {{ profile_form.state }}
+            {{ profile_form.state.errors }}
         </div>
         <br>
         <div class = "wrapper">
             <i class="fa fa-map-pin" id="fa-edit-prof"></i>
             <label>Zipcode:</label>
             {{ profile_form.zipcode }}
+            {{ profile_form.zipcode.errors }}
         </div>
         <br>
         <div class = "wrapper">
             <i class="fa fa-mobile" id="fa-edit-prof"></i>
             <label>Phone Number:</label>
             {{ profile_form.phone_number }}
+            {{ profile_form.phone_number.errors }}
         </div>
         <br>
         <div class = "wrapper">
             <i class="fa fa-birthday-cake" id="fa-edit-prof"></i>
             <label>Birthday:</label>
             {{ profile_form.birthdate }}
+            {{ profile_form.birthdate.errors }}
         </div>
         <br/>
         <div class="wrapper">
             <label>How did you hear about us?</label>
             {{ profile_form.how_did_you_hear_about_us }}
+            {{ profile_form.how_did_you_hear_about_us.errors }}
         </div>
         <br>
 
