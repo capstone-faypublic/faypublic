@@ -109,9 +109,6 @@ class Equipment(models.Model):
     def get_absolute_url(self):
         return '/equipment/' + self.slug
 
-    def get_checkout_url(self):
-        return '/equipment/checkout/' + self.slug
-
     def name(self):
         return self.make + " " + self.model
 

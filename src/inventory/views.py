@@ -1,17 +1,28 @@
+import json
+from tkinter import N
+from dateutil import tz
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.admin.views.decorators import staff_member_required
+from django.forms import modelformset_factory
+import userprofile
 from userprofile.models import UserProfile
+from django.contrib.auth.models import User
 from django.db.models import Q
-from .models import Equipment, EquipmentCategory, EquipmentCheckout, ClosedDay
+from .models import CHECKOUT_24HR, Equipment, EquipmentCategory, EquipmentCheckout, ClosedDay
 from .forms import EquipmentCheckoutForm
 import arrow
 from .models import RESERVED, CHECKED_OUT
 from project.models import Project
 from django.http import JsonResponse
 import dateutil
-
+from django import forms
+from functools import partial
+from datetime import datetime
+from django.utils.timezone import make_aware
+DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 
 # Create your views here.
 
@@ -63,7 +74,6 @@ def equipment_list(request):
 
 
 def compute_due_date(timeframe, checkout_date):
-
     if timeframe == 'CHECKOUT_3HR':
         res = arrow.get(checkout_date)
         due = res.shift(hours=3)
@@ -92,32 +102,6 @@ def compute_due_date(timeframe, checkout_date):
         return due.datetime
     return None
 
-
-
-def available_units(item, start_date, end_date):
-    all_item_checkouts = EquipmentCheckout.objects.filter(equipment=item)
-    checked_out_on_date = all_item_checkouts.filter(
-        (Q(checkout_date__gte=start_date) & Q(checkout_date__lte=end_date) & Q(due_date__gte=end_date)) # overlaps the checkout_date
-        | (Q(checkout_date__lte=start_date) & Q(due_date__gte=start_date) &Q(due_date__lte=end_date)) # overlaps the due_date
-        | (Q(checkout_date__lte=start_date) & Q(due_date__gte=end_date)) # within checkout_date and due_date
-        | (Q(checkout_date__gte=start_date) & Q(due_date__lte=end_date)) # wraps checkout_date and due_date
-    )
-    checked_out_by_status = checked_out_on_date.filter(Q(checkout_status=RESERVED) | Q(checkout_status=CHECKED_OUT))
-
-    return item.quantity - len(checked_out_by_status)
-
-def user_has_current_checkout(user, item):
-    today = arrow.utcnow().date()
-    checkouts = EquipmentCheckout.objects.filter(
-        Q(equipment=item)
-        & Q(user=user)
-        & (
-            Q(checkout_status='RESERVED')
-            | Q(checkout_status='CHECKED_OUT')
-        )
-    )
-    return len(checkouts) > 0
-
 def closed_on_day(date):
     weekday = arrow.get(date).weekday()
     closed_days = ClosedDay.objects.filter(
@@ -133,67 +117,14 @@ def closed_on_day(date):
     return len(closed_days) > 0
 
 @login_required
-def equipment_checkout(request, slug):
+def equipment_details(request, slug):
     equipment = get_object_or_404(Equipment, slug=slug)
-
-    checkout_form = EquipmentCheckoutForm(request.POST or None)
-
-    err_msg = ''
-
-    userprofile = None
-    try:
-        userprofile = UserProfile.objects.get(user=request.user)
-    except:
-        userprofile = None
-
-    if checkout_form.is_valid():
-        userprofile = get_object_or_404(UserProfile, user=request.user)
-        project_id = request.POST.get('project')
-        checkout_time = int(request.POST.get('checkout_time')) if request.POST.get('checkout_time') else 0
-        project = get_object_or_404(Project, id=project_id)
-
-        if userprofile.can_checkout_equipment(equipment):
-            checkout = checkout_form.save(commit=False)
-
-            checkout.equipment = equipment
-            checkout.user = request.user
-
-            # checkouts starting
-            if not checkout.equipment.checkout_timeframe == 'CHECKOUT_3HR':
-                checkout.checkout_date = arrow.get(checkout.checkout_date).replace(hour=10).datetime
-            else:
-                checkout.checkout_date = arrow.get(checkout.checkout_date).replace(hour=checkout_time).datetime
-
-
-            checkout.due_date = compute_due_date(checkout.equipment.checkout_timeframe, checkout.checkout_date)
-            checkout.project = project
-            checkout.checkout_status = RESERVED
-
-            if not closed_on_day(checkout.checkout_date):
-                units = available_units(equipment, checkout.checkout_date, checkout.due_date)
-
-                if units > 0:
-                    if not user_has_current_checkout(request.user, equipment):
-                        checkout.save()
-
-                        return redirect('user_checkouts')
-                    else:
-                        err_msg = 'Sorry, you currently have this item checked out'
-                else:
-                    err_msg = 'Sorry, there are no units available for that date'
-            else:
-                err_msg = 'Sorry, we are closed that day!'
-        else:
-            err_msg = 'Sorry, you haven\'t completed the prerequisites necessary to check out this item'
 
     return render(
         request,
-        'equipment_checkout.html',
+        'equipment_details.html',
         context={
             'equipment': equipment,
-            'userprofile': userprofile,
-            'checkout_form': checkout_form,
-            'err_msg': err_msg
         }
     )
 
@@ -294,3 +225,251 @@ def admin_events(request):
         })
 
     return JsonResponse(checkouts, safe=False)
+
+def user_has_overdue_checkout(user):
+    today = arrow.utcnow().date()
+    overdue_checkouts = EquipmentCheckout.objects.filter(
+        Q(user=user)
+        & Q(checkout_status='CHECKED_OUT')
+        & Q(due_date__lte=today)
+    )
+    return len(overdue_checkouts) > 0
+
+def user_has_required_badges(user, equipment):
+    if user.is_superuser:
+        return True
+
+    try:
+        profile = UserProfile.objects.get(user=user)
+        return profile.can_checkout_equipment(equipment)
+    except:
+        registrations = user.classregistration_set.filter(completed=True)
+        badges = []
+
+        for reg in registrations:
+            sect = reg.class_section
+            course = sect.class_key
+            for badge in course.awarded_badges.all():
+                badges.append(badge)
+
+        for req in equipment.prerequisite_badges.all():
+            if req not in badges:
+                return False
+
+        return True
+
+def user_has_current_checkout(user, item):
+    today = arrow.utcnow().date()
+    checkouts = EquipmentCheckout.objects.filter(
+        Q(equipment=item)
+        & Q(user=user)
+        & (
+            Q(checkout_status='RESERVED')
+            | Q(checkout_status='CHECKED_OUT')
+        )
+    )
+    return len(checkouts) > 0
+
+def available_units(item, start_date, end_date):
+    all_item_checkouts = EquipmentCheckout.objects.filter(equipment=item)
+    checked_out_on_date = all_item_checkouts.filter(
+        (Q(checkout_date__gte=start_date) & Q(checkout_date__lte=end_date) & Q(due_date__gte=end_date)) # overlaps the checkout_date
+        | (Q(checkout_date__lte=start_date) & Q(due_date__gte=start_date) &Q(due_date__lte=end_date)) # overlaps the due_date
+        | (Q(checkout_date__lte=start_date) & Q(due_date__gte=end_date)) # within checkout_date and due_date
+        | (Q(checkout_date__gte=start_date) & Q(due_date__lte=end_date)) # wraps checkout_date and due_date
+    )
+    checked_out_by_status = checked_out_on_date.filter(Q(checkout_status=RESERVED) | Q(checkout_status=CHECKED_OUT))
+
+    return item.quantity - len(checked_out_by_status)
+
+@csrf_exempt
+@staff_member_required
+def get_user_projects_json(request):
+    data = json.loads(request.body)
+
+    if data.get('user_id'):
+        user = None
+        try:
+            user = User.objects.get(id=data.get('user_id'))
+        except:
+            return JsonResponse({ 'error': 'User does not exist' }, status=404)
+
+        # the user has no overdue checkouts
+        if user_has_overdue_checkout(user):
+            return JsonResponse({ 'error': 'User has overdue checkouts' }, status=400)
+
+        projects = []
+        for p in user.owner_projects.all():
+            projects.append({ 'id': p.id, 'title': p.title })
+        for p in user.project_set.all():
+            projects.append({ 'id': p.id, 'title': p.title })
+
+        return JsonResponse({ 'projects': projects }, status=200)
+
+    return JsonResponse({ 'error': 'Invalid request' }, status=400)
+
+@csrf_exempt
+@login_required
+def check_user_can_check_out_equipment(request):
+    data = json.loads(request.body)
+
+    if data.get('equipment_id') and data.get('checkout_start_date'):
+        user = None
+        if request.user.is_superuser and data.get('user_id'):
+            try:
+                user = User.objects.get(id=data.get('user_id'))
+            except:
+                return JsonResponse({ 'error': 'User does not exist' }, status=404)
+        elif request.user.is_superuser:
+            return JsonResponse({ 'error': 'User not selected' }, status=400)
+        else:
+            user = request.user
+
+        equipment = None
+        equipment_id = data.get('equipment_id')
+
+        if not equipment_id:
+            return JsonResponse({ 'error': 'Invalid selection' }, status=400)
+
+        try:
+            equipment = Equipment.objects.get(id=equipment_id)
+        except:
+            return JsonResponse({ 'error': 'Invalid selection' }, status=400)
+
+
+        # there are available units
+        checkout_date = make_aware(datetime.strptime(data.get('checkout_start_date'), '%Y-%m-%d'))
+        due_date = compute_due_date(equipment.checkout_timeframe, checkout_date)
+        if not available_units(equipment, checkout_date, due_date):
+            return JsonResponse({ 'error': 'No units available for selected checkout date' }, status=400)
+
+        # the user does not currently have the item checked out
+        if user_has_current_checkout(user, equipment):
+            return JsonResponse({ 'error': 'User has item checked out' }, status=400)
+
+        # the user has the prerequisite classes/badges
+        if not user_has_required_badges(user, equipment):
+            return JsonResponse({ 'error': 'User does not have prerequisite badges' }, status=400)
+
+        return JsonResponse({ 'valid': True }, status=200)
+
+    return JsonResponse({ 'error': 'Invalid request, equipment and checkout date required' }, status=400)
+
+@csrf_exempt
+@login_required
+def handle_equipment_checkout_form(request):
+    data = json.loads(request.body)
+
+    checkout_start_date = data.get('checkout_start_date') 
+    checkout_time = int(data.get('checkout_time'))
+    project_id = int(data.get('project_id'))
+    equipment_ids = data.get('equipment_ids')
+    user = None
+
+    if not checkout_start_date or not checkout_time or not equipment_ids or len(equipment_ids) is 0:
+        return JsonResponse({ 'error': 'Invalid submission', 'checkout_start_date': checkout_start_date, 'checkout_time': checkout_time, 'equipment_ids': equipment_ids }, status=400)
+
+    if request.user.is_superuser:
+        user_id = data.get('user_id')
+        try:
+            user = User.objects.get(id=user_id)
+        except:
+            return JsonResponse({ 'error': 'User does not exist' }, status=404)
+    else:
+        user = request.user
+
+    # re-validate checkout details for each item then save
+
+    # the user has no overdue checkouts
+    if user_has_overdue_checkout(user):
+        return JsonResponse({ 'error': 'User has overdue checkouts' }, status=400)
+
+    global_checkout_timeframe = CHECKOUT_24HR if len(equipment_ids) > 1 else None
+
+    checkouts = []
+    errors = {}
+    has_errors = False
+
+    for equipment_id in equipment_ids:
+        equipment = None
+        equipment_errors = []
+
+        try:
+            equipment = Equipment.objects.get(id=int(equipment_id))
+        except:
+            equipment_errors.append('Equipment does not exist')
+
+        checkout_date = arrow.get(checkout_start_date).replace(hour=checkout_time, tzinfo='US/Central').datetime
+        due_date = compute_due_date(global_checkout_timeframe if global_checkout_timeframe else equipment.checkout_timeframe, checkout_date)
+
+        if closed_on_day(checkout_date):
+            equipment_errors.append('We are closed that day')
+
+        if not available_units(equipment, checkout_date, due_date):
+            equipment_errors.append('No units available for selected checkout date')
+
+        # the user does not currently have the item checked out
+        if user_has_current_checkout(user, equipment):
+            equipment_errors.append('User has item checked out')
+
+        # the user has the prerequisite classes/badges
+        if not user_has_required_badges(user, equipment):
+            equipment_errors.append('User does not have required badges')
+
+        project = None
+
+        try:
+            project = Project.objects.get(id=project_id)
+        except:
+            equipment_errors.append('Project does not exist')
+
+        if len(equipment_errors) > 0:
+            errors[equipment_id] = equipment_errors
+            has_errors = True
+            break
+
+        checkout = EquipmentCheckout.objects.create(
+            user=user,
+            equipment=equipment,
+            project=project,
+            checkout_date=checkout_date,
+            due_date=due_date
+        )
+
+        checkouts.append({
+            'equipment_id': checkout.equipment.id,
+            'equipment_name': checkout.equipment.name(),
+            'checkout_timeframe': checkout.equipment.checkout_timeframe,
+            'start': checkout_date,
+            'end': due_date,
+            'status': checkout.checkout_status,
+            'title': str(checkout.user) + ' - ' + checkout.equipment.name()
+        })
+
+
+    if has_errors:
+        return JsonResponse({ 'errors': errors, 'checkouts': checkouts }, status=400)
+
+    return JsonResponse({ 'checkouts': checkouts }, safe=False, status=200)
+
+@login_required
+def checkout_page(request):
+    users = None
+    user_projects = None
+    equipment_list = Equipment.objects.all()
+
+    if request.user.is_superuser:
+        users = User.objects.all()
+    else:
+        profile = UserProfile.objects.get(user=request.user)
+        user_projects = profile.projects()
+
+    return render(
+        request,
+        'checkout_page.html',
+        context={
+            'users': users,
+            'user_projects': user_projects,
+            'equipment_list': equipment_list,
+        }
+    )

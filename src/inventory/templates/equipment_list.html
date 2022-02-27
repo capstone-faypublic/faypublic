@@ -39,31 +39,31 @@
 
         <br/>
 
+        <div class="space">
+            {% if user.is_authenticated %}
+                <a href="/equipment/checkout/" class="button blue-bg">Check out</a>
+            {% else %}
+                <a href="/equipment/checkout/">Log in</a> to check out
+            {% endif %}
+        </div>
 
         <table class="table">
         {% for equip in equipment %}
             <tr class="row">
                 <td class="media" style="width: 140px">
-                    <a href="{{ equip.get_checkout_url }}">
+                    <a href="{{ equip.get_absolute_url }}">
                         <img src="{{ equip.get_image_url }}"/>
                     </a>
                 </td>
                 <td>
                     <span class="title">
-                        <a href="{{ equip.get_checkout_url }}">
+                        <a href="{{ equip.get_absolute_url }}">
                             {{ equip.make }} {{ equip.model }}
                         </a>
                     </span>
                     <span class="info">
                         {{ equip.description }}
                     </span>
-                </td>
-                <td style="text-align: right">
-                    {% if user.is_authenticated %}
-                        <a href="{{ equip.get_checkout_url }}" class="button blue-bg">Check out</a>
-                    {% else %}
-                        <a href="{{ equip.get_checkout_url }}">Log in</a> to check out
-                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
