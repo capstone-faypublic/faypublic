@@ -27,13 +27,15 @@ services:
       - ./src/static:/static
     labels:
       - traefik.enable=true
-      - traefik.http.routers.nginx.rule=Host(`login.faypublic.local`) && PathPrefix(`/static/`) # be sure to add login.faypublic.local to your /etc/hosts file
+      - traefik.http.routers.nginx.rule=Host(`104.236.243.27`) &&
+        PathPrefix(`/static/`) # be sure to add login.faypublic.local to your /etc/hosts file
       - traefik.http.routers.nginx.entrypoints=web
 
   django:
     build: .
     # restart: always
-    command: ./wait-for-it.sh $POSTGRES_HOST:$POSTGRES_PORT -t 60 -- python manage.py runserver 0.0.0.0:8000
+    command: ./wait-for-it.sh $POSTGRES_HOST:$POSTGRES_PORT -t 60 -- python
+      manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
     volumes:
@@ -46,7 +48,7 @@ services:
       - .env
     labels:
       - traefik.enable=true
-      - traefik.http.routers.django.rule=Host(`login.faypublic.local`) # be sure to add login.faypublic.local to your /etc/hosts file
+      - traefik.http.routers.django.rule=Host(`104.236.243.27`) # be sure to add login.faypublic.local to your /etc/hosts file
       - traefik.http.routers.django.entrypoints=web
 
   postgres:
@@ -62,7 +64,8 @@ services:
   celery:
     build: .
     # command: celery multi start w1 -A faypublic -l info && celery -A faypublic beat -l info
-    command: ./wait-for-it.sh $POSTGRES_HOST:$POSTGRES_PORT -t 60 -- celery -A faypublic worker -l info -B
+    command: ./wait-for-it.sh $POSTGRES_HOST:$POSTGRES_PORT -t 60 -- celery -A
+      faypublic worker -l info -B
     volumes:
       - ./src:/src/faypublic
     links:
