@@ -4,7 +4,7 @@ from project.models import Project
 from django.template.defaultfilters import slugify
 from django.db.models import Q
 import arrow
-from datetime import date
+from datetime import date, datetime
 from userprofile.models import Badge
 from faypublic.settings import DEBUG
 from userprofile.models import UserProfile
@@ -171,7 +171,9 @@ class EquipmentCheckout(models.Model):
 
     @property
     def is_past_due(self):
-        return date.today() > self.due_date
+        now = arrow.now().datetime
+        due = arrow.get(self.due_date).datetime
+        return now > due
 
 
 class ClosedDay(models.Model):
