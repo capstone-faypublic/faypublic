@@ -27,9 +27,8 @@ services:
       - ./src/static:/static
     labels:
       - traefik.enable=true
-      - traefik.http.routers.nginx.rule=Host(`login.faypublic.local`) && PathPrefix(`/static/`)
-      # - traefik.http.routers.nginx.rule=Host(`104.236.243.27`) &&
-      #   PathPrefix(`/static/`) # be sure to add login.faypublic.local to your /etc/hosts file
+      # - traefik.http.routers.nginx.rule=Host(`login.faypublic.local`) && PathPrefix(`/static/`)
+      - traefik.http.routers.nginx.rule=Host(`104.236.243.27`) && PathPrefix(`/static/`) # be sure to add login.faypublic.local to your /etc/hosts file
       - traefik.http.routers.nginx.entrypoints=web
 
   django:
@@ -48,8 +47,8 @@ services:
       - .env
     labels:
       - traefik.enable=true
-      - traefik.http.routers.django.rule=Host(`login.faypublic.local`)
-      # - traefik.http.routers.django.rule=Host(`104.236.243.27`) # be sure to add login.faypublic.local to your /etc/hosts file
+      # - traefik.http.routers.django.rule=Host(`login.faypublic.local`)
+      - traefik.http.routers.django.rule=Host(`104.236.243.27`) # be sure to add login.faypublic.local to your /etc/hosts file
       - traefik.http.routers.django.entrypoints=web
 
   postgres:
