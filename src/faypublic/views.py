@@ -62,6 +62,12 @@ def home(request):
 def user_register(request):
     form = UserRegistrationForm(request.POST or None)
 
+    street_address = request.POST.get('street_address')
+    city = request.POST.get('city')
+    state = request.POST.get('state')
+    zipcode = request.POST.get('zip_code')
+    phone_number = request.POST.get('phone_number')
+
     if form.is_valid():
         form.save()
         username = form.cleaned_data.get('username')
@@ -72,7 +78,12 @@ def user_register(request):
         )
         login(request, user)
         userprofile = UserProfile.objects.create(
-            user=user
+            user=user,
+            street_address=street_address,
+            city=city,
+            state=state,
+            zipcode=zipcode,
+            phone_number=phone_number
         )
         userprofile.save()
 
@@ -87,6 +98,33 @@ def user_register(request):
         'user_register.html',
         context={
             'form': form
+        }
+    )
+
+    if request.POST:
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+
+    if profile_form.is_valid():
+        userprofile = profile_form.save(commit=False)
+        user_get_email_reminders = request.POST.get('user_get_email_reminders')
+        userprofile.get_email_reminders = True if user_get_email_reminders == 'on' else False
+        user_get_sms_reminders = request.POST.get('user_get_sms_reminders')
+        userprofile.get_sms_reminders = True if user_get_sms_reminders == 'on' else False
+        userprofile.save()
+
+        
+        request.user.first_name = user_first_name
+        request.user.last_name = user_last_name
+        request.user.email = user_email
+        request.user.save()
+
+    return render(
+        request,
+        'edit_profile.html',
+        context={
+            'name': request.user.first_name + ' ' + request.user.last_name,
+            'profile': userprofile,
+            'profile_form': profile_form
         }
     )
 

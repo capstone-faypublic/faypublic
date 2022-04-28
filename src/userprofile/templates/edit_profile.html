@@ -40,6 +40,7 @@ $(document).ready(function() {
             <!-- <i class="fas fa-upload" id="fa-edit-prof"></i> -->
             <label>Profile photo:</label>
             {{ profile_form.profile_photo }}
+            <p><i>Please upload a picture of yourself so we can recognize you.</i></p>
         </div>
         <br>
         <div class = "wrapper">
@@ -65,7 +66,7 @@ $(document).ready(function() {
             <i class="fa fa-map-signs" id="fa-edit-prof"></i>
             <label>Street Address:</label>
             {{ profile_form.street_address }}
-            <!-- {{ profile_form.street_address.errors }} -->
+            {{ profile_form.street_address.errors }}
         </div>
         <br>
         <div class = "wrapper">
