@@ -1,0 +1,327 @@
+{% extends 'base.html' %}
+{% block pagecontent %}
+
+<head>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js" integrity="sha384-nVi8MaibAtVMFZb4R1zHUW/DsTJpG/YwPknbGABVOgk5s6Vhopl6XQD/pTCG/DKB" crossorigin="anonymous"></script>
+    <!-- added for date picker -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+    <link rel='stylesheet' href='/static/js/fullcalendar-3.9.0/fullcalendar.css' />
+    <!-- <script src='/static/js/fullcalendar-3.9.0/lib/jquery.min.js'></script> -->
+    <script src='/static/js/fullcalendar-3.9.0/lib/moment.min.js'></script>
+    <script src='/static/js/fullcalendar-3.9.0/fullcalendar.js'></script>
+
+    <script type="text/javascript">
+
+    $(function() {
+        // page is now ready, initialize the calendar...
+        $('#calendar').fullCalendar({
+            // put your options and callbacks here
+            themeSystem: 'bootstrap4',
+            defaultView: 'agendaWeek',
+            events: '/equipment/checkouts/{{ equipment.id }}/',
+            minTime: '10:00:00',
+            maxTime: '19:00:00',
+            slotDuration: '00:30:00',
+            nowIndicator: true,
+        });
+    });
+
+    window.addEventListener('load', (event) => {
+        // do some magic
+        $('input[name="checkout-date"]').datepicker('option', 'dateFormat', 'yy-mm-dd');
+
+        const equipmentSelectTemplate = document.getElementById('equipment-select-template');
+        const buttonAdd = document.getElementById('add-button');
+        const buttonSubmit = document.getElementById('submit-button');
+
+        buttonAdd.onclick = addEquipmentSelectionForm;
+        buttonSubmit.onclick = submitForm;
+
+        const equipmentSelectionFormIds = [];
+
+        function addEquipmentSelectionForm() {
+            function generateChangeHandler (form) {
+                return function () {
+                    return validateEquipmentSelection(form);
+                }
+            }
+
+            function validateEquipmentSelection (form) {
+                form.querySelector('.helpText').innerHTML = '';
+                const equipment_id = $(form).find('select[name="equipment"]').val();
+                const user_id = $('select[name="admin-user-select"]').val();
+                const checkout_date = $('input[name="checkout-date"]').val();
+
+                if (!equipment_id || equipment_id === '' || !checkout_date || checkout_date === '') {
+                    form.querySelector('.helpText').innerHTML = 'Must select equipment and checkout date';
+                }
+
+                $.ajax({
+                    url: "/equipment/checkout/validate-selection/",
+                    type: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify({
+                        'equipment_id': equipment_id,
+                        'user_id': user_id,
+                        'checkout_start_date': checkout_date,
+                    }),
+                    success: function(result){
+                        form.querySelector('.helpText').innerHTML = '';
+                        // enable the submit button if all are valid?
+                    },
+                    error: function(result) {
+                        const error = result.responseJSON['error'];
+                        form.querySelector('.helpText').innerHTML = error;
+                    }
+                });
+            }
+
+            const newForm = equipmentSelectTemplate.cloneNode(true);
+            const newId = 'equipment-selection-form-' + equipmentSelectionFormIds.length;
+            newForm.setAttribute('id', newId);
+            newForm.setAttribute('style', '');
+            newForm.querySelector('.remove-button').onclick = generateRemoveHandler(newId);
+            newForm.querySelector('select[name="equipment"]').onchange = generateChangeHandler(newForm);
+            document.getElementById('equipment-select-forms').appendChild(newForm);
+            equipmentSelectionFormIds.push(newId);
+        }
+
+        function generateRemoveHandler(formId) {
+            return function () {
+                return removeEquipmentSelection(formId);
+            }
+        }
+
+        function removeEquipmentSelection(formId) {
+            const form = document.getElementById(formId);
+            document.getElementById('equipment-select-forms').removeChild(form);
+            equipmentSelectionFormIds.splice(equipmentSelectionFormIds.indexOf(formId), 1)
+        }
+
+        function submitForm(e) {
+            e.preventDefault();
+
+            const equipmentSelectForms = $('#equipment-select-forms select[name="equipment"]');
+            const equipment_ids = [];
+            const user_id = $('select[name="admin-user-select"]').val();
+            const checkout_date = $('input[name="checkout-date"]').val();
+            const checkout_time = $('select[name="checkout-time"]').val();
+            const project_id = $('select[name="project"]').val();
+
+            if (!equipmentSelectForms || equipmentSelectForms.length === 0 || 
+            !checkout_time || checkout_time === '' || !checkout_date || checkout_date === '' ||
+            !project_id || project_id === '') {
+                $('#form-help-text').text('Must fill out all form fields');
+                return;
+            }
+
+            for (var i = 0; i < equipmentSelectForms.length; i++) {
+                equipment_ids.push($(equipmentSelectForms[i]).val())
+            }
+
+            $.ajax({
+                url: "/equipment/checkout/check-out-items/",
+                type: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify({
+                    'user_id': user_id,
+                    'project_id': project_id,
+                    'checkout_start_date': checkout_date,
+                    'checkout_time': checkout_time,
+                    'equipment_ids': equipment_ids,
+                }),
+                success: function(result){
+                    $('#form-help-text').text('Success. You can close the window.');
+                },
+                error: function(result) {
+                    const errors = result.responseJSON['errors'];
+
+                    let errorTexts = [];
+                    Object.keys(errors).forEach(k => {
+                        errorText.push(errors[k].join(', '));
+                    });
+
+                    $('#form-help-text').text(errorTexts.join('\n'));
+                }
+            });
+        }
+
+        addEquipmentSelectionForm();
+
+    }, false);
+
+    </script>
+
+    {% if request.user.is_superuser %}
+
+    <script type="text/javascript">
+        window.addEventListener('load', (event) => {
+
+            const adminProjectSelectTemplate = document.getElementById('admin-select-project-template');
+
+            function validateUserSelectionAndGetProjects() {
+                document.getElementById('admin-select-project-wrapper').innerHTML = '';
+
+                const user_id = $('select[name="admin-user-select"]').val();
+
+                if (!user_id || user_id === '') {
+                    document.getElementById('admin-select-project-wrapper').innerHTML = 'No user selected';
+                    return;
+                }
+
+                $.ajax({
+                    url: "/equipment/admin-user-projects/",
+                    type: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify({
+                        'user_id': user_id
+                    }),
+                    success: function(result){
+                        const projects = result['projects'];
+
+                        if (!projects || projects.length == 0) {
+                            document.getElementById('admin-select-project-wrapper').innerHTML = 'User has no projects';
+                            return;
+                        }
+
+                        const projectSelect = adminProjectSelectTemplate.cloneNode(true);
+                        projectSelect.setAttribute('id', 'admin-select-project');
+                        projectSelect.setAttribute('style', '');
+                        document.getElementById('admin-select-project-wrapper').appendChild(projectSelect);
+                        projectSelect.querySelector('select[name="project-temp"]').setAttribute('name', 'project')
+                        
+                        for(var i = 0; i < projects.length; i++) {
+                            const option = document.createElement('option');
+                            option.setAttribute('value', projects[i]['id']);
+                            option.innerText = projects[i]['title'];
+                            document.getElementById('admin-select-project-wrapper').appendChild(projectSelect);
+                            projectSelect.querySelector('select[name="project"]').appendChild(option);
+                        }
+                    },
+                    error: function(result) {
+                        const error = result.responseJSON['error'];
+                        document.getElementById('admin-select-project-wrapper').innerHTML = error;
+                    }
+                })
+            }
+
+            const userSelect = document.getElementById('admin-user-select');
+            userSelect.onchange = validateUserSelectionAndGetProjects;
+
+        }, false);
+
+    </script>
+
+    {% endif %}
+
+
+
+</head>
+
+<script>
+    $(document).ready(function() {
+        $('.datepicker').datepicker({
+            defaultView: 'basicWeek',
+        });
+    });
+</script>
+
+<div id="equipment-select-template" style="display: none;">
+    <div class="wrapper">
+        <select name="equipment" required>
+            <option disabled selected>-----</option>
+            {% for equipment in equipment_list %}
+                <option value="{{ equipment.id }}">{{ equipment.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="helpText"></div>
+    <div>
+        <button class="remove-button">Remove</button>
+    </div>
+</div>
+
+{% if request.user.is_superuser %}
+    <div id="admin-select-project-template" style="display: none;">
+        <label>Project</label>
+        <select name="project-temp" required>
+            <option disabled selected>-----</option>
+            {% for project in user_projects %}
+                <option value="{{ project.id }}">{{ project.title }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{% endif %}
+
+    <div class="container flex-container">
+        <div id="checkout-details" class="flex-item space">
+            {% if request.user.is_superuser and users %}
+                <div class="wrapper">
+                    <label>User</label>
+                    <select id="admin-user-select" name="admin-user-select" required>
+                        <option disabled selected>-----</option>
+                        {% for user in users %}
+                            <option value="{{ user.id }}">{{ user }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+            {% if request.user.is_superuser %}
+                <div id="admin-select-project-wrapper" class="wrapper"></div>
+            {% else %}
+            <div class="wrapper" id="project">
+                <label>Project</label>
+                <select name="project" required>
+                    <option disabled selected>-----</option>
+                    {% for project in user_projects %}
+                        <option value="{{ project.id }}">{{ project.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+            <div class="wrapper" id="checkout-date">
+                <i class="fa fa-calendar" id="fa-edit-prof"></i>
+                <label>Checkout date:</label>
+                <input class="datepicker" name="checkout-date" required />
+            </div>
+            <div class="wrapper" id="checkout-time">
+                <label>Checkout Time</label>
+                <select name="checkout-time" required>
+                    <option disabled selected>-----</option>
+                    <option value="10">10:00 am</option>
+                    <option value="11">11:00 am</option>
+                    <option value="12">12:00 pm</option>
+                    <option value="13">1:00 pm</option>
+                    <option value="14">2:00 pm</option>
+                    <option value="15">3:00 pm</option>
+                    <option value="16">4:00 pm</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex-item space">
+            <b>Equipment</b>
+            <div id="equipment-select-forms"></div>
+            <button id="add-button">Add</button>
+            <button id="submit-button">Submit</button>
+            <div id="form-help-text"></div>
+        </div>
+    </div>
+
+    <div class="space">
+        <div id='calendar'></div>
+    </div>
+</div>
+
+{% endblock pagecontent %}

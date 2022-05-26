@@ -59,8 +59,42 @@
         {{ form.password2.errors }}
         <br/>
 
+        <div class = "wrapper">
+            <i class="fas fa-id-card" id="fa-edit-prof"></i>
+            <label>Street address:</label>
+            <input type="text" name="street_address" placeholder="101 W Rock St" required>
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="far fa-id-card" id="fa-edit-prof"></i>
+            <label>City:</label>
+            <input type="text" name="city" placeholder="Fayetteville" required>
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="fas fa-envelope" id="fa-edit-prof"></i>
+            <label>State:</label>
+            <input type="text" name="state" placeholder="AR" required>
+        </div>
+
+        <br>
+        <div class = "wrapper">
+            <i class="fas fa-id-card" id="fa-edit-prof"></i>
+            <label>Zip code:</label>
+            <input type="number" name="zip_code" placeholder="72701" required>
+        </div>
+        <br>
+        <div class = "wrapper">
+            <i class="far fa-id-card" id="fa-edit-prof"></i>
+            <label>Phone number:</label>
+            <input type="tel" name="phone_number" placeholder="(123) 456-7777" required>
+        </div>
+
         <p>
             <input type="checkbox" name="user_application" style="display: inline;" required> I agree to the User Application Terms (shown below)
+        </p>
+         <p>
+            FPTV does not sell or share any collected personal information.
         </p>
         <br>
         <input type="submit" class="button green-bg" value="Register" style="width:100%"/>
